@@ -251,7 +251,8 @@
   function renderHomePortraits() {
     var box = document.getElementById('home-portraits');
     if (!box) return;
-    var ps = box.hasAttribute('data-all') ? LI.portraits() : LI.portraits().slice(0, 3);
+    var all = LI.portraits().filter(function (p) { return p.listed !== false; });
+    var ps = box.hasAttribute('data-all') ? all : all.slice(0, 3);
     if (!ps.length) return; // le message « à venir » est déjà dans le HTML
     box.innerHTML = ps.map(function (p, i) {
       return '<a class="p-card" href="' + LI.esc(LI.root + p.url) + '">' +
