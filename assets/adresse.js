@@ -90,7 +90,7 @@
     supermarket: 'Supermarché', convenience: 'Épicerie', deli: 'Traiteur', wine: 'Caviste', alcohol: 'Caviste',
     chocolate: 'Chocolatier', confectionery: 'Confiserie', seafood: 'Poissonnerie', coffee: 'Torréfacteur', tea: 'Thé',
     farm: 'Produits fermiers', organic: 'Bio', frozen_food: 'Surgelés', beverages: 'Boissons',
-    hairdresser: 'Coiffeur', beauty: 'Institut de beauté', florist: 'Fleuriste', laundry: 'Laverie', dry_cleaning: 'Pressing',
+    estate_agent: 'Agence immobilière', hairdresser: 'Coiffeur', beauty: 'Institut de beauté', florist: 'Fleuriste', laundry: 'Laverie', dry_cleaning: 'Pressing',
     optician: 'Opticien', hearing_aids: 'Audioprothésiste', medical_supply: 'Matériel médical',
     clothes: 'Vêtements', shoes: 'Chaussures', books: 'Librairie', gift: 'Cadeaux', jewelry: 'Bijouterie',
     furniture: 'Ameublement', hardware: 'Quincaillerie', doityourself: 'Bricolage', newsagent: 'Presse', tobacco: 'Tabac',
@@ -110,7 +110,7 @@
     alim: ['bakery', 'pastry', 'butcher', 'greengrocer', 'cheese', 'supermarket', 'convenience', 'deli', 'wine', 'alcohol', 'chocolate', 'confectionery', 'seafood', 'coffee', 'tea', 'farm', 'organic', 'frozen_food', 'beverages', 'marketplace'],
     resto: ['restaurant', 'cafe', 'bar', 'pub', 'fast_food', 'ice_cream'],
     sante: ['pharmacy', 'optician', 'hearing_aids', 'medical_supply', 'doctors', 'dentist', 'clinic'],
-    serv: ['hairdresser', 'beauty', 'florist', 'laundry', 'dry_cleaning', 'bank', 'post_office', 'travel_agency', 'copyshop', 'tattoo', 'massage', 'car_repair', 'funeral_directors', 'library']
+    serv: ['estate_agent', 'hairdresser', 'beauty', 'florist', 'laundry', 'dry_cleaning', 'bank', 'post_office', 'travel_agency', 'copyshop', 'tattoo', 'massage', 'car_repair', 'funeral_directors', 'library']
   };
   function kindOf(t) {
     if (t.shop) return t.shop;
@@ -231,6 +231,11 @@
       var d = LI.dist(S.lat, S.lon, pr.lat, pr.lon);
       if (d <= 1500) P.push({ id: 'portrait/' + i, lat: pr.lat, lon: pr.lon, name: pr.name, d: d, t: { shop: pr.kind || '' }, portrait: pr, label: pr.category });
     });
+    (S.agences || []).forEach(function (a) {
+      if (a.lat == null) return;
+      var d = LI.dist(S.lat, S.lon, a.lat, a.lon);
+      if (d <= 1500) P.push({ id: 'cv/' + a.insee, lat: a.lat, lon: a.lon, name: a.name, d: d, t: { shop: 'estate_agent' }, label: 'Agence immobilière', own: a });
+    });
     P.sort(function (a, b) { return a.d - b.d; });
     return P;
   }
@@ -249,7 +254,8 @@
       box.innerHTML = list.map(function (p, i) {
         var lab = p.label || labelOf(kindOf(p.t));
         var pt = p.portrait ? '<a class="pt" href="' + LI.esc(LI.root + p.portrait.url) + '">Lire son portrait <span class="arrow">→</span></a>' : '';
-        return '<div class="shop' + (p.portrait ? ' has-portrait' : '') + '"><div class="num" aria-hidden="true">' + (i + 1) + '</div><div>' +
+        if (p.own) pt = '<a class="pt" href="' + LI.esc(LI.root + 'a-propos.html') + '">Notre agence · l’équipe <span class="arrow">→</span></a>';
+        return '<div class="shop' + (p.portrait || p.own ? ' has-portrait' : '') + '"><div class="num" aria-hidden="true">' + (i + 1) + '</div><div>' +
           '<div class="k">' + LI.esc(lab) + '</div><div class="nm">' + LI.esc(p.name) + '</div>' +
           '<div class="ds">' + fmtMin(minutes('walk', p.d)) + ' à pied · ' + fmtDist(p.d) + '</div>' + pt + '</div></div>';
       }).join('');
@@ -285,7 +291,7 @@
     S.shopLayer.clearLayers();
     var bounds = [[S.lat, S.lon]];
     S.shopsShown.forEach(function (p, i) {
-      L.marker([p.lat, p.lon], { icon: LI.divIcon('<div class="pin-n' + (p.portrait ? ' star' : '') + '">' + (i + 1) + '</div>', '', 28), title: p.name })
+      L.marker([p.lat, p.lon], { icon: LI.divIcon('<div class="pin-n' + (p.portrait || p.own ? ' star' : '') + '">' + (i + 1) + '</div>', '', 28), title: p.name })
         .bindPopup('<strong>' + LI.esc(p.name) + '</strong><br>' + LI.esc(p.label || labelOf(kindOf(p.t))) + ' · ' + fmtMin(minutes('walk', p.d)) + ' à pied' +
           (p.portrait ? '<br><a href="' + LI.esc(LI.root + p.portrait.url) + '">Lire son portrait →</a>' : ''))
         .addTo(S.shopLayer);
@@ -337,8 +343,9 @@
     initMap();
     renderPrices();
     setLoading();
-    Promise.all([getPois(S.lat, S.lon), LI.resolvePortraits()]).then(function (res) {
+    Promise.all([getPois(S.lat, S.lon), LI.resolvePortraits(), LI.resolveAgences()]).then(function (res) {
       S.pois = res[0];
+      S.agences = res[2];
       buildTrips();
       renderShops();
     }).catch(showError);

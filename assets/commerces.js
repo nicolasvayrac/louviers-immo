@@ -27,6 +27,7 @@
     ['maison', 'Maison & déco', 'Décoration, fleurs, ameublement, bricolage', ['furniture', 'interior_decoration', 'houseware', 'florist', 'garden_centre', 'hardware', 'doityourself', 'kitchen', 'bed', 'paint', 'lighting', 'antiques', 'second_hand', 'carpet', 'curtain', 'tiles', 'bathroom_furnishing']],
     ['loisirs', 'Culture & loisirs', 'Livres, jeux, sport, cadeaux', ['books', 'music', 'art', 'toys', 'games', 'sports', 'bicycle', 'outdoor', 'photo', 'stationery', 'gift', 'craft', 'video_games', 'newsagent', 'tobacco', 'pet']],
     ['sante', 'Santé', 'Pharmacies, opticiens, audioprothésistes', ['pharmacy', 'optician', 'hearing_aids', 'medical_supply', 'chemist']],
+    ['immobilier', 'Immobilier', 'Votre agence indépendante à Louviers depuis 1992', []],
     ['services', 'Services', 'Banques, poste, pressing, téléphonie, garages', ['bank', 'post_office', 'laundry', 'dry_cleaning', 'travel_agency', 'copyshop', 'mobile_phone', 'electronics', 'computer', 'car_repair', 'car', 'funeral_directors', 'insurance', 'locksmith', 'shoe_repair', 'repair']]
   ];
   var LABEL = {
@@ -150,11 +151,15 @@
   function card(s) {
     var lab = s.label || (s.portrait && s.portrait.category) || LABEL[s.kind] || 'Commerce';
     var links = [];
+    if (s.own) {
+      links.push('<a class="pt" href="https://www.cvimmobilier.fr/estimation">Faire estimer un bien <span class="arrow">→</span></a>');
+      links.push('<a class="cx" href="' + LI.esc(LI.root + 'a-propos.html') + '">L’équipe</a>');
+    }
     if (s.portrait) links.push('<a class="pt" href="' + LI.esc(LI.root + s.portrait.url) + '">Lire son portrait <span class="arrow">→</span></a>');
     if (s.web) links.push('<a class="cx" href="' + LI.esc(s.web) + '" target="_blank" rel="noopener">Site web ↗</a>');
     links.push('<a class="cx" href="' + LI.esc(LI.root + 'adresse.html?q=' + encodeURIComponent(s.name + (s.addr ? ', ' + s.addr : '')) + '&lat=' + s.lat.toFixed(6) + '&lon=' + s.lon.toFixed(6)) + '">Voir le quartier</a>');
-    return '<article class="biz' + (s.portrait ? ' has-portrait' : '') + '">' +
-      '<div class="k">' + LI.esc(lab) + (s.portrait ? ' · <span class="star">Portrait</span>' : '') + '</div>' +
+    return '<article class="biz' + (s.portrait || s.own ? ' has-portrait' : '') + '">' +
+      '<div class="k">' + LI.esc(lab) + (s.portrait ? ' · <span class="star">Portrait</span>' : '') + (s.own ? ' · <span class="star">Éditeur du guide</span>' : '') + '</div>' +
       '<h3 class="nm">' + LI.esc(s.name) + '</h3>' +
       (s.addr ? '<div class="ds">' + LI.esc(s.addr) + '</div>' : '') +
       (s.phone ? '<div class="ds"><a href="tel:' + LI.esc(s.phone.replace(/[^\d+]/g, '')) + '">' + LI.esc(s.phone) + '</a></div>' : '') +
@@ -173,7 +178,7 @@
     });
     var tot = document.querySelector('.rub[data-rub="all"] .n'); if (tot) tot.textContent = S.all.length;
 
-    var sortFn = function (a, b) { return (b.portrait ? 1 : 0) - (a.portrait ? 1 : 0) || a.name.localeCompare(b.name, 'fr'); };
+    var sortFn = function (a, b) { return (b.own ? 1 : 0) - (a.own ? 1 : 0) || (b.portrait ? 1 : 0) - (a.portrait ? 1 : 0) || a.name.localeCompare(b.name, 'fr'); };
     var html = RUB.filter(function (r) { return S.rub === 'all' || r[0] === S.rub; }).map(function (r) {
       var items = list.filter(function (s) { return s.rub === r[0]; }).sort(sortFn);
       if (!items.length) return '';
@@ -187,7 +192,7 @@
       S.layer.clearLayers();
       var pts = [];
       list.forEach(function (s) {
-        L.circleMarker([s.lat, s.lon], { radius: s.portrait ? 8 : 6, color: '#FFFFFF', weight: 1.5, fillColor: s.portrait ? '#C9A961' : '#1B2E40', fillOpacity: 0.95 })
+        L.circleMarker([s.lat, s.lon], { radius: s.portrait || s.own ? 8 : 6, color: '#FFFFFF', weight: 1.5, fillColor: s.portrait || s.own ? '#C9A961' : '#1B2E40', fillOpacity: 0.95 })
           .bindPopup('<strong>' + LI.esc(s.name) + '</strong><br>' + LI.esc(LABEL[s.kind] || s.label || '') + (s.addr ? '<br>' + LI.esc(s.addr) : '') +
             (s.portrait ? '<br><a href="' + LI.esc(LI.root + s.portrait.url) + '">Lire son portrait →</a>' : ''))
           .addTo(S.layer);
@@ -197,11 +202,22 @@
     }
   }
 
+  function addAgences(list) {
+    return LI.resolveAgences().then(function (ags) {
+      ags.forEach(function (a) {
+        if (a.insee !== S.insee || a.lat == null) return;
+        list.push({ id: 'cv/' + a.insee, name: a.name, lat: a.lat, lon: a.lon, kind: 'estate_agent', rub: 'immobilier',
+          addr: a.addr, web: a.web, phone: a.phone, label: 'Agence immobilière', own: true });
+      });
+      return list;
+    });
+  }
+
   function load() {
     $('dir').innerHTML = '<div class="state"><span class="loader"></span>Chargement des commerces…</div>';
     query(S.insee).then(function (d) {
       return attachPortraits(d.slice());
-    }).then(function (d) {
+    }).then(addAgences).then(function (d) {
       S.all = d;
       render();
     }).catch(function () {
