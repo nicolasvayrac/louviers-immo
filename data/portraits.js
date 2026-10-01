@@ -51,5 +51,20 @@ window.LI_PORTRAITS = [
     address: "43 rue du Maréchal Foch 27400 Louviers",
     phone: "02 32 40 02 77",
     website: "https://www.maison-barbe.com/"
+  },
+  {
+    name: "Institut des Portes de l'Eau",
+    title: "la beauté au naturel en centre-ville",
+    url: "portraits/institut-des-portes-de-l-eau.html",
+    photo: "assets/img/portraits/portes-eau-accueil.jpg",
+    chapo: "Place de la Porte de l’Eau, Élodie, esthéticienne depuis plus de vingt-trois ans, a ouvert un institut tourné vers les soins bio.",
+    quartier: "Centre-ville",
+    category: "Institut de beauté",
+    kind: "beauty",
+    rubrique: "beaute",
+    commune: "Louviers",
+    address: "1 place de la Porte de l'Eau 27400 Louviers",
+    phone: "09 82 52 92 16",
+    website: "https://institutdesportesdeleau.fr/"
   }
 ];
