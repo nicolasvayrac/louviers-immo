@@ -99,5 +99,22 @@ window.LI_PORTRAITS = [
     address: "10 place du Général de Gaulle 27100 Le Vaudreuil",
     phone: "02 32 40 04 63",
     website: "https://auxdelicesdelouviers.fr/maison-guincetre/"
+  },
+  {
+    name: "Georget Cycles",
+    aliases: ["Culture Vélo", "Culture Velo", "Culture Vélo Georget", "Culture Velo Georget", "Georget"],
+    mapName: "Georget Cycles - Culture Vélo",
+    title: "le vélo à Louviers depuis 1928",
+    url: "portraits/georget-cycles.html",
+    photo: "assets/img/portraits/georget-facade.jpg",
+    chapo: "Né d’une histoire de famille commencée en 1928, le magasin du boulevard du Docteur Postel est aujourd’hui porté par le Lovérien Cédric Lecerf.",
+    quartier: "Les Tisserands",
+    category: "Magasin de vélos",
+    kind: "bicycle",
+    rubrique: "loisirs",
+    commune: "Louviers",
+    address: "1 boulevard du Docteur Postel 27400 Louviers",
+    phone: "02 32 40 06 22",
+    website: "https://www.georgetcycles.fr/"
   }
 ];
