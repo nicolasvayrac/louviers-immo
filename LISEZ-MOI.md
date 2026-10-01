@@ -13,6 +13,8 @@ Il fonctionne sur n'importe quel hébergement (Netlify, OVH…).
 | `quartiers.html` + `quartiers/centre-ville.html` | Les quartiers (le centre-ville sert de modèle) |
 | `portraits.html` + `portraits/modele.html` | Portraits de commerçants (modèle de page non référencé) |
 | `commerces.html` | Annuaire des commerçants par rubrique (Se restaurer, Snacking, S'habiller…), carte, recherche, 10 communes |
+| `diagnostics.html` | Diagnostics obligatoires : questionnaire (vente/location, type, année…) et contrôle d’assainissement de l’Agglomération Seine-Eure |
+| `conciergerie.html` | S’installer : eau, électricité, gaz, box, déchets, démarches, mairie, avec plusieurs prestataires |
 | `outils.html` | Frais de notaire (taux de l'Eure 2026) et capacité d'emprunt |
 | `a-propos.html`, `mentions-legales.html`, `404.html` | Pages institutionnelles |
 
@@ -77,6 +79,14 @@ Questionnaire type (6 questions, déjà dans le modèle) : comment est née l'af
 
 Vos deux agences et vos partenaires (courtiers…) sont listés dans `data/partenaires.js`. Ils apparaissent toujours, en doré, dans l'annuaire et dans « Mon adresse ». Pour en ajouter ou en retirer un, modifiez ce fichier (mode d'emploi en haut du fichier) ou demandez à Claude.
 
+## Masquer un commerce
+
+Pour qu'un commerce n'apparaisse plus (ni dans l'annuaire, ni dans « Mon adresse »), ajoutez son nom dans `data/exclusions.js` (mode d'emploi en haut du fichier). Pour le réafficher, supprimez la ligne.
+
+## Clubs sportifs
+
+Les clubs et associations sportives de Louviers sont listés dans `data/clubs.js` (source : annuaire des associations 2024 de la Ville). Ils apparaissent dans la rubrique « Clubs sportifs » de l'annuaire. Pour en ajouter, en retirer ou corriger un lieu, modifiez ce fichier. Par discrétion, ni les noms des présidents ni leurs numéros personnels ne sont publiés : seulement le site du club, son adresse mail de club, ou un lien vers la page de la Ville.
+
 ## Mise à jour automatique des commerces
 
 Chaque lundi, GitHub télécharge les commerces, écoles, arrêts de bus et équipements depuis OpenStreetMap (`scripts/build_pois.py`) et les enregistre dans `data/pois.json` : le site les affiche alors instantanément, sans dépendre d'un service extérieur à chaque visite. Pour lancer la mise à jour à la main : onglet **Actions** du dépôt → « Mettre à jour les données » → **Run workflow**.
@@ -84,6 +94,6 @@ Chaque lundi, GitHub télécharge les commerces, écoles, arrêts de bus et équ
 ## Bon à savoir
 
 - **Temps de trajet** : estimations calculées à partir des distances (détour moyen de 30 %, 4,8 km/h à pied, 15 km/h à vélo, vitesse urbaine puis routière en voiture). Pour le bus, le site affiche les arrêts les plus proches et leurs lignes quand OpenStreetMap les connaît. Des temps de bus exacts nécessiteraient les horaires du réseau Semo (évolution possible).
-- **Commerces** : ils viennent d'OpenStreetMap. Si un commerce manque ou a fermé, on peut le corriger soi-même sur openstreetmap.org (gratuit), et la correction apparaît sur le site sous quelques minutes. Les agences immobilières sont volontairement exclues de la liste.
+- **Commerces** : ils viennent d'OpenStreetMap. Si un commerce manque ou a fermé, on peut le corriger soi-même sur openstreetmap.org (gratuit), et la correction apparaît sur le site sous quelques minutes. Les agences immobilières sont volontairement exclues de la liste. Les tabacs ont leur propre rubrique « Tabac & presse », et les artisans du bâtiment (plombiers, électriciens, menuisiers, couvreurs…) sont regroupés dans « Artisans ».
 - **Frais de notaire** : les taux sont dans `assets/outils.js` (bloc « Paramètres ») : DMTO de l'Eure à 6,32 % depuis le 1er avril 2026, 5,81 % pour les primo-accédants. À mettre à jour si la loi change.
 - **Mesure d'audience** : Plausible, comme sur l'ancien site (voir `GUIDE-TRACKING-PLAUSIBLE.md`). Tous les boutons « Estimer mon bien » envoient l'événement « Estimation Click », avec la page d'origine en position.

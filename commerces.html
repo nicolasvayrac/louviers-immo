@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>document.documentElement.className='js';</script>
 <title>Commerces à Louviers : restaurants, snacking, mode, métiers de bouche · louviers.immo</title>
-<meta name="description" content="L’annuaire des commerçants de Louviers et de la Seine-Eure par rubrique : se restaurer, snacking, cafés, boulangeries, métiers de bouche, s’habiller, beauté, maison, santé, services.">
+<meta name="description" content="L’annuaire de Louviers et de l’Agglomération Seine-Eure par rubrique : restaurants, snacking, cafés, boulangeries, métiers de bouche, mode, artisans, clubs sportifs, notaires, santé, services.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://louviers.immo/commerces.html">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="louviers.immo">
 <meta property="og:title" content="Commerces à Louviers : restaurants, snacking, mode, métiers de bouche · louviers.immo">
-<meta property="og:description" content="L’annuaire des commerçants de Louviers et de la Seine-Eure par rubrique : se restaurer, snacking, cafés, boulangeries, métiers de bouche, s’habiller, beauté, maison, santé, services.">
+<meta property="og:description" content="L’annuaire de Louviers et de l’Agglomération Seine-Eure par rubrique : restaurants, snacking, cafés, boulangeries, métiers de bouche, mode, artisans, clubs sportifs, notaires, santé, services.">
 <meta property="og:url" content="https://louviers.immo/commerces.html">
 <meta property="og:image" content="https://louviers.immo/assets/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -26,7 +26,7 @@
 <link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="assets/style.css?v=20261001e">
+<link rel="stylesheet" href="assets/style.css?v=20261001v">
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -39,18 +39,18 @@
     </a>
     <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
     <nav class="menu" id="menu" aria-label="Navigation principale">
-      <a href="adresse.html">Mon adresse</a><a href="commerces.html" aria-current="page">Commerces</a><a href="quartiers.html">Quartiers</a><a href="prix.html">Prix</a><a href="portraits.html">Portraits</a><a href="outils.html">Outils</a>
+      <a href="adresse.html">Mon adresse</a><a href="commerces.html" aria-current="page">Commerces</a><a href="quartiers.html">Quartiers</a><a href="prix.html">Prix</a><a href="conciergerie.html">S’installer</a><a href="diagnostics.html">Diagnostics</a><a href="outils.html">Outils</a>
       <a class="plausible-event-name=Estimation+Click plausible-event-position=commerces btn btn-gold" href="https://www.cvimmobilier.fr/estimation">Estimer mon bien</a>
     </nav>
   </div>
 </header>
 <main id="contenu">
-<section class="page-head">
+<section class="page-head ph-ocre">
   <div class="wrap">
     <div class="crumbs"><a href="index.html">Accueil</a> · Commerces</div>
     <span class="eyebrow">L’annuaire</span>
-    <h1 style="margin-top:12px">Les commerçants <span class="it">de Louviers.</span></h1>
-    <p class="lede" style="margin-top:20px">Où déjeuner, s’habiller, acheter son pain ou faire un cadeau : tous les commerces, rubrique par rubrique, avec les portraits de ceux que nous avons rencontrés.</p>
+    <h1 style="margin-top:12px">Les bonnes adresses <span class="it">de Louviers.</span></h1>
+    <p class="lede" style="margin-top:20px">Où déjeuner, acheter son pain, trouver un artisan ou inscrire les enfants au club de tennis : commerces, artisans et clubs sportifs, rubrique par rubrique.</p>
   </div>
 </section>
 
@@ -58,19 +58,19 @@
   <div class="wrap stack-lg">
     <div class="market">
       <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C9A961" stroke-width="1.5" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v7h14v-7"/></svg>
-      <div><strong>Marché de Louviers</strong> · mercredi et samedi matin, place de la Halle : producteurs locaux et produits du terroir.</div>
+      <div><strong>Marché de Louviers</strong> · mercredi et samedi matin, place de la Halle : producteurs locaux et produits du terroir. <a href="https://www.ville-louviers.fr/actualite-agenda/" target="_blank" rel="noopener" style="color:#fff;border-bottom:1px solid var(--gold-light)">Agenda de la Ville</a></div>
     </div>
 
     <div class="dir-tools">
-      <div class="field"><label for="c-q">Rechercher un commerce</label>
-        <input id="c-q" type="search" placeholder="Nom, type de commerce, rue…" autocomplete="off"></div>
+      <div class="field"><label for="c-q">Rechercher</label>
+        <input id="c-q" type="search" placeholder="Nom, activité, sport, rue…" autocomplete="off"></div>
       <div class="field"><label for="c-commune">Commune</label><select id="c-commune"></select></div>
       <div class="note" id="count" aria-live="polite" style="padding-bottom:14px"></div>
     </div>
     <div class="rubs" id="rubs" role="group" aria-label="Rubriques"></div>
 
     <div class="map-box" style="height:clamp(320px,46vh,520px)">
-      <div class="map" id="map" role="region" aria-label="Carte des commerces"></div>
+      <div class="map" id="map" role="region" aria-label="Carte de l’annuaire"></div>
       <div class="map-badge"><span class="pin-n star" style="width:16px;height:16px;font-size:0;border-width:1px"></span><span>En doré : les commerces dont nous avons fait le portrait</span></div>
     </div>
 
@@ -107,6 +107,8 @@
           <li><a href="quartiers.html">Quartiers</a></li>
           <li><a href="prix.html">Prix de l’immobilier</a></li>
           <li><a href="portraits.html">Portraits</a></li>
+          <li><a href="conciergerie.html">S’installer</a></li>
+          <li><a href="diagnostics.html">Diagnostics</a></li>
           <li><a href="outils.html">Outils</a></li>
           <li><a href="a-propos.html">À propos</a></li>
         </ul>
@@ -132,15 +134,19 @@
         <a href="mentions-legales.html">Mentions légales</a>
         <a href="mentions-legales.html#donnees">Sources des données</a>
         <a href="https://www.cvimmobilier.fr/">cvimmobilier.fr</a>
+        <a href="https://www.ville-louviers.fr/" target="_blank" rel="noopener">Ville de Louviers</a>
+        <a href="https://www.agglo-seine-eure.fr/" target="_blank" rel="noopener">Agglomération Seine-Eure</a>
       </nav>
     </div>
   </div>
 </footer>
-<script src="assets/site.js?v=20261001e"></script>
-<script src="assets/vendor/leaflet/leaflet.js?v=20261001e"></script>
-<script src="assets/map.js?v=20261001e"></script>
-<script src="data/portraits.js?v=20261001e"></script>
-<script src="data/partenaires.js?v=20261001e"></script>
-<script src="assets/commerces.js?v=20261001e"></script>
+<script src="assets/site.js?v=20261001v"></script>
+<script src="assets/vendor/leaflet/leaflet.js?v=20261001v"></script>
+<script src="assets/map.js?v=20261001v"></script>
+<script src="data/portraits.js?v=20261001v"></script>
+<script src="data/partenaires.js?v=20261001v"></script>
+<script src="data/exclusions.js?v=20261001v"></script>
+<script src="data/clubs.js?v=20261001v"></script>
+<script src="assets/commerces.js?v=20261001v"></script>
 </body>
 </html>

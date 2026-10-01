@@ -205,7 +205,7 @@
   function shopsAll() {
     var P = S.pois.filter(function (p) {
       var k = kindOf(p.t);
-      if (!k || !p.name) return false;
+      if (!k || !p.name || LI.isExclu(p.name)) return false;
       if (p.t.shop === 'estate_agent' || p.t.shop === 'vacant' || p.t.office) return false; // pas d'agences immobilières
       if (p.t.shop) return true;
       return !!AMENITY_FR[k] && ['library', 'townhall'].indexOf(k) < 0 && p.d <= 1500;
@@ -253,11 +253,11 @@
     } else {
       box.innerHTML = list.map(function (p, i) {
         var lab = p.label || labelOf(kindOf(p.t));
-        var pt = p.portrait ? '<a class="pt" href="' + LI.esc(LI.root + p.portrait.url) + '">Lire son portrait <span class="arrow">→</span></a>' : '';
+        var pt = p.portrait ? '<a class="pt" href="' + LI.esc(LI.root + p.portrait.url) + '">Lire son portrait</a>' : '';
         if (p.own) {
           var l0 = (p.own.links && p.own.links[0]) || (p.own.web ? { label: 'Site web', url: p.own.web } : null);
           pt = (p.own.badge ? '<span class="pt" style="margin-right:8px">' + LI.esc(p.own.badge) + '</span>' : '') +
-            (l0 ? '<a class="pt" href="' + LI.esc(LI.partnerLink(l0.url)) + '"' + (/^https?:/i.test(l0.url) ? ' target="_blank" rel="noopener"' : '') + '>' + LI.esc(l0.label) + ' <span class="arrow">→</span></a>' : '');
+            (l0 ? '<a class="pt" href="' + LI.esc(LI.partnerLink(l0.url)) + '"' + (/^https?:/i.test(l0.url) ? ' target="_blank" rel="noopener"' : '') + '>' + LI.esc(l0.label) + '</a>' : '');
         }
         return '<div class="shop' + (p.portrait || (p.own && p.own.badge) ? ' has-portrait' : '') + '"><div class="num" aria-hidden="true">' + (i + 1) + '</div><div>' +
           '<div class="k">' + LI.esc(lab) + '</div><div class="nm">' + LI.esc(p.name) + '</div>' +
@@ -297,7 +297,7 @@
     S.shopsShown.forEach(function (p, i) {
       L.marker([p.lat, p.lon], { icon: LI.divIcon('<div class="pin-n' + (p.portrait || (p.own && p.own.badge) ? ' star' : '') + '">' + (i + 1) + '</div>', '', 28), title: p.name })
         .bindPopup('<strong>' + LI.esc(p.name) + '</strong><br>' + LI.esc(p.label || labelOf(kindOf(p.t))) + ' · ' + fmtMin(minutes('walk', p.d)) + ' à pied' +
-          (p.portrait ? '<br><a href="' + LI.esc(LI.root + p.portrait.url) + '">Lire son portrait →</a>' : ''))
+          (p.portrait ? '<br><a href="' + LI.esc(LI.root + p.portrait.url) + '">Lire son portrait</a>' : ''))
         .addTo(S.shopLayer);
       bounds.push([p.lat, p.lon]);
     });

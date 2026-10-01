@@ -218,6 +218,32 @@
     }
     return agResolved;
   };
+  /* ---------- Commerces masqués (data/exclusions.js) ---------- */
+  var exclu = null;
+  LI.isExclu = function (name) {
+    if (!exclu) {
+      exclu = {};
+      (window.LI_EXCLUS || []).forEach(function (n) { if (n) exclu[LI.norm(n)] = 1; });
+    }
+    return !!exclu[LI.norm(name || '')];
+  };
+
+  /* ---------- Clubs sportifs (data/clubs.js) ---------- */
+  var clubsResolved = null;
+  LI.resolveClubs = function () {
+    if (!clubsResolved) {
+      var list = (window.LI_CLUBS || []).filter(function (c) { return c && c.name; });
+      var byAddr = {};
+      list.forEach(function (c) { if (c.address) (byAddr[c.address] = byAddr[c.address] || []).push(c); });
+      clubsResolved = Promise.all(Object.keys(byAddr).map(function (a) {
+        return LI.geocode(a, 1, false).then(function (r) {
+          if (r[0]) byAddr[a].forEach(function (c) { c.lat = r[0].lat; c.lon = r[0].lon; });
+        }).catch(function () { /* club affiché sans position */ });
+      })).then(function () { return list; });
+    }
+    return clubsResolved;
+  };
+
   LI.partnerLink = function (u) {
     return /^https?:/i.test(u) ? u : LI.root + u;
   };
@@ -276,9 +302,9 @@
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
       }, { threshold: 0.08 });
-      document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+      document.querySelectorAll('.rv, .stagger').forEach(function (el) { io.observe(el); });
     } else {
-      document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); });
+      document.querySelectorAll('.rv, .stagger').forEach(function (el) { el.classList.add('in'); });
     }
     renderHomePortraits();
     fillKpis();

@@ -58,7 +58,7 @@ def main():
     q = f'''[out:json][timeout:170];(
       nwr({bb})[shop][name][shop!~"^(vacant|estate_agent)$"];
       nwr({bb})[amenity~"^(pharmacy|restaurant|cafe|bar|pub|fast_food|food_court|ice_cream|bank|post_office|doctors|dentist|clinic|library|marketplace|townhall|school|kindergarten|college)$"];
-      nwr({bb})[craft~"^(bakery|caterer|confectionery|butcher|shoe_repair|tailor|locksmith)$"][name];
+      nwr({bb})[craft][name];
       nwr({bb})[leisure~"^(park|playground|sports_centre|swimming_pool|pitch)$"][name];
       node({bb})[highway=bus_stop];
       node({bb})[railway~"^(station|halt)$"][station!~"subway|light_rail"];

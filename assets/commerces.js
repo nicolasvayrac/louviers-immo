@@ -25,12 +25,15 @@
     ['habiller', 'S’habiller', 'Mode, chaussures, accessoires et bijoux', ['clothes', 'shoes', 'boutique', 'fashion_accessories', 'bag', 'jewelry', 'watches', 'leather', 'tailor', 'fabric', 'baby_goods']],
     ['beaute', 'Beauté & bien-être', 'Coiffeurs, instituts, parfumeries', ['hairdresser', 'beauty', 'cosmetics', 'perfumery', 'massage', 'tattoo', 'barber']],
     ['maison', 'Maison & déco', 'Décoration, fleurs, ameublement, bricolage', ['furniture', 'interior_decoration', 'houseware', 'florist', 'garden_centre', 'hardware', 'doityourself', 'kitchen', 'bed', 'paint', 'lighting', 'antiques', 'second_hand', 'carpet', 'curtain', 'tiles', 'bathroom_furnishing']],
-    ['loisirs', 'Culture & loisirs', 'Livres, jeux, sport, cadeaux', ['books', 'music', 'art', 'toys', 'games', 'sports', 'bicycle', 'outdoor', 'photo', 'stationery', 'gift', 'craft', 'video_games', 'newsagent', 'tobacco', 'pet']],
+    ['loisirs', 'Culture & loisirs', 'Livres, jeux, sport, cadeaux', ['books', 'music', 'art', 'toys', 'games', 'sports', 'bicycle', 'outdoor', 'photo', 'stationery', 'gift', 'craft', 'video_games', 'pet']],
+    ['tabac', 'Tabac & presse', 'Bureaux de tabac, presse, jeux', ['tobacco', 'newsagent', 'e-cigarette', 'lottery']],
     ['sante', 'Santé', 'Pharmacies, opticiens, audioprothésistes', ['pharmacy', 'optician', 'hearing_aids', 'medical_supply', 'chemist']],
     ['immobilier', 'Immobilier', 'Votre agence indépendante à Louviers depuis 1992', []],
     ['financement', 'Financement', 'Nos courtiers partenaires pour votre prêt immobilier', []],
     ['notaires', 'Notaires', 'Les offices notariaux de Louviers', []],
-    ['services', 'Services', 'Banques, poste, pressing, téléphonie, garages', ['bank', 'post_office', 'laundry', 'dry_cleaning', 'travel_agency', 'copyshop', 'mobile_phone', 'electronics', 'computer', 'car_repair', 'car', 'funeral_directors', 'insurance', 'locksmith', 'shoe_repair', 'repair']]
+    ['artisans', 'Artisans', 'Les artisans du bâtiment et de la maison avec qui l’on travaille', ['plumber', 'electrician', 'carpenter', 'joiner', 'roofer', 'painter', 'builder', 'hvac', 'heating_engineer', 'tiler', 'plasterer', 'glaziery', 'locksmith', 'stonemason', 'gardener', 'floorer', 'parquet_layer', 'carpet_layer', 'insulation', 'metal_construction', 'window_construction', 'cabinet_maker', 'upholsterer', 'chimney_sweeper', 'sweep', 'scaffolder', 'sanitary', 'electronics_repair']],
+    ['services', 'Services', 'Banques, poste, pressing, téléphonie, garages', ['bank', 'post_office', 'laundry', 'dry_cleaning', 'travel_agency', 'copyshop', 'mobile_phone', 'electronics', 'computer', 'car_repair', 'car', 'funeral_directors', 'insurance', 'shoe_repair', 'repair']],
+    ['sport', 'Clubs sportifs', 'Les clubs et associations sportives de Louviers', []]
   ];
   var LABEL = {
     restaurant: 'Restaurant', fast_food: 'Restauration rapide', food_court: 'Restauration', sandwich: 'Sandwicherie', caterer: 'Traiteur',
@@ -41,7 +44,8 @@
     clothes: 'Vêtements', shoes: 'Chaussures', boutique: 'Boutique', fashion_accessories: 'Accessoires', bag: 'Maroquinerie', jewelry: 'Bijouterie', watches: 'Horlogerie', leather: 'Maroquinerie', tailor: 'Retouches', fabric: 'Tissus', baby_goods: 'Puériculture',
     hairdresser: 'Coiffeur', beauty: 'Institut de beauté', cosmetics: 'Cosmétiques', perfumery: 'Parfumerie', massage: 'Massage', tattoo: 'Tatouage', barber: 'Barbier',
     furniture: 'Ameublement', interior_decoration: 'Décoration', houseware: 'Arts de la table', florist: 'Fleuriste', garden_centre: 'Jardinerie', hardware: 'Quincaillerie', doityourself: 'Bricolage', kitchen: 'Cuisines', bed: 'Literie', paint: 'Peinture', lighting: 'Luminaires', antiques: 'Antiquités', second_hand: 'Dépôt-vente', carpet: 'Tapis', curtain: 'Rideaux', tiles: 'Carrelage', bathroom_furnishing: 'Salles de bain',
-    books: 'Librairie', music: 'Musique', art: 'Galerie', toys: 'Jouets', games: 'Jeux', sports: 'Sport', bicycle: 'Vélos', outdoor: 'Plein air', photo: 'Photo', stationery: 'Papeterie', gift: 'Cadeaux', craft: 'Loisirs créatifs', video_games: 'Jeux vidéo', newsagent: 'Presse', tobacco: 'Tabac-presse', pet: 'Animalerie',
+    books: 'Librairie', music: 'Musique', art: 'Galerie', toys: 'Jouets', games: 'Jeux', sports: 'Sport', bicycle: 'Vélos', outdoor: 'Plein air', photo: 'Photo', stationery: 'Papeterie', gift: 'Cadeaux', craft: 'Loisirs créatifs', video_games: 'Jeux vidéo', newsagent: 'Presse', tobacco: 'Tabac-presse', 'e-cigarette': 'Cigarette électronique', lottery: 'Jeux de hasard', pet: 'Animalerie',
+    plumber: 'Plombier', electrician: 'Électricien', carpenter: 'Charpentier', joiner: 'Menuisier', roofer: 'Couvreur', painter: 'Peintre', builder: 'Maçon', hvac: 'Chauffage, climatisation', heating_engineer: 'Chauffagiste', tiler: 'Carreleur', plasterer: 'Plâtrier', glaziery: 'Vitrier', stonemason: 'Tailleur de pierre', gardener: 'Paysagiste', floorer: 'Poseur de sols', parquet_layer: 'Parqueteur', carpet_layer: 'Poseur de sols', insulation: 'Isolation', metal_construction: 'Métallier', window_construction: 'Menuiseries extérieures', cabinet_maker: 'Ébéniste', upholsterer: 'Tapissier', chimney_sweeper: 'Ramoneur', sweep: 'Ramoneur', scaffolder: 'Échafaudage', sanitary: 'Plombier', electronics_repair: 'Dépannage électronique',
     pharmacy: 'Pharmacie', optician: 'Opticien', hearing_aids: 'Audioprothésiste', medical_supply: 'Matériel médical', chemist: 'Droguerie',
     bank: 'Banque', post_office: 'Bureau de poste', laundry: 'Laverie', dry_cleaning: 'Pressing', travel_agency: 'Agence de voyages', copyshop: 'Reprographie', mobile_phone: 'Téléphonie', electronics: 'Électronique', computer: 'Informatique', car_repair: 'Garage', car: 'Automobile', funeral_directors: 'Pompes funèbres', insurance: 'Assurance', locksmith: 'Serrurier', shoe_repair: 'Cordonnier', repair: 'Réparation'
   };
@@ -69,7 +73,7 @@
 
   /* ---------- Chargement ---------- */
   function fromElement(id, la, lo, t) {
-    if (la == null || !t.name || t.office) return null;
+    if (la == null || !t.name || t.office || LI.isExclu(t.name)) return null;
     var k = kindOf(t), r = KIND2RUB[k];
     if (!r) return null;
     return { id: id, name: t.name, lat: la, lon: lo, kind: k, rub: r, addr: addrOf(t), web: safeUrl(t.website || t['contact:website']), phone: t.phone || t['contact:phone'] || '' };
@@ -90,7 +94,7 @@
     });
   }
   function queryLive(insee) {
-    var key = 'li-commerces-' + insee;
+    var key = 'li-commerces2-' + insee;
     try {
       var c = JSON.parse(sessionStorage.getItem(key) || 'null');
       if (c && Date.now() - c.t < 3600e3) return Promise.resolve(c.d);
@@ -98,7 +102,7 @@
     var q = '[out:json][timeout:30];area["ref:INSEE"="' + insee + '"]["boundary"="administrative"]->.a;(' +
       'nwr(area.a)[shop][name][shop!~"^(vacant|estate_agent)$"];' +
       'nwr(area.a)[amenity~"^(restaurant|fast_food|food_court|cafe|bar|pub|ice_cream|pharmacy|bank|post_office)$"][name];' +
-      'nwr(area.a)[craft~"^(bakery|caterer|confectionery|butcher|shoe_repair|tailor|locksmith)$"][name];' +
+      'nwr(area.a)[craft][name];' +
       ');out center tags;';
     var urls = ['https://overpass-api.de/api/interpreter', 'https://overpass.private.coffee/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
     function attempt(i) {
@@ -110,7 +114,7 @@
       var d = (j.elements || []).map(function (e) {
         var la = e.lat != null ? e.lat : (e.center && e.center.lat), lo = e.lon != null ? e.lon : (e.center && e.center.lon);
         var t = e.tags || {};
-        if (la == null || !t.name || t.office) return null;
+        if (la == null || !t.name || t.office || LI.isExclu(t.name)) return null;
         var k = kindOf(t), r = KIND2RUB[k];
         if (!r) return null;
         var key2 = LI.norm(t.name) + '|' + Math.round(la * 2000) + '|' + Math.round(lo * 2000);
@@ -155,16 +159,18 @@
     var links = [];
     if (s.own && s.own.links) {
       s.own.links.forEach(function (l, i) {
-        links.push('<a class="' + (i === 0 ? 'pt' : 'cx') + '" href="' + LI.esc(LI.partnerLink(l.url)) + '"' + (/^https?:/i.test(l.url) ? ' target="_blank" rel="noopener"' : '') + '>' + LI.esc(l.label) + (i === 0 ? ' <span class="arrow">→</span>' : '') + '</a>');
+        links.push('<a class="' + (i === 0 ? 'pt' : 'cx') + '" href="' + LI.esc(LI.partnerLink(l.url)) + '"' + (/^https?:/i.test(l.url) ? ' target="_blank" rel="noopener"' : '') + '>' + LI.esc(l.label) + (i === 0 ? '' : '') + '</a>');
       });
     }
-    if (s.portrait) links.push('<a class="pt" href="' + LI.esc(LI.root + s.portrait.url) + '">Lire son portrait <span class="arrow">→</span></a>');
+    if (s.portrait) links.push('<a class="pt" href="' + LI.esc(LI.root + s.portrait.url) + '">Lire son portrait</a>');
     if (s.web) links.push('<a class="cx" href="' + LI.esc(s.web) + '" target="_blank" rel="noopener">Site web ↗</a>');
-    links.push('<a class="cx" href="' + LI.esc(LI.root + 'adresse.html?q=' + encodeURIComponent(s.name + (s.addr ? ', ' + s.addr : '')) + '&lat=' + s.lat.toFixed(6) + '&lon=' + s.lon.toFixed(6)) + '">Voir le quartier</a>');
+    if (s.email) links.push('<a class="cx" href="mailto:' + LI.esc(s.email) + '">Écrire au club</a>');
+    if (s.club && !s.web && !s.email) links.push('<a class="cx" href="https://www.ville-louviers.fr/ma-ville/activites-sportives/vie-sportive/les-clubs-sportifs/" target="_blank" rel="noopener">Contact sur le site de la Ville ↗</a>');
+    if (s.lat != null) links.push('<a class="cx" href="' + LI.esc(LI.root + 'adresse.html?q=' + encodeURIComponent(s.name + (s.addr ? ', ' + s.addr : '')) + '&lat=' + s.lat.toFixed(6) + '&lon=' + s.lon.toFixed(6)) + '">Voir le quartier</a>');
     return '<article class="biz' + (s.portrait || (s.own && s.own.badge) ? ' has-portrait' : '') + '">' +
       '<div class="k">' + LI.esc(lab) + (s.portrait ? ' · <span class="star">Portrait</span>' : '') + (s.own && s.own.badge ? ' · <span class="star">' + LI.esc(s.own.badge) + '</span>' : '') + '</div>' +
       '<h3 class="nm">' + LI.esc(s.name) + '</h3>' +
-      (s.addr ? '<div class="ds">' + LI.esc(s.addr) + '</div>' : '') +
+      (s.lieu || s.addr ? '<div class="ds">' + LI.esc(s.lieu || s.addr) + '</div>' : '') +
       (s.phone ? '<div class="ds"><a href="tel:' + LI.esc(s.phone.replace(/[^\d+]/g, '')) + '">' + LI.esc(s.phone) + '</a></div>' : '') +
       '<div class="lk">' + links.join('') + '</div></article>';
   }
@@ -172,7 +178,7 @@
   function render() {
     var q = LI.norm(S.q);
     var list = S.all.filter(function (s) {
-      return (S.rub === 'all' || s.rub === S.rub) && (!q || LI.norm(s.name + ' ' + (LABEL[s.kind] || '') + ' ' + s.addr).indexOf(q) >= 0);
+      return (S.rub === 'all' || s.rub === S.rub) && (!q || LI.norm(s.name + ' ' + (LABEL[s.kind] || s.label || '') + ' ' + (s.lieu || s.addr || '')).indexOf(q) >= 0);
     });
     // Compteurs
     RUB.forEach(function (r) {
@@ -188,16 +194,17 @@
       return '<section class="rub-sec" id="r-' + r[0] + '"><div class="rub-head"><h2>' + LI.esc(r[1]) + '</h2><p>' + LI.esc(r[2]) + ' · ' + items.length + '</p></div>' +
         '<div class="biz-grid">' + items.map(card).join('') + '</div></section>';
     }).join('');
-    $('dir').innerHTML = html || '<div class="state">Aucun commerce ne correspond à cette recherche.</div>';
-    $('count').textContent = list.length + ' commerce' + (list.length > 1 ? 's' : '');
+    $('dir').innerHTML = html || '<div class="state">Aucune adresse ne correspond à cette recherche.</div>';
+    $('count').textContent = list.length + ' adresse' + (list.length > 1 ? 's' : '');
 
     if (S.map) {
       S.layer.clearLayers();
       var pts = [];
       list.forEach(function (s) {
+        if (s.lat == null) return;
         L.circleMarker([s.lat, s.lon], { radius: s.portrait || (s.own && s.own.badge) ? 8 : 6, color: '#FFFFFF', weight: 1.5, fillColor: s.portrait || (s.own && s.own.badge) ? '#C9A961' : '#1B2E40', fillOpacity: 0.95 })
-          .bindPopup('<strong>' + LI.esc(s.name) + '</strong><br>' + LI.esc(LABEL[s.kind] || s.label || '') + (s.addr ? '<br>' + LI.esc(s.addr) : '') +
-            (s.portrait ? '<br><a href="' + LI.esc(LI.root + s.portrait.url) + '">Lire son portrait →</a>' : ''))
+          .bindPopup('<strong>' + LI.esc(s.name) + '</strong><br>' + LI.esc(LABEL[s.kind] || s.label || '') + (s.lieu || s.addr ? '<br>' + LI.esc(s.lieu || s.addr) : '') +
+            (s.portrait ? '<br><a href="' + LI.esc(LI.root + s.portrait.url) + '">Lire son portrait</a>' : ''))
           .addTo(S.layer);
         pts.push([s.lat, s.lon]);
       });
@@ -216,11 +223,22 @@
     });
   }
 
+  function addClubs(list) {
+    if (S.insee !== '27375') return Promise.resolve(list);
+    return LI.resolveClubs().then(function (cs) {
+      cs.forEach(function (c) {
+        list.push({ id: 'club/' + c.name, name: c.name, lat: c.lat, lon: c.lon, kind: '', rub: 'sport', club: true,
+          lieu: c.lieu || '', addr: (c.address || '').replace(/\s*\d{5}.*$/, ''), web: c.web || '', email: c.email || '', phone: '', label: c.sport || 'Club sportif' });
+      });
+      return list;
+    }).catch(function () { return list; });
+  }
+
   function load() {
-    $('dir').innerHTML = '<div class="state"><span class="loader"></span>Chargement des commerces…</div>';
+    $('dir').innerHTML = '<div class="state"><span class="loader"></span>Chargement de l’annuaire…</div>';
     query(S.insee).then(function (d) {
       return attachPortraits(d.slice());
-    }).then(addAgences).then(function (d) {
+    }).then(addAgences).then(addClubs).then(function (d) {
       S.all = d;
       render();
     }).catch(function () {
