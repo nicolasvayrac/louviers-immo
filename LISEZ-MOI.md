@@ -73,6 +73,10 @@ DVF est mis à jour deux fois par an (avril et octobre). Le fichier ne contient 
 
 Questionnaire type (6 questions, déjà dans le modèle) : comment est née l'affaire · pourquoi Louviers · une journée type · le produit dont on est le plus fier · son adresse préférée à Louviers · un conseil à un nouvel arrivant.
 
+## Mise à jour automatique des commerces
+
+Chaque lundi, GitHub télécharge les commerces, écoles, arrêts de bus et équipements depuis OpenStreetMap (`scripts/build_pois.py`) et les enregistre dans `data/pois.json` : le site les affiche alors instantanément, sans dépendre d'un service extérieur à chaque visite. Pour lancer la mise à jour à la main : onglet **Actions** du dépôt → « Mettre à jour les données » → **Run workflow**.
+
 ## Bon à savoir
 
 - **Temps de trajet** : estimations calculées à partir des distances (détour moyen de 30 %, 4,8 km/h à pied, 15 km/h à vélo, vitesse urbaine puis routière en voiture). Pour le bus, le site affiche les arrêts les plus proches et leurs lignes quand OpenStreetMap les connaît. Des temps de bus exacts nécessiteraient les horaires du réseau Semo (évolution possible).

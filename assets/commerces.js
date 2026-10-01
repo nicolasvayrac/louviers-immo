@@ -65,7 +65,28 @@
   }
 
   /* ---------- Chargement ---------- */
+  function fromElement(id, la, lo, t) {
+    if (la == null || !t.name || t.office) return null;
+    var k = kindOf(t), r = KIND2RUB[k];
+    if (!r) return null;
+    return { id: id, name: t.name, lat: la, lon: lo, kind: k, rub: r, addr: addrOf(t), web: safeUrl(t.website || t['contact:website']), phone: t.phone || t['contact:phone'] || '' };
+  }
+  function dedupe(list) {
+    var seen = {};
+    return list.filter(function (s) {
+      var k = LI.norm(s.name) + '|' + Math.round(s.lat * 2000) + '|' + Math.round(s.lon * 2000);
+      if (seen[k]) return false; seen[k] = 1; return true;
+    });
+  }
   function query(insee) {
+    return LI.loadPOIs().then(function (c) {
+      if (c && c.pois.some(function (p) { return p.c === insee; })) {
+        return dedupe(c.pois.filter(function (p) { return p.c === insee; }).map(function (p) { return fromElement(p.id, p.lat, p.lon, p.t); }).filter(Boolean));
+      }
+      return queryLive(insee);
+    });
+  }
+  function queryLive(insee) {
     var key = 'li-commerces-' + insee;
     try {
       var c = JSON.parse(sessionStorage.getItem(key) || 'null');
@@ -76,9 +97,9 @@
       'nwr(area.a)[amenity~"^(restaurant|fast_food|food_court|cafe|bar|pub|ice_cream|pharmacy|bank|post_office)$"][name];' +
       'nwr(area.a)[craft~"^(bakery|caterer|confectionery|butcher|shoe_repair|tailor|locksmith)$"][name];' +
       ');out center tags;';
-    var urls = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
+    var urls = ['https://overpass-api.de/api/interpreter', 'https://overpass.private.coffee/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
     function attempt(i) {
-      return LI.fetchJSON(urls[i], { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q) }, 35000)
+      return LI.fetchJSON(urls[i], { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'data=' + encodeURIComponent(q) }, 20000)
         .catch(function (e) { if (i + 1 < urls.length) return attempt(i + 1); throw e; });
     }
     return attempt(0).then(function (j) {

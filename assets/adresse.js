@@ -31,7 +31,7 @@
   function fmtDist(m) { return m < 1000 ? (Math.round(m / 10) * 10) + ' m' : LI.fmt(m / 1000, 1) + ' km'; }
 
   /* ---------- Overpass (OpenStreetMap) ---------- */
-  var OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
+  var OVERPASS = ['https://overpass-api.de/api/interpreter', 'https://overpass.private.coffee/api/interpreter', 'https://overpass.kumi.systems/api/interpreter'];
   function overpass(lat, lon) {
     var p = lat.toFixed(6) + ',' + lon.toFixed(6);
     var q = '[out:json][timeout:25];(' +
@@ -49,7 +49,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: 'data=' + encodeURIComponent(q)
-      }, 30000).catch(function (e) {
+      }, 20000).catch(function (e) {
         if (i + 1 < OVERPASS.length) return attempt(i + 1);
         throw e;
       });
@@ -65,6 +65,21 @@
         seen[id] = 1;
         var t = e.tags || {};
         return { id: id, lat: la, lon: lo, t: t, name: t.name || '', d: LI.dist(lat, lon, la, lo) };
+      }).filter(Boolean);
+    });
+  }
+
+  // Lieux autour du point : fichier pré-téléchargé si l'adresse est dans la zone, sinon OpenStreetMap en direct
+  function getPois(lat, lon) {
+    return LI.loadPOIs().then(function (c) {
+      if (!c || !LI.inBBox(c.bbox, lat, lon, -0.02)) return overpass(lat, lon);
+      return c.pois.map(function (p) {
+        var t = p.t, d = LI.dist(lat, lon, p.lat, p.lon), max = 1500;
+        if (t.railway || t.highway === 'motorway_junction') max = 20000;
+        else if (/^(school|kindergarten|college)$/.test(t.amenity || '') || t.shop === 'supermarket') max = 6000;
+        if (d > max) return null;
+        if (t.shop && !t.name) return null;
+        return { id: p.id, lat: p.lat, lon: p.lon, t: t, name: t.name || '', d: d };
       }).filter(Boolean);
     });
   }
@@ -322,7 +337,7 @@
     initMap();
     renderPrices();
     setLoading();
-    Promise.all([overpass(S.lat, S.lon), LI.resolvePortraits()]).then(function (res) {
+    Promise.all([getPois(S.lat, S.lon), LI.resolvePortraits()]).then(function (res) {
       S.pois = res[0];
       buildTrips();
       renderShops();

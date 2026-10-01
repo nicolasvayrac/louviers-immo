@@ -169,6 +169,21 @@
     return dvfPromise;
   };
 
+  /* ---------- Lieux OpenStreetMap pré-téléchargés (data/pois.json) ---------- */
+  var poisPromise = null;
+  LI.loadPOIs = function () {
+    if (!poisPromise) {
+      poisPromise = LI.fetchJSON(LI.root + 'data/pois.json', null, 15000)
+        .then(function (j) { return j && j.pois && j.pois.length ? j : null; })
+        .catch(function () { return null; });
+    }
+    return poisPromise;
+  };
+  LI.inBBox = function (b, lat, lon, margin) {
+    var m = margin || 0;
+    return b && lat >= b[0] - m && lat <= b[2] + m && lon >= b[1] - m && lon <= b[3] + m;
+  };
+
   /* ---------- Portraits (data/portraits.js) ---------- */
   LI.portraits = function () { return (window.LI_PORTRAITS || []).filter(function (p) { return p && p.url && p.name; }); };
   // Complète les coordonnées manquantes à partir de l'adresse (une seule fois par page)
