@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr" data-root="" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.className='js';</script>
+<title>Commerces à Louviers : restaurants, snacking, mode, métiers de bouche · louviers.immo</title>
+<meta name="description" content="L’annuaire des commerçants de Louviers et de la Seine-Eure par rubrique : se restaurer, snacking, cafés, boulangeries, métiers de bouche, s’habiller, beauté, maison, santé, services.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://louviers.immo/commerces.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="louviers.immo">
+<meta property="og:title" content="Commerces à Louviers : restaurants, snacking, mode, métiers de bouche · louviers.immo">
+<meta property="og:description" content="L’annuaire des commerçants de Louviers et de la Seine-Eure par rubrique : se restaurer, snacking, cafés, boulangeries, métiers de bouche, s’habiller, beauté, maison, santé, services.">
+<meta property="og:url" content="https://louviers.immo/commerces.html">
+<meta property="og:image" content="https://louviers.immo/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1B2E40">
+<meta name="google-site-verification" content="GoHdQ6W1nZJ7YV2Tz9iZWKYWoI4cij_dAX-F8a0LJ_o">
+<!-- Plausible Analytics : mesure d'audience sans cookies -->
+<script defer data-domain="louviers.immo" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
+<script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/style.css?v=20261001">
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html" aria-label="louviers.immo — accueil">
+      <img src="assets/img/logo-navy.png" alt="CV Immobilier" width="600" height="218">
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-name">louviers<b>.immo</b></span>
+    </a>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    <nav class="menu" id="menu" aria-label="Navigation principale">
+      <a href="adresse.html">Mon adresse</a><a href="commerces.html" aria-current="page">Commerces</a><a href="quartiers.html">Quartiers</a><a href="prix.html">Prix</a><a href="portraits.html">Portraits</a><a href="outils.html">Outils</a>
+      <a class="plausible-event-name=Estimation+Click plausible-event-position=commerces btn btn-gold" href="https://www.cvimmobilier.fr/estimation">Estimer mon bien</a>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+<section class="page-head">
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html">Accueil</a> · Commerces</div>
+    <span class="eyebrow">L’annuaire</span>
+    <h1 style="margin-top:12px">Les commerçants <span class="it">de Louviers.</span></h1>
+    <p class="lede" style="margin-top:20px">Où déjeuner, s’habiller, acheter son pain ou faire un cadeau : tous les commerces, rubrique par rubrique, avec les portraits de ceux que nous avons rencontrés.</p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:44px">
+  <div class="wrap stack-lg">
+    <div class="market">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C9A961" stroke-width="1.5" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v7h14v-7"/></svg>
+      <div><strong>Marché de Louviers</strong> · mercredi et samedi matin, place de la Halle : producteurs locaux et produits du terroir.</div>
+    </div>
+
+    <div class="dir-tools">
+      <div class="field"><label for="c-q">Rechercher un commerce</label>
+        <input id="c-q" type="search" placeholder="Nom, type de commerce, rue…" autocomplete="off"></div>
+      <div class="field"><label for="c-commune">Commune</label><select id="c-commune"></select></div>
+      <div class="note" id="count" aria-live="polite" style="padding-bottom:14px"></div>
+    </div>
+    <div class="rubs" id="rubs" role="group" aria-label="Rubriques"></div>
+
+    <div class="map-box" style="height:clamp(320px,46vh,520px)">
+      <div class="map" id="map" role="region" aria-label="Carte des commerces"></div>
+      <div class="map-badge"><span class="pin-n star" style="width:16px;height:16px;font-size:0;border-width:1px"></span><span>En doré : les commerces dont nous avons fait le portrait</span></div>
+    </div>
+
+    <div id="dir"></div>
+
+    <div class="box-sand split" style="margin-top:32px">
+      <div class="a stack">
+        <span class="eyebrow">Commerçants</span>
+        <h2 style="font-size:clamp(26px,2.6vw,36px)">Votre commerce manque, <span class="it">ou mérite un portrait ?</span></h2>
+      </div>
+      <div class="b stack">
+        <p class="muted">L’annuaire s’appuie sur OpenStreetMap, la carte collaborative : chacun peut y ajouter ou corriger un commerce gratuitement, et la mise à jour apparaît ici en quelques minutes. Pour un portrait, écrivez-nous.</p>
+        <div class="two">
+          <a class="btn btn-navy" href="mailto:contact@cvimmobilier.fr?subject=Portrait%20louviers.immo">Proposer un portrait</a>
+          <a class="btn btn-line" href="https://www.openstreetmap.org/" target="_blank" rel="noopener">Corriger sur OpenStreetMap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="stack">
+        <img src="assets/img/logo-cream.png" alt="CV Immobilier" width="600" height="218" loading="lazy" style="align-self:flex-start">
+        <p style="color:#9FB0C0;max-width:28em">louviers.immo est un guide proposé par CV Immobilier, agence immobilière indépendante membre de la FNAIM et du réseau Interkab, à Louviers depuis 1992.</p>
+      </div>
+      <div>
+        <h4>Le guide</h4>
+        <ul>
+          <li><a href="adresse.html">Mon adresse</a></li>
+          <li><a href="commerces.html">Commerces</a></li>
+          <li><a href="quartiers.html">Quartiers</a></li>
+          <li><a href="prix.html">Prix de l’immobilier</a></li>
+          <li><a href="portraits.html">Portraits</a></li>
+          <li><a href="outils.html">Outils</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Agence de Louviers</h4>
+        <ul>
+          <li>27 rue du Général de Gaulle<br>27400 Louviers</li>
+          <li><a class="tel" href="tel:+33232402228">02 32 40 22 28</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Saint-Pierre-du-Vauvray</h4>
+        <ul>
+          <li>15 Grande Rue<br>27430 Saint-Pierre-du-Vauvray</li>
+          <li><a class="tel" href="tel:+33279492171">02 79 49 21 71</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CV Immobilier · Carte professionnelle CPI 2701 2016 000 005 229</span>
+      <nav aria-label="Liens légaux">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="mentions-legales.html#donnees">Sources des données</a>
+        <a href="https://www.cvimmobilier.fr/">cvimmobilier.fr</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<script src="assets/site.js?v=20261001"></script>
+<script src="assets/vendor/leaflet/leaflet.js?v=20261001"></script>
+<script src="assets/map.js?v=20261001"></script>
+<script src="data/portraits.js?v=20261001"></script>
+<script src="assets/commerces.js?v=20261001"></script>
+</body>
+</html>

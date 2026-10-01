@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr" data-root="" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.className='js';</script>
+<title>Frais de notaire et capacité d’emprunt : simulateurs · louviers.immo</title>
+<meta name="description" content="Calculez vos frais de notaire dans l’Eure (ancien, neuf, primo-accédant) et votre capacité d’emprunt avant de visiter à Louviers.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://louviers.immo/outils.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="louviers.immo">
+<meta property="og:title" content="Frais de notaire et capacité d’emprunt : simulateurs · louviers.immo">
+<meta property="og:description" content="Calculez vos frais de notaire dans l’Eure (ancien, neuf, primo-accédant) et votre capacité d’emprunt avant de visiter à Louviers.">
+<meta property="og:url" content="https://louviers.immo/outils.html">
+<meta property="og:image" content="https://louviers.immo/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1B2E40">
+<meta name="google-site-verification" content="GoHdQ6W1nZJ7YV2Tz9iZWKYWoI4cij_dAX-F8a0LJ_o">
+<!-- Plausible Analytics : mesure d'audience sans cookies -->
+<script defer data-domain="louviers.immo" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
+<script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=20261001">
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html" aria-label="louviers.immo — accueil">
+      <img src="assets/img/logo-navy.png" alt="CV Immobilier" width="600" height="218">
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-name">louviers<b>.immo</b></span>
+    </a>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    <nav class="menu" id="menu" aria-label="Navigation principale">
+      <a href="adresse.html">Mon adresse</a><a href="commerces.html">Commerces</a><a href="quartiers.html">Quartiers</a><a href="prix.html">Prix</a><a href="portraits.html">Portraits</a><a href="outils.html" aria-current="page">Outils</a>
+      <a class="plausible-event-name=Estimation+Click plausible-event-position=outils btn btn-gold" href="https://www.cvimmobilier.fr/estimation">Estimer mon bien</a>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+<section class="page-head">
+  <div class="wrap">
+    <div class="crumbs"><a href="index.html">Accueil</a> · Outils</div>
+    <span class="eyebrow">Outils pratiques</span>
+    <h1 style="margin-top:12px">Faire ses comptes <span class="it">avant de visiter.</span></h1>
+  </div>
+</section>
+
+<section class="section" id="notaire">
+  <div class="wrap stack-lg">
+    <div class="head" style="margin-bottom:0"><div><span class="eyebrow">Simulateur</span><h2>Frais de <span class="it">notaire</span></h2></div>
+      <p>Ce qui s’ajoute au prix d’achat : taxes reversées à l’État et aux collectivités, rémunération du notaire, frais de formalités.</p></div>
+    <div class="calc">
+      <form id="form-notaire" novalidate>
+        <div class="field"><label for="n-prix">Prix du bien (hors frais d’agence à la charge du vendeur)</label>
+          <input id="n-prix" type="number" inputmode="numeric" min="0" step="1000" value="200000"></div>
+        <div class="field"><span class="small" style="font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Type de bien</span>
+          <div class="radio-row" role="radiogroup" aria-label="Type de bien">
+            <label><input type="radio" name="n-type" value="ancien" checked> Ancien</label>
+            <label><input type="radio" name="n-type" value="neuf"> Neuf (VEFA)</label>
+          </div></div>
+        <div id="n-primo-row"><label class="check"><input type="checkbox" id="n-primo"> Premier achat de résidence principale</label></div>
+        <p class="note">Dans l’Eure, les droits de mutation sont passés à 5 % (part départementale) au 1<sup>er</sup> avril 2026 ; le taux de 4,5 % est maintenu pour les primo-accédants. Estimation indicative : le montant exact est donné par votre notaire.</p>
+      </form>
+      <div class="out" aria-live="polite">
+        <span class="eyebrow">Frais estimés</span>
+        <div class="big" id="n-total">—</div>
+        <div id="n-pct" style="color:var(--gold-light)"></div>
+        <div class="lines">
+          <div><span id="n-taxes-l">Droits de mutation</span><span id="n-taxes">—</span></div>
+          <div><span>Émoluments du notaire (TTC)</span><span id="n-emo">—</span></div>
+          <div><span>Contribution de sécurité immobilière</span><span id="n-csi">—</span></div>
+          <div><span>Débours et formalités (forfait)</span><span id="n-deb">—</span></div>
+          <div style="border-bottom:0"><span style="color:var(--cream)">Coût total de l’achat</span><span id="n-cout" style="font-weight:600">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-sand" id="emprunt">
+  <div class="wrap stack-lg">
+    <div class="head" style="margin-bottom:0"><div><span class="eyebrow">Simulateur</span><h2>Capacité <span class="it">d’emprunt</span></h2></div>
+      <p>Selon la règle des banques : des mensualités (assurance comprise) qui ne dépassent pas 35 % des revenus.</p></div>
+    <div class="calc">
+      <form id="form-emprunt" novalidate>
+        <div class="two">
+          <div class="field"><label for="e-rev">Revenus nets du foyer / mois</label><input id="e-rev" type="number" inputmode="numeric" min="0" step="100" value="4000"></div>
+          <div class="field"><label for="e-chg">Crédits en cours / mois</label><input id="e-chg" type="number" inputmode="numeric" min="0" step="50" value="0"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="e-apport">Apport personnel</label><input id="e-apport" type="number" inputmode="numeric" min="0" step="1000" value="20000"></div>
+          <div class="field"><label for="e-duree">Durée du prêt</label>
+            <select id="e-duree"><option value="15">15 ans</option><option value="20">20 ans</option><option value="25" selected>25 ans</option></select></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="e-taux">Taux du crédit (%)</label><input id="e-taux" type="number" inputmode="decimal" min="0" max="15" step="0.05" value="3.5"></div>
+          <div class="field"><label for="e-ass">Taux d’assurance (%)</label><input id="e-ass" type="number" inputmode="decimal" min="0" max="2" step="0.01" value="0.30"></div>
+        </div>
+        <p class="note">Taux pré-remplis à titre d’exemple : modifiez-les selon les conditions du moment. Pour une simulation personnalisée, un courtier ou votre banque vous donnera un chiffre précis — nous pouvons vous mettre en relation avec notre partenaire à Louviers.</p>
+      </form>
+      <div class="out" aria-live="polite">
+        <span class="eyebrow">Budget d’achat estimé</span>
+        <div class="big" id="e-budget">—</div>
+        <div style="color:var(--gold-light)">frais de notaire inclus (≈ 7,8 % dans l’ancien)</div>
+        <div class="lines">
+          <div><span>Montant empruntable</span><span id="e-capital">—</span></div>
+          <div><span>Mensualité maximale</span><span id="e-mensu">—</span></div>
+          <div><span class="small" style="color:var(--on-dark-muted)">dont</span><span class="small" id="e-mensu-d" style="color:var(--on-dark-muted)">—</span></div>
+          <div style="border-bottom:0"><span>Coût total du crédit (intérêts + assurance)</span><span id="e-cout">—</span></div>
+        </div>
+        <a class="btn btn-gold" id="e-link" href="prix.html" style="align-self:flex-start;margin-top:8px">Voir les prix à Louviers <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="t-grid">
+      <a class="plausible-event-name=Estimation+Click plausible-event-position=outils t-card dark" href="https://www.cvimmobilier.fr/estimation" style="grid-column:1/-1">
+        <span class="eyebrow" style="color:var(--gold)">Vous vendez ?</span>
+        <span class="t" style="font-size:clamp(28px,3vw,40px)">Faites estimer votre bien <span class="it">par une équipe qui connaît chaque rue.</span></span>
+        <p>Avis de valeur argumenté, gratuit et sans engagement.</p>
+        <span class="go">Demander une estimation <span class="arrow">→</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="stack">
+        <img src="assets/img/logo-cream.png" alt="CV Immobilier" width="600" height="218" loading="lazy" style="align-self:flex-start">
+        <p style="color:#9FB0C0;max-width:28em">louviers.immo est un guide proposé par CV Immobilier, agence immobilière indépendante membre de la FNAIM et du réseau Interkab, à Louviers depuis 1992.</p>
+      </div>
+      <div>
+        <h4>Le guide</h4>
+        <ul>
+          <li><a href="adresse.html">Mon adresse</a></li>
+          <li><a href="commerces.html">Commerces</a></li>
+          <li><a href="quartiers.html">Quartiers</a></li>
+          <li><a href="prix.html">Prix de l’immobilier</a></li>
+          <li><a href="portraits.html">Portraits</a></li>
+          <li><a href="outils.html">Outils</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Agence de Louviers</h4>
+        <ul>
+          <li>27 rue du Général de Gaulle<br>27400 Louviers</li>
+          <li><a class="tel" href="tel:+33232402228">02 32 40 22 28</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Saint-Pierre-du-Vauvray</h4>
+        <ul>
+          <li>15 Grande Rue<br>27430 Saint-Pierre-du-Vauvray</li>
+          <li><a class="tel" href="tel:+33279492171">02 79 49 21 71</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CV Immobilier · Carte professionnelle CPI 2701 2016 000 005 229</span>
+      <nav aria-label="Liens légaux">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="mentions-legales.html#donnees">Sources des données</a>
+        <a href="https://www.cvimmobilier.fr/">cvimmobilier.fr</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<script src="assets/site.js?v=20261001"></script>
+<script src="assets/outils.js?v=20261001"></script>
+</body>
+</html>

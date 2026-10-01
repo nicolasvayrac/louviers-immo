@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="fr" data-root="" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.className='js';</script>
+<title>Mon adresse — vivre à Louviers, rue par rue · louviers.immo</title>
+<meta name="description" content="Entrez une adresse à Louviers ou dans la Seine-Eure : commerces les plus proches, écoles, arrêts de bus, gare, temps de trajet à pied, à vélo et en voiture, et prix des ventes autour.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://louviers.immo/adresse.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="louviers.immo">
+<meta property="og:title" content="Mon adresse — vivre à Louviers, rue par rue · louviers.immo">
+<meta property="og:description" content="Entrez une adresse à Louviers ou dans la Seine-Eure : commerces les plus proches, écoles, arrêts de bus, gare, temps de trajet à pied, à vélo et en voiture, et prix des ventes autour.">
+<meta property="og:url" content="https://louviers.immo/adresse.html">
+<meta property="og:image" content="https://louviers.immo/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1B2E40">
+<meta name="google-site-verification" content="GoHdQ6W1nZJ7YV2Tz9iZWKYWoI4cij_dAX-F8a0LJ_o">
+<!-- Plausible Analytics : mesure d'audience sans cookies -->
+<script defer data-domain="louviers.immo" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
+<script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/style.css?v=20261001">
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html" aria-label="louviers.immo — accueil">
+      <img src="assets/img/logo-navy.png" alt="CV Immobilier" width="600" height="218">
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-name">louviers<b>.immo</b></span>
+    </a>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    <nav class="menu" id="menu" aria-label="Navigation principale">
+      <a href="adresse.html" aria-current="page">Mon adresse</a><a href="commerces.html">Commerces</a><a href="quartiers.html">Quartiers</a><a href="prix.html">Prix</a><a href="portraits.html">Portraits</a><a href="outils.html">Outils</a>
+      <a class="plausible-event-name=Estimation+Click plausible-event-position=adresse btn btn-gold" href="https://www.cvimmobilier.fr/estimation">Estimer mon bien</a>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+<section class="page-head">
+  <div class="wrap res-head">
+    <div style="max-width:780px">
+      <div class="crumbs"><a href="index.html">Accueil</a> · Mon adresse</div>
+      <span class="eyebrow" style="color:var(--gold)">Vivre ici</span>
+      <h1 id="res-title" style="margin-top:12px">Une adresse, <span class="it">tout ce qu’il y a autour.</span></h1>
+      <div class="res-sub"><span id="res-city">Louviers et la Seine-Eure</span><span class="dot">·</span><span>Temps estimés · données OpenStreetMap</span></div>
+    </div>
+    <form class="search" role="search" action="adresse.html" autocomplete="off">
+    <label for="adresse-q">Tester une adresse</label>
+    <div class="search-row">
+      <div class="search-field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C7C33" stroke-width="1.8" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <input id="adresse-q" name="q" type="text" placeholder="Numéro, rue, commune" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="adresse-q-list" enterkeyhint="search">
+      </div>
+      <button class="btn btn-navy" type="submit">Rechercher <span class="arrow" aria-hidden="true">→</span></button>
+      <ul class="suggest" id="adresse-q-list" role="listbox" aria-label="Suggestions d’adresses"></ul>
+    </div>
+  </form>
+  </div>
+</section>
+
+<section class="section" id="intro" style="padding-top:56px">
+  <div class="wrap stack-lg" style="max-width:860px">
+    <p class="lede" id="intro-msg">Tapez une adresse ci-dessus et choisissez-la dans la liste : vous verrez les commerces, écoles, arrêts de bus et services les plus proches, avec les temps de trajet et les prix des ventes autour.</p>
+    <div class="communes" style="margin-top:0"><span>Exemples :</span><a class="pill" href="adresse.html?q=Place+de+la+Halle+aux+Drapiers+27400+Louviers">Place de la Halle aux Drapiers, Louviers</a><a class="pill" href="adresse.html?q=15+Grande+Rue+27430+Saint-Pierre-du-Vauvray">Grande Rue, Saint-Pierre-du-Vauvray</a><a class="pill" href="adresse.html?q=Le+Vaudreuil">Le Vaudreuil</a></div>
+  </div>
+</section>
+
+<div id="results" hidden>
+<section class="section" style="padding-top:56px;padding-bottom:40px">
+  <div class="wrap">
+    <p id="far" class="empty-data" hidden style="margin-bottom:28px">Cette adresse est assez loin de Louviers : louviers.immo est conçu pour Louviers et l’agglomération Seine-Eure, les résultats restent indicatifs.</p>
+    <div class="res-grid">
+      <div class="stack">
+        <span class="eyebrow">Temps de trajet</span>
+        <h2 style="font-size:clamp(28px,2.6vw,36px)">Depuis cette adresse, <span class="it" id="mode-label">à pied</span></h2>
+        <div class="modes" role="group" aria-label="Mode de déplacement" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+          <button type="button" class="mode" data-mode="walk" aria-pressed="true">À pied</button>
+          <button type="button" class="mode" data-mode="bike" aria-pressed="false">À vélo</button>
+          <button type="button" class="mode" data-mode="car" aria-pressed="false">En voiture</button>
+        </div>
+        <div id="trips" aria-live="polite"></div>
+        <div class="tgroup"><h3>Bus · arrêts les plus proches</h3><div id="bus"></div></div>
+        <p class="note">Temps estimés à partir de la distance à vol d’oiseau (corrigée des détours), à 4,8 km/h à pied et 15 km/h à vélo. Données OpenStreetMap : si un lieu manque ou a fermé, <a href="mailto:contact@cvimmobilier.fr?subject=louviers.immo%20%E2%80%94%20correction">signalez-le-nous</a>.</p>
+      </div>
+      <div class="map-box">
+        <div class="map" id="map" role="region" aria-label="Carte du quartier"></div>
+        <div class="map-badge"><span class="pin-me" style="box-shadow:none;width:14px;height:14px;border-width:2px"></span><span>Votre adresse · cercles ≈ 5, 10, 15 min à pied</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:24px;padding-bottom:56px">
+  <div class="wrap stack-lg">
+    <div class="head" style="margin-bottom:0">
+      <div><span class="eyebrow">À deux pas</span><h2>Les commerces <span class="it">les plus proches</span></h2></div>
+      <div class="cats" role="group" aria-label="Filtrer par catégorie">
+        <button type="button" class="cat" data-fam="all" aria-pressed="true">Tous</button>
+        <button type="button" class="cat" data-fam="alim" aria-pressed="false">Alimentation</button>
+        <button type="button" class="cat" data-fam="resto" aria-pressed="false">Restaurants</button>
+        <button type="button" class="cat" data-fam="sante" aria-pressed="false">Santé</button>
+        <button type="button" class="cat" data-fam="serv" aria-pressed="false">Services</button>
+        <button type="button" class="cat" data-fam="shop" aria-pressed="false">Boutiques</button>
+      </div>
+    </div>
+    <div class="shops" id="shops" aria-live="polite"></div>
+    <p class="note"><span class="pin-n star" style="display:inline-flex;width:22px;height:22px;font-size:11px;vertical-align:middle;margin-right:6px">1</span>En doré : les commerces dont nous avons fait le portrait.</p>
+  </div>
+</section>
+
+<section style="padding-bottom:var(--section)">
+  <div class="wrap">
+    <div class="box-sand split" style="align-items:center">
+      <div class="a stack">
+        <span class="eyebrow">Les prix autour</span>
+        <h2 style="font-size:clamp(28px,2.6vw,38px)">Ce qui s’est vendu <span class="it">à moins de 500 m</span></h2>
+        <p class="muted">Ventes réelles enregistrées par l’État (DVF). Médiane calculée dès 3 ventes.</p>
+        <a class="link-u" id="prices-link" href="prix.html" style="align-self:flex-start">Voir la carte des ventes <span class="arrow">→</span></a>
+      </div>
+      <div class="b stack">
+        <div class="kpis" id="prices"></div>
+        <div class="two">
+          <a class="btn btn-navy" href="https://www.cvimmobilier.fr/">Nos biens à vendre</a>
+          <a class="plausible-event-name=Estimation+Click plausible-event-position=adresse btn btn-gold" href="https://www.cvimmobilier.fr/estimation">Faire estimer un bien</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="stack">
+        <img src="assets/img/logo-cream.png" alt="CV Immobilier" width="600" height="218" loading="lazy" style="align-self:flex-start">
+        <p style="color:#9FB0C0;max-width:28em">louviers.immo est un guide proposé par CV Immobilier, agence immobilière indépendante membre de la FNAIM et du réseau Interkab, à Louviers depuis 1992.</p>
+      </div>
+      <div>
+        <h4>Le guide</h4>
+        <ul>
+          <li><a href="adresse.html">Mon adresse</a></li>
+          <li><a href="commerces.html">Commerces</a></li>
+          <li><a href="quartiers.html">Quartiers</a></li>
+          <li><a href="prix.html">Prix de l’immobilier</a></li>
+          <li><a href="portraits.html">Portraits</a></li>
+          <li><a href="outils.html">Outils</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Agence de Louviers</h4>
+        <ul>
+          <li>27 rue du Général de Gaulle<br>27400 Louviers</li>
+          <li><a class="tel" href="tel:+33232402228">02 32 40 22 28</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Saint-Pierre-du-Vauvray</h4>
+        <ul>
+          <li>15 Grande Rue<br>27430 Saint-Pierre-du-Vauvray</li>
+          <li><a class="tel" href="tel:+33279492171">02 79 49 21 71</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CV Immobilier · Carte professionnelle CPI 2701 2016 000 005 229</span>
+      <nav aria-label="Liens légaux">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="mentions-legales.html#donnees">Sources des données</a>
+        <a href="https://www.cvimmobilier.fr/">cvimmobilier.fr</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<script src="assets/site.js?v=20261001"></script>
+<script src="assets/vendor/leaflet/leaflet.js?v=20261001"></script>
+<script src="assets/map.js?v=20261001"></script>
+<script src="data/portraits.js?v=20261001"></script>
+<script src="assets/adresse.js?v=20261001"></script>
+</body>
+</html>

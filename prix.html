@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="fr" data-root="" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.className='js';</script>
+<title>Prix de l’immobilier à Louviers : les ventes réelles, sur la carte · louviers.immo</title>
+<meta name="description" content="Prix au m² à Louviers et dans la Seine-Eure à partir des ventes réelles enregistrées par l’État (DVF) : carte des ventes, médianes maisons et appartements par commune.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://louviers.immo/prix.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="louviers.immo">
+<meta property="og:title" content="Prix de l’immobilier à Louviers : les ventes réelles, sur la carte · louviers.immo">
+<meta property="og:description" content="Prix au m² à Louviers et dans la Seine-Eure à partir des ventes réelles enregistrées par l’État (DVF) : carte des ventes, médianes maisons et appartements par commune.">
+<meta property="og:url" content="https://louviers.immo/prix.html">
+<meta property="og:image" content="https://louviers.immo/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1B2E40">
+<meta name="google-site-verification" content="GoHdQ6W1nZJ7YV2Tz9iZWKYWoI4cij_dAX-F8a0LJ_o">
+<!-- Plausible Analytics : mesure d'audience sans cookies -->
+<script defer data-domain="louviers.immo" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
+<script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/style.css?v=20261001">
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html" aria-label="louviers.immo — accueil">
+      <img src="assets/img/logo-navy.png" alt="CV Immobilier" width="600" height="218">
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-name">louviers<b>.immo</b></span>
+    </a>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    <nav class="menu" id="menu" aria-label="Navigation principale">
+      <a href="adresse.html">Mon adresse</a><a href="commerces.html">Commerces</a><a href="quartiers.html">Quartiers</a><a href="prix.html" aria-current="page">Prix</a><a href="portraits.html">Portraits</a><a href="outils.html">Outils</a>
+      <a class="plausible-event-name=Estimation+Click plausible-event-position=prix btn btn-gold" href="https://www.cvimmobilier.fr/estimation">Estimer mon bien</a>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+<section class="page-head">
+  <div class="wrap" style="max-width:var(--wrap)">
+    <div class="crumbs"><a href="index.html">Accueil</a> · Prix</div>
+    <span class="eyebrow">Observatoire des prix</span>
+    <h1 style="margin-top:12px">Prix de l’immobilier à Louviers.<br><span class="it">Les ventes réelles.</span></h1>
+    <p class="lede" style="margin-top:20px">Chaque point de la carte est une vente enregistrée par l’État (base DVF) : prix, surface, date. Pas une estimation d’algorithme.</p>
+    <p class="note" style="margin-top:14px">Période couverte : <span id="period">—</span> · Mise à jour : <span id="updated">—</span></p>
+  </div>
+</section>
+
+<section class="section" style="padding-top:48px">
+  <div class="wrap stack-lg">
+    <div id="no-data" class="empty-data" hidden>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16h.01"/></svg>
+      <div><strong>Les données de ventes sont en cours d’intégration.</strong><br>La carte et les prix au m² s’afficheront ici très bientôt.</div>
+    </div>
+    <form class="filters" onsubmit="return false" aria-label="Filtres">
+      <div class="field"><label for="f-type">Type de bien</label>
+        <select id="f-type"><option value="all">Maisons et appartements</option><option value="M">Maisons</option><option value="A">Appartements</option></select></div>
+      <div class="field"><label for="f-commune">Commune</label>
+        <select id="f-commune"><option value="all">Toutes les communes</option></select></div>
+      <div class="field"><label for="f-period">Période</label>
+        <select id="f-period"><option value="12">12 derniers mois</option><option value="24" selected>24 derniers mois</option><option value="all">Toute la période</option></select></div>
+    </form>
+    <div class="kpis" style="max-width:820px">
+      <div class="kpi light"><div class="l">Maison</div><div class="v" id="k-maison">—</div><div class="u">€/m² médian</div></div>
+      <div class="kpi light"><div class="l">Appartement</div><div class="v" id="k-appart">—</div><div class="u">€/m² médian</div></div>
+      <div class="kpi light"><div class="l">Ventes</div><div class="v" id="k-ventes">—</div><div class="u">selon les filtres</div></div>
+    </div>
+    <div class="map-box" style="height:clamp(420px,68vh,760px)">
+      <div class="map" id="map" role="region" aria-label="Carte des ventes"></div>
+    </div>
+    <div class="legend" aria-label="Légende">
+      <span><i style="background:#4F7F98"></i><span id="lg-low">moins cher</span></span>
+      <span><i style="background:#C9A961"></i>dans la moyenne</span>
+      <span><i style="background:#6B5420"></i><span id="lg-high">plus cher</span></span>
+      <span class="muted">· couleurs calculées sur la sélection en cours (tiers)</span>
+    </div>
+
+    <div class="stack" style="margin-top:24px">
+      <h2 style="font-size:clamp(28px,2.6vw,38px)">Par commune</h2>
+      <div class="table-wrap"><table class="data">
+        <thead><tr><th scope="col">Commune</th><th scope="col" class="num">Ventes</th><th scope="col" class="num">Maison · €/m²</th><th scope="col" class="num">Appartement · €/m²</th></tr></thead>
+        <tbody id="t-body"></tbody>
+      </table></div>
+      <p class="note">Médianes affichées à partir de 5 ventes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-sand">
+  <div class="wrap split" style="align-items:start">
+    <div class="a stack">
+      <span class="eyebrow">Méthode</span>
+      <h2>D’où viennent <span class="it">ces chiffres ?</span></h2>
+    </div>
+    <div class="b stack" style="font-size:16px;color:var(--text)">
+      <p><strong style="color:var(--navy)">DVF</strong> (Demandes de valeurs foncières) est la base publique des ventes immobilières, publiée par la Direction générale des Finances publiques à partir des actes enregistrés chez les notaires. Elle est mise à jour deux fois par an, avec quelques mois de décalage.</p>
+      <p>Nous ne gardons que les ventes simples d’<strong style="color:var(--navy)">une seule maison ou d’un seul appartement</strong> (avec ou sans garage ou cave), écartons les ventes en bloc, les terrains seuls et les valeurs aberrantes, puis calculons des <strong style="color:var(--navy)">médianes</strong> — moins sensibles aux ventes exceptionnelles qu’une moyenne.</p>
+      <p>Le prix au m² d’un quartier ne dit pas la valeur d’une maison : état, terrain, exposition, travaux font varier le prix de 30 % ou plus. Pour un chiffre fiable sur votre bien, rien ne remplace une visite.</p>
+      <a class="plausible-event-name=Estimation+Click plausible-event-position=prix btn btn-navy" style="align-self:flex-start;margin-top:8px" href="https://www.cvimmobilier.fr/estimation">Demander une estimation <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="stack">
+        <img src="assets/img/logo-cream.png" alt="CV Immobilier" width="600" height="218" loading="lazy" style="align-self:flex-start">
+        <p style="color:#9FB0C0;max-width:28em">louviers.immo est un guide proposé par CV Immobilier, agence immobilière indépendante membre de la FNAIM et du réseau Interkab, à Louviers depuis 1992.</p>
+      </div>
+      <div>
+        <h4>Le guide</h4>
+        <ul>
+          <li><a href="adresse.html">Mon adresse</a></li>
+          <li><a href="commerces.html">Commerces</a></li>
+          <li><a href="quartiers.html">Quartiers</a></li>
+          <li><a href="prix.html">Prix de l’immobilier</a></li>
+          <li><a href="portraits.html">Portraits</a></li>
+          <li><a href="outils.html">Outils</a></li>
+          <li><a href="a-propos.html">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Agence de Louviers</h4>
+        <ul>
+          <li>27 rue du Général de Gaulle<br>27400 Louviers</li>
+          <li><a class="tel" href="tel:+33232402228">02 32 40 22 28</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Saint-Pierre-du-Vauvray</h4>
+        <ul>
+          <li>15 Grande Rue<br>27430 Saint-Pierre-du-Vauvray</li>
+          <li><a class="tel" href="tel:+33279492171">02 79 49 21 71</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CV Immobilier · Carte professionnelle CPI 2701 2016 000 005 229</span>
+      <nav aria-label="Liens légaux">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="mentions-legales.html#donnees">Sources des données</a>
+        <a href="https://www.cvimmobilier.fr/">cvimmobilier.fr</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<script src="assets/site.js?v=20261001"></script>
+<script src="assets/vendor/leaflet/leaflet.js?v=20261001"></script>
+<script src="assets/map.js?v=20261001"></script>
+<script src="assets/prix.js?v=20261001"></script>
+</body>
+</html>
