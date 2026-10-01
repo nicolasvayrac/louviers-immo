@@ -16,6 +16,7 @@
      address   Adresse complète : la position est retrouvée automatiquement
      lat, lon  (facultatif) coordonnées exactes, si l'adresse ne suffit pas
      aliases   Autres noms du commerce (enseigne, ancien nom)
+     mapName   (facultatif) nom affiché sur les cartes et dans l'annuaire
      website   Site du commerce
      commune   Commune, ex. "Louviers"
      rubrique  Rubrique de l'annuaire : restaurer, snacking, cafes, boulangeries,
@@ -40,6 +41,8 @@ window.LI_PORTRAITS = [
     aliases: ["Charcuterie du Parvis", "Maison Barbé - Charcuterie du Parvis"],
     title: "la charcuterie du Parvis fait peau neuve",
     url: "portraits/maison-barbe.html",
+    photo: "assets/img/portraits/maison-barbe-facade.jpg",
+    mapName: "Maison Barbé - Charcuterie du Parvis",
     chapo: "Rue du Maréchal Foch, Sylvie et Patrice Barbé perpétuent une charcuterie artisanale, entièrement repensée après de gros travaux.",
     quartier: "Centre-ville",
     category: "Charcutier-traiteur",

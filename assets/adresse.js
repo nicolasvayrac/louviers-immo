@@ -223,13 +223,13 @@
           if (dd < 15 || (dd < 150 && names.indexOf(LI.norm(p.name)) >= 0)) hit = i;
         }
       });
-      if (hit != null) { p.portrait = portraits[hit]; used[hit] = 1; }
+      if (hit != null) { p.portrait = portraits[hit]; used[hit] = 1; if (p.portrait.mapName) p.name = p.portrait.mapName; }
     });
     // Portraits absents d'OpenStreetMap mais situés dans le périmètre
     portraits.forEach(function (pr, i) {
       if (used[i] || pr.lat == null) return;
       var d = LI.dist(S.lat, S.lon, pr.lat, pr.lon);
-      if (d <= 1500) P.push({ id: 'portrait/' + i, lat: pr.lat, lon: pr.lon, name: pr.name, d: d, t: { shop: pr.kind || '' }, portrait: pr, label: pr.category });
+      if (d <= 1500) P.push({ id: 'portrait/' + i, lat: pr.lat, lon: pr.lon, name: pr.mapName || pr.name, d: d, t: { shop: pr.kind || '' }, portrait: pr, label: pr.category });
     });
     (S.agences || []).forEach(function (a) {
       if (a.lat == null) return;

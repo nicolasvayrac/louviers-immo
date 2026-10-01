@@ -141,11 +141,12 @@
         });
         if (hit) {
           hit.portrait = p;
+          if (p.mapName) hit.name = p.mapName;
           if (p.rubrique) hit.rub = p.rubrique;
           if (p.website && !hit.web) hit.web = p.website;
           if (p.address && !hit.addr) hit.addr = p.address.replace(/\s*\d{5}.*$/, '');
         } else if (p.commune === com && p.lat != null) {
-          list.push({ id: 'portrait/' + p.url, name: p.name, lat: p.lat, lon: p.lon, kind: p.kind || '', rub: p.rubrique || 'bouche',
+          list.push({ id: 'portrait/' + p.url, name: p.mapName || p.name, lat: p.lat, lon: p.lon, kind: p.kind || '', rub: p.rubrique || 'bouche',
             addr: (p.address || '').replace(/\s*\d{5}.*$/, ''), web: p.website || '', phone: p.phone || '', portrait: p, label: p.category });
         }
       });

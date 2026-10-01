@@ -20,6 +20,9 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), camera=(), microphone=()"
+    # AVANT LE LANCEMENT : interdit à Google d'indexer le site de test.
+    # À SUPPRIMER le jour de la mise en ligne officielle sur louviers.immo.
+    X-Robots-Tag = "noindex, nofollow"
 
 # Données DVF : non indexées par les moteurs de recherche (conditions de réutilisation)
 [[headers]]
