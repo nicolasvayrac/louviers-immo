@@ -32,20 +32,24 @@ KEEP = ['name', 'shop', 'amenity', 'craft', 'leisure', 'highway', 'railway', 'st
         'isced:level', 'addr:housenumber', 'addr:street', 'website', 'contact:website', 'phone', 'contact:phone', 'office']
 
 
-def overpass(q):
+class OverpassError(Exception):
+    pass
+
+
+def overpass(q, tries=2):
     data = urllib.parse.urlencode({'data': q}).encode()
     last = None
     for url in ENDPOINTS:
-        for attempt in range(2):
+        for attempt in range(tries):
             try:
                 req = urllib.request.Request(url, data=data, headers={'User-Agent': 'louviers.immo/1.0 (contact@cvimmobilier.fr)'})
                 with urllib.request.urlopen(req, timeout=180) as r:
                     return json.loads(r.read().decode('utf-8'))
             except Exception as e:  # noqa: BLE001
                 last = e
-                print(f'  {url} : {e} — nouvel essai', file=sys.stderr)
-                time.sleep(10)
-    raise SystemExit(f'Overpass indisponible : {last}')
+                print(f'  {url} : {e} — nouvel essai', flush=True)
+                time.sleep(15)
+    raise OverpassError(str(last))
 
 
 def main():
@@ -60,8 +64,11 @@ def main():
       node({bb})[railway~"^(station|halt)$"][station!~"subway|light_rail"];
       node({bb})[highway=motorway_junction];
     );out center tags;'''
-    print('Téléchargement des lieux…')
-    j = overpass(q)
+    print('Téléchargement des lieux…', flush=True)
+    try:
+        j = overpass(q, tries=3)
+    except OverpassError as e:
+        raise SystemExit(f'Overpass indisponible, fichier inchangé : {e}')
     pois, index = [], {}
     for el in j.get('elements', []):
         la = el.get('lat', (el.get('center') or {}).get('lat'))
@@ -72,20 +79,31 @@ def main():
         pid = f"{el['type']}/{el['id']}"
         index[pid] = len(pois)
         pois.append({'id': pid, 'lat': round(la, 6), 'lon': round(lo, 6), 't': t})
-    print(f'{len(pois)} lieux.')
+    print(f'{len(pois)} lieux.', flush=True)
 
-    # Commune de chaque lieu (pour l'annuaire)
+    # Commune de chaque lieu (pour l'annuaire). Une commune qui ne répond pas est sautée :
+    # le site interrogera alors OpenStreetMap en direct pour elle.
+    ok = []
     for insee, name in COMMUNES.items():
-        time.sleep(5)
-        qa = f'[out:json][timeout:120];area["ref:INSEE"="{insee}"]["boundary"="administrative"]->.a;(nwr(area.a)[shop];nwr(area.a)[amenity];nwr(area.a)[craft];);out ids;'
-        ja = overpass(qa)
+        time.sleep(8)
+        qa = (f'[out:json][timeout:90];area["ref:INSEE"="{insee}"]["boundary"="administrative"]->.a;('
+              'nwr(area.a)[shop][name];'
+              'nwr(area.a)[amenity~"^(restaurant|fast_food|food_court|cafe|bar|pub|ice_cream|pharmacy|bank|post_office)$"][name];'
+              'nwr(area.a)[craft][name];);out ids;')
+        try:
+            ja = overpass(qa)
+        except OverpassError as e:
+            print(f'  {name} : sautée ({e})', flush=True)
+            continue
         c = 0
         for el in ja.get('elements', []):
             i = index.get(f"{el['type']}/{el['id']}")
             if i is not None:
                 pois[i]['c'] = insee
                 c += 1
-        print(f'  {name} : {c}')
+        ok.append(name)
+        print(f'  {name} : {c} commerces', flush=True)
+    print(f'Communes traitées : {len(ok)}/{len(COMMUNES)}', flush=True)
 
     out = {'generated': datetime.now(timezone.utc).strftime('%Y-%m-%d'), 'bbox': BBOX, 'communes': COMMUNES,
            'licence': 'Données © contributeurs OpenStreetMap, ODbL', 'pois': pois}
@@ -93,7 +111,7 @@ def main():
         raise SystemExit('Trop peu de lieux : fichier non remplacé par sécurité.')
     with open(OUT, 'w', encoding='utf-8') as f:
         json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
-    print('Écrit', OUT)
+    print('Écrit', OUT, flush=True)
 
 
 if __name__ == '__main__':
