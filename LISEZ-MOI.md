@@ -73,6 +73,10 @@ DVF est mis à jour deux fois par an (avril et octobre). Le fichier ne contient 
 
 Questionnaire type (6 questions, déjà dans le modèle) : comment est née l'affaire · pourquoi Louviers · une journée type · le produit dont on est le plus fier · son adresse préférée à Louviers · un conseil à un nouvel arrivant.
 
+## Agences et partenaires
+
+Vos deux agences et vos partenaires (courtiers…) sont listés dans `data/partenaires.js`. Ils apparaissent toujours, en doré, dans l'annuaire et dans « Mon adresse ». Pour en ajouter ou en retirer un, modifiez ce fichier (mode d'emploi en haut du fichier) ou demandez à Claude.
+
 ## Mise à jour automatique des commerces
 
 Chaque lundi, GitHub télécharge les commerces, écoles, arrêts de bus et équipements depuis OpenStreetMap (`scripts/build_pois.py`) et les enregistre dans `data/pois.json` : le site les affiche alors instantanément, sans dépendre d'un service extérieur à chaque visite. Pour lancer la mise à jour à la main : onglet **Actions** du dépôt → « Mettre à jour les données » → **Run workflow**.

@@ -202,17 +202,13 @@
     return resolved;
   };
 
-  /* ---------- Nos agences (toujours présentes dans les listes) ---------- */
-  LI.AGENCES = [
-    { name: 'CV Immobilier — Louviers', address: '27 rue du Général de Gaulle 27400 Louviers', addr: '27 rue du Général de Gaulle',
-      insee: '27375', phone: '02 32 40 22 28', web: 'https://www.cvimmobilier.fr/' },
-    { name: 'CV Immobilier — Saint-Pierre-du-Vauvray', address: '15 Grande Rue 27430 Saint-Pierre-du-Vauvray', addr: '15 Grande Rue',
-      insee: '27598', phone: '02 79 49 21 71', web: 'https://www.cvimmobilier.fr/' }
-  ];
+  /* ---------- Agences et partenaires (data/partenaires.js) ---------- */
   var agResolved = null;
   LI.resolveAgences = function () {
     if (!agResolved) {
-      agResolved = Promise.all(LI.AGENCES.map(function (a) {
+      var list = (window.LI_PARTENAIRES || []).filter(function (a) { return a && a.name && a.address; });
+      agResolved = Promise.all(list.map(function (a) {
+        if (!a.addr) a.addr = a.address.replace(/\s*\d{5}.*$/, '');
         if (a.lat != null) return Promise.resolve(a);
         return LI.geocode(a.address, 1, false).then(function (r) {
           if (r[0]) { a.lat = r[0].lat; a.lon = r[0].lon; }
@@ -221,6 +217,9 @@
       }));
     }
     return agResolved;
+  };
+  LI.partnerLink = function (u) {
+    return /^https?:/i.test(u) ? u : LI.root + u;
   };
 
   function renderHomePortraits() {

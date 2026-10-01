@@ -110,7 +110,7 @@
     alim: ['bakery', 'pastry', 'butcher', 'greengrocer', 'cheese', 'supermarket', 'convenience', 'deli', 'wine', 'alcohol', 'chocolate', 'confectionery', 'seafood', 'coffee', 'tea', 'farm', 'organic', 'frozen_food', 'beverages', 'marketplace'],
     resto: ['restaurant', 'cafe', 'bar', 'pub', 'fast_food', 'ice_cream'],
     sante: ['pharmacy', 'optician', 'hearing_aids', 'medical_supply', 'doctors', 'dentist', 'clinic'],
-    serv: ['estate_agent', 'hairdresser', 'beauty', 'florist', 'laundry', 'dry_cleaning', 'bank', 'post_office', 'travel_agency', 'copyshop', 'tattoo', 'massage', 'car_repair', 'funeral_directors', 'library']
+    serv: ['estate_agent', 'notary', 'hairdresser', 'beauty', 'florist', 'laundry', 'dry_cleaning', 'bank', 'post_office', 'travel_agency', 'copyshop', 'tattoo', 'massage', 'car_repair', 'funeral_directors', 'library']
   };
   function kindOf(t) {
     if (t.shop) return t.shop;
@@ -234,7 +234,7 @@
     (S.agences || []).forEach(function (a) {
       if (a.lat == null) return;
       var d = LI.dist(S.lat, S.lon, a.lat, a.lon);
-      if (d <= 1500) P.push({ id: 'cv/' + a.insee, lat: a.lat, lon: a.lon, name: a.name, d: d, t: { shop: 'estate_agent' }, label: 'Agence immobilière', own: a });
+      if (d <= 1500) P.push({ id: 'partenaire/' + a.name, lat: a.lat, lon: a.lon, name: a.name, d: d, t: { shop: a.rubrique === 'immobilier' ? 'estate_agent' : (a.rubrique === 'notaires' ? 'notary' : 'bank') }, label: a.category || '', own: a });
     });
     P.sort(function (a, b) { return a.d - b.d; });
     return P;
@@ -254,8 +254,12 @@
       box.innerHTML = list.map(function (p, i) {
         var lab = p.label || labelOf(kindOf(p.t));
         var pt = p.portrait ? '<a class="pt" href="' + LI.esc(LI.root + p.portrait.url) + '">Lire son portrait <span class="arrow">→</span></a>' : '';
-        if (p.own) pt = '<a class="pt" href="' + LI.esc(LI.root + 'a-propos.html') + '">Notre agence · l’équipe <span class="arrow">→</span></a>';
-        return '<div class="shop' + (p.portrait || p.own ? ' has-portrait' : '') + '"><div class="num" aria-hidden="true">' + (i + 1) + '</div><div>' +
+        if (p.own) {
+          var l0 = (p.own.links && p.own.links[0]) || (p.own.web ? { label: 'Site web', url: p.own.web } : null);
+          pt = (p.own.badge ? '<span class="pt" style="margin-right:8px">' + LI.esc(p.own.badge) + '</span>' : '') +
+            (l0 ? '<a class="pt" href="' + LI.esc(LI.partnerLink(l0.url)) + '"' + (/^https?:/i.test(l0.url) ? ' target="_blank" rel="noopener"' : '') + '>' + LI.esc(l0.label) + ' <span class="arrow">→</span></a>' : '');
+        }
+        return '<div class="shop' + (p.portrait || (p.own && p.own.badge) ? ' has-portrait' : '') + '"><div class="num" aria-hidden="true">' + (i + 1) + '</div><div>' +
           '<div class="k">' + LI.esc(lab) + '</div><div class="nm">' + LI.esc(p.name) + '</div>' +
           '<div class="ds">' + fmtMin(minutes('walk', p.d)) + ' à pied · ' + fmtDist(p.d) + '</div>' + pt + '</div></div>';
       }).join('');
@@ -291,7 +295,7 @@
     S.shopLayer.clearLayers();
     var bounds = [[S.lat, S.lon]];
     S.shopsShown.forEach(function (p, i) {
-      L.marker([p.lat, p.lon], { icon: LI.divIcon('<div class="pin-n' + (p.portrait || p.own ? ' star' : '') + '">' + (i + 1) + '</div>', '', 28), title: p.name })
+      L.marker([p.lat, p.lon], { icon: LI.divIcon('<div class="pin-n' + (p.portrait || (p.own && p.own.badge) ? ' star' : '') + '">' + (i + 1) + '</div>', '', 28), title: p.name })
         .bindPopup('<strong>' + LI.esc(p.name) + '</strong><br>' + LI.esc(p.label || labelOf(kindOf(p.t))) + ' · ' + fmtMin(minutes('walk', p.d)) + ' à pied' +
           (p.portrait ? '<br><a href="' + LI.esc(LI.root + p.portrait.url) + '">Lire son portrait →</a>' : ''))
         .addTo(S.shopLayer);
