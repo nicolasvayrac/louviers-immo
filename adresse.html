@@ -26,7 +26,7 @@
 <link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="assets/style.css?v=20261001z">
+<link rel="stylesheet" href="assets/style.css?v=20261002b">
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -46,6 +46,10 @@
 </header>
 <main id="contenu">
 <section class="page-head ph-ciel">
+  <div class="print-only print-head">
+    <img src="assets/img/logo-navy.png" alt="CV Immobilier" width="600" height="218">
+    <div><strong>Fiche adresse louviers.immo</strong><br><span id="print-date"></span></div>
+  </div>
   <div class="wrap res-head">
     <div style="max-width:780px">
       <div class="crumbs"><a href="index.html">Accueil</a> · Mon adresse</div>
@@ -76,6 +80,7 @@
 <div id="results" hidden>
 <section class="section" style="padding-top:56px;padding-bottom:40px">
   <div class="wrap">
+    <div class="no-print res-tools"><button type="button" class="btn btn-line plausible-event-name=Fiche+Imprimee" onclick="window.print()">Imprimer la fiche</button></div>
     <p id="far" class="empty-data" hidden style="margin-bottom:28px">Cette adresse est assez loin de Louviers : louviers.immo est conçu pour Louviers et l’Agglomération Seine-Eure, les résultats restent indicatifs.</p>
     <div class="res-grid">
       <div class="stack">
@@ -133,8 +138,24 @@
         </div>
       </div>
     </div>
+
+    <div class="alerte no-print" id="alerte">
+      <div class="stack">
+        <h2 style="font-size:clamp(26px,2.4vw,34px)">Recevoir les biens à vendre dans ce quartier</h2>
+        <p class="muted">Laissez votre adresse mail : l’équipe CV Immobilier vous prévient quand un bien se vend ou se met en vente près de cette adresse.</p>
+      </div>
+      <form class="lform plausible-event-name=Alerte+Quartier" name="alerte-quartier" method="POST" action="merci.html" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="alerte-quartier">
+        <input type="hidden" name="adresse" id="alerte-adresse" value="">
+        <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
+        <div class="field"><label for="alerte-mail">Votre adresse mail</label><input id="alerte-mail" name="email" type="email" required autocomplete="email"></div>
+        <label class="check"><input type="checkbox" name="consentement" value="oui" required> <span>J’accepte de recevoir des informations de CV Immobilier sur ce quartier. Désinscription à tout moment (<a href="mentions-legales.html#formulaires">en savoir plus</a>).</span></label>
+        <button class="btn btn-gold" type="submit" style="align-self:flex-start">Me prévenir</button>
+      </form>
+    </div>
   </div>
 </section>
+<div class="print-only print-foot">CV Immobilier · 27 rue du Général de Gaulle, 27400 Louviers · 02 32 40 22 28 · contact@cvimmobilier.fr · cvimmobilier.fr<br>Temps de trajet estimés et prix issus des ventes DVF : informations indicatives.</div>
 </div>
 </main>
 <footer class="footer">
@@ -185,12 +206,12 @@
     </div>
   </div>
 </footer>
-<script src="assets/site.js?v=20261001z"></script>
-<script src="assets/vendor/leaflet/leaflet.js?v=20261001z"></script>
-<script src="assets/map.js?v=20261001z"></script>
-<script src="data/portraits.js?v=20261001z"></script>
-<script src="data/partenaires.js?v=20261001z"></script>
-<script src="data/exclusions.js?v=20261001z"></script>
-<script src="assets/adresse.js?v=20261001z"></script>
+<script src="assets/site.js?v=20261002b"></script>
+<script src="assets/vendor/leaflet/leaflet.js?v=20261002b"></script>
+<script src="assets/map.js?v=20261002b"></script>
+<script src="data/portraits.js?v=20261002b"></script>
+<script src="data/partenaires.js?v=20261002b"></script>
+<script src="data/exclusions.js?v=20261002b"></script>
+<script src="assets/adresse.js?v=20261002b"></script>
 </body>
 </html>

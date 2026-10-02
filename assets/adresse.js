@@ -360,11 +360,17 @@
     $('res-city').textContent = r.type === 'municipality' ? (r.context || '') : sub;
     history.replaceState(null, '', 'adresse.html?q=' + encodeURIComponent(r.label) + '&lat=' + r.lat.toFixed(6) + '&lon=' + r.lon.toFixed(6));
     $('results').hidden = false;
+    var fa = document.getElementById('alerte-adresse'); if (fa) fa.value = r.label;
+    var pd = document.getElementById('print-date'); if (pd) pd.textContent = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
     $('intro').hidden = true;
     loadPlace();
   }
 
+  // Fonctions réutilisées par le comparateur de quartiers
+  LI.adr = { getPois: getPois, minutes: minutes, fmtMin: fmtMin, fmtDist: fmtDist, nearest: nearest, schoolType: schoolType };
+
   document.addEventListener('DOMContentLoaded', function () {
+    if (!document.getElementById('results')) return; // page autre que « Mon adresse »
     // Boutons de mode
     document.querySelectorAll('.mode').forEach(function (b) {
       b.addEventListener('click', function () {

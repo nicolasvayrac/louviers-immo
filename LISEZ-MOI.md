@@ -15,6 +15,9 @@ Il fonctionne sur n'importe quel hébergement (Netlify, OVH…).
 | `commerces.html` | Annuaire des commerçants par rubrique (Se restaurer, Snacking, S'habiller…), carte, recherche, 10 communes |
 | `diagnostics.html` | Diagnostics obligatoires : questionnaire (vente/location, type, année…) et contrôle d’assainissement de l’Agglomération Seine-Eure |
 | `conciergerie.html` | S’installer : eau, électricité, gaz, box, déchets, démarches, mairie, avec plusieurs prestataires |
+| `comparer.html` | Comparateur de deux adresses : prix, écoles, gare, A13 |
+| `outil-qr.html` | **Outil interne** (non référencé) : code QR « Vivre ici » vers la page d'une adresse, pour les annonces et vitrines |
+| `merci.html` | Page affichée après l'envoi d'un formulaire |
 | `outils.html` | Frais de notaire (taux de l'Eure 2026) et capacité d'emprunt |
 | `a-propos.html`, `mentions-legales.html`, `404.html` | Pages institutionnelles |
 
@@ -41,6 +44,15 @@ Services gratuits utilisés directement par le navigateur du visiteur (aucune cl
 ### Après la mise en ligne
 - Ouvrez Google Search Console, ajoutez `louviers.immo` et envoyez `https://louviers.immo/sitemap.xml`.
 - Testez « Mon adresse » avec une vraie adresse de Louviers.
+
+## Liste du jour du lancement
+
+1. **Netlify, réglages de test à retirer** : dans `netlify.toml`, supprimez les 3 lignes marquées « AVANT LE LANCEMENT » (consigne `X-Robots-Tag: noindex`). Si vous avez ajouté un mot de passe, supprimez le fichier `_headers` ou désactivez la protection dans Netlify.
+2. **Domaine** : Netlify → Domain management → Add a domain → `louviers.immo`, puis suivez les instructions DNS chez OVH. Attendez que le cadenas HTTPS s'active.
+3. **Formulaires** : Netlify → Forms → vérifiez que la détection des formulaires est activée et que `alerte-quartier` et `proposer-commerce` apparaissent ; ajoutez une notification par mail vers contact@cvimmobilier.fr (Forms → Form notifications). Faites un envoi d'essai de chaque formulaire.
+4. **Google** : Search Console → propriété `louviers.immo` → Sitemaps → envoyez `https://louviers.immo/sitemap.xml`. Demandez l'indexation de l'accueil.
+5. **Plausible** : ouvrez le tableau de bord, visitez le site depuis votre téléphone et vérifiez que la visite apparaît. Ajoutez les objectifs (Goals) : Estimation Click, Estimation Rapide, Diagnostics Vendeur, Biens Quartier, Alerte Quartier, Proposer Commerce, Fiche Imprimee, Comparateur.
+6. **Contrôle final** : testez « Mon adresse » avec une vraie adresse, la carte des prix, un portrait, l'annuaire, et le partage d'un portrait sur Facebook (l'image du commerçant doit apparaître).
 
 ## À faire avant d'annoncer le site
 
@@ -90,6 +102,14 @@ Les clubs et associations sportives de Louviers sont listés dans `data/clubs.js
 ## Mise à jour automatique des commerces
 
 Chaque lundi, GitHub télécharge les commerces, écoles, arrêts de bus et équipements depuis OpenStreetMap (`scripts/build_pois.py`) et les enregistre dans `data/pois.json` : le site les affiche alors instantanément, sans dépendre d'un service extérieur à chaque visite. Pour lancer la mise à jour à la main : onglet **Actions** du dépôt → « Mettre à jour les données » → **Run workflow**.
+
+## Formulaires et données personnelles
+
+Les formulaires « Recevoir les biens à vendre dans ce quartier » (page Mon adresse) et « Proposer mon commerce » (Portraits et Commerces) passent par Netlify Forms. Les demandes s'affichent dans Netlify (onglet Forms) et, une fois la notification réglée, arrivent par mail. La mention RGPD est dans les mentions légales (`#formulaires`) : durée de conservation de 3 ans après le dernier échange, à confirmer par vos soins. Pensez à répondre aux demandes de désinscription.
+
+## Générer les pages
+
+Les pages HTML sont produites par `scripts/gen.py` (Python 3 et Pillow). Les textes se modifient dans ce fichier, puis `python3 scripts/gen.py` réécrit toutes les pages. Les photos sont automatiquement servies en WebP avec le JPG en secours : après avoir ajouté une photo JPG, créez aussi sa version `.webp` (ou demandez à Claude).
 
 ## Bon à savoir
 

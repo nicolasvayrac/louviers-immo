@@ -26,7 +26,7 @@
 <link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="assets/style.css?v=20261001z">
+<link rel="stylesheet" href="assets/style.css?v=20261002b">
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -95,6 +95,29 @@
   </div>
 </section>
 
+<section class="section" id="estimation" style="padding-top:0">
+  <div class="wrap">
+    <div class="estim">
+      <div class="stack">
+        <span class="eyebrow">Estimation rapide</span>
+        <h2 style="font-size:clamp(28px,2.6vw,38px)">Une première fourchette pour votre bien</h2>
+        <p class="muted">Calculée à partir des ventes réelles de biens du même type autour de l’adresse.</p>
+        <form class="lform" id="estim-form" novalidate>
+          <div class="field"><label for="e-adr">Adresse du bien</label><input id="e-adr" required placeholder="Numéro, rue, commune" autocomplete="street-address"></div>
+          <div class="lform-grid">
+            <div class="field"><label for="e-type">Type de bien</label><select id="e-type"><option value="M">Maison</option><option value="A">Appartement</option></select></div>
+            <div class="field"><label for="e-surf">Surface habitable (m²)</label><input id="e-surf" type="number" inputmode="numeric" min="10" max="600" required></div>
+          </div>
+          <button class="btn btn-navy" type="submit" style="align-self:flex-start">Calculer la fourchette</button>
+        </form>
+      </div>
+      <div class="estim-out" id="estim-out" aria-live="polite">
+        <p class="muted">Renseignez l’adresse, le type et la surface : la fourchette s’affiche ici.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section bg-sand">
   <div class="wrap split" style="align-items:start">
     <div class="a stack">
@@ -158,9 +181,10 @@
     </div>
   </div>
 </footer>
-<script src="assets/site.js?v=20261001z"></script>
-<script src="assets/vendor/leaflet/leaflet.js?v=20261001z"></script>
-<script src="assets/map.js?v=20261001z"></script>
-<script src="assets/prix.js?v=20261001z"></script>
+<script src="assets/site.js?v=20261002b"></script>
+<script src="assets/vendor/leaflet/leaflet.js?v=20261002b"></script>
+<script src="assets/map.js?v=20261002b"></script>
+<script src="assets/prix.js?v=20261002b"></script>
+<script src="assets/estimation.js?v=20261002b"></script>
 </body>
 </html>

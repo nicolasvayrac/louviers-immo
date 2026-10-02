@@ -25,7 +25,7 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=20261001z">
+<link rel="stylesheet" href="assets/style.css?v=20261002b">
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -69,7 +69,6 @@
       <span class="eyebrow">Commerçants, artisans</span>
       <h2>Et si le prochain portrait <span class="it">était le vôtre ?</span></h2>
       <p class="lede">C’est gratuit et sans contrepartie. Votre portrait apparaît aussi auprès de tous ceux qui cherchent une maison près de chez vous.</p>
-      <a class="btn btn-navy" style="align-self:flex-start" href="mailto:contact@cvimmobilier.fr?subject=Portrait%20louviers.immo">Proposer un portrait</a>
     </div>
     <div class="b">
       <ol class="steps clean">
@@ -79,6 +78,24 @@
         <li><span class="n">04</span><span><strong>Votre portrait vit sur louviers.immo</strong><span class="d">Et il apparaît sur la carte de toutes les adresses voisines.</span></span></li>
       </ol>
     </div>
+  </div>
+  <div class="wrap" id="proposer" style="margin-top:40px">
+    <h3 style="margin-bottom:18px">Proposer mon commerce</h3>
+    <form class="lform plausible-event-name=Proposer+Commerce plausible-event-position=portraits" name="proposer-commerce" method="POST" action="merci.html" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="proposer-commerce">
+      <input type="hidden" name="page" value="portraits">
+      <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
+      <div class="lform-grid">
+        <div class="field"><label for="pc-nom-portraits">Nom du commerce</label><input id="pc-nom-portraits" name="commerce" required></div>
+        <div class="field"><label for="pc-adr-portraits">Adresse</label><input id="pc-adr-portraits" name="adresse" required></div>
+        <div class="field"><label for="pc-contact-portraits">Votre nom</label><input id="pc-contact-portraits" name="contact" required></div>
+        <div class="field"><label for="pc-mail-portraits">Votre adresse mail</label><input id="pc-mail-portraits" name="email" type="email" required></div>
+        <div class="field"><label for="pc-tel-portraits">Téléphone (facultatif)</label><input id="pc-tel-portraits" name="telephone" type="tel"></div>
+        <div class="field"><label for="pc-msg-portraits">Votre message (facultatif)</label><textarea id="pc-msg-portraits" name="message" rows="3"></textarea></div>
+      </div>
+      <label class="check"><input type="checkbox" name="consentement" value="oui" required> <span>J’accepte que CV Immobilier utilise ces informations pour me recontacter au sujet de louviers.immo (<a href="mentions-legales.html#formulaires">en savoir plus</a>).</span></label>
+      <button class="btn btn-navy" type="submit" style="align-self:flex-start">Envoyer ma demande</button>
+    </form>
   </div>
 </section>
 </main>
@@ -130,7 +147,7 @@
     </div>
   </div>
 </footer>
-<script src="assets/site.js?v=20261001z"></script>
-<script src="data/portraits.js?v=20261001z"></script>
+<script src="assets/site.js?v=20261002b"></script>
+<script src="data/portraits.js?v=20261002b"></script>
 </body>
 </html>

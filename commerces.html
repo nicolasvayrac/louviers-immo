@@ -26,7 +26,7 @@
 <link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="assets/style.css?v=20261001z">
+<link rel="stylesheet" href="assets/style.css?v=20261002b">
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -76,18 +76,24 @@
 
     <div id="dir"></div>
 
-    <div class="box-sand split" style="margin-top:32px">
-      <div class="a stack">
-        <span class="eyebrow">Commerçants</span>
-        <h2 style="font-size:clamp(26px,2.6vw,36px)">Votre commerce manque, <span class="it">ou mérite un portrait ?</span></h2>
+    <div class="box-sand stack" style="margin-top:32px" id="proposer">
+      <h2 style="font-size:clamp(26px,2.6vw,36px)">Votre commerce manque, <span class="it">ou mérite un portrait ?</span></h2>
+      <p class="muted">Écrivez-nous : nous ajoutons votre adresse et, si vous le souhaitez, nous venons faire votre portrait, gratuitement. Une erreur sur la carte ? Elle se corrige aussi sur <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a>, la carte collaborative.</p>
+      <form class="lform plausible-event-name=Proposer+Commerce plausible-event-position=commerces" name="proposer-commerce" method="POST" action="merci.html" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="proposer-commerce">
+      <input type="hidden" name="page" value="commerces">
+      <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
+      <div class="lform-grid">
+        <div class="field"><label for="pc-nom-commerces">Nom du commerce</label><input id="pc-nom-commerces" name="commerce" required></div>
+        <div class="field"><label for="pc-adr-commerces">Adresse</label><input id="pc-adr-commerces" name="adresse" required></div>
+        <div class="field"><label for="pc-contact-commerces">Votre nom</label><input id="pc-contact-commerces" name="contact" required></div>
+        <div class="field"><label for="pc-mail-commerces">Votre adresse mail</label><input id="pc-mail-commerces" name="email" type="email" required></div>
+        <div class="field"><label for="pc-tel-commerces">Téléphone (facultatif)</label><input id="pc-tel-commerces" name="telephone" type="tel"></div>
+        <div class="field"><label for="pc-msg-commerces">Votre message (facultatif)</label><textarea id="pc-msg-commerces" name="message" rows="3"></textarea></div>
       </div>
-      <div class="b stack">
-        <p class="muted">L’annuaire s’appuie sur OpenStreetMap, la carte collaborative : chacun peut y ajouter ou corriger un commerce gratuitement, et la mise à jour apparaît ici en quelques minutes. Pour un portrait, écrivez-nous.</p>
-        <div class="two">
-          <a class="btn btn-navy" href="mailto:contact@cvimmobilier.fr?subject=Portrait%20louviers.immo">Proposer un portrait</a>
-          <a class="btn btn-line" href="https://www.openstreetmap.org/" target="_blank" rel="noopener">Corriger sur OpenStreetMap</a>
-        </div>
-      </div>
+      <label class="check"><input type="checkbox" name="consentement" value="oui" required> <span>J’accepte que CV Immobilier utilise ces informations pour me recontacter au sujet de louviers.immo (<a href="mentions-legales.html#formulaires">en savoir plus</a>).</span></label>
+      <button class="btn btn-navy" type="submit" style="align-self:flex-start">Envoyer ma demande</button>
+    </form>
     </div>
   </div>
 </section>
@@ -140,13 +146,13 @@
     </div>
   </div>
 </footer>
-<script src="assets/site.js?v=20261001z"></script>
-<script src="assets/vendor/leaflet/leaflet.js?v=20261001z"></script>
-<script src="assets/map.js?v=20261001z"></script>
-<script src="data/portraits.js?v=20261001z"></script>
-<script src="data/partenaires.js?v=20261001z"></script>
-<script src="data/exclusions.js?v=20261001z"></script>
-<script src="data/clubs.js?v=20261001z"></script>
-<script src="assets/commerces.js?v=20261001z"></script>
+<script src="assets/site.js?v=20261002b"></script>
+<script src="assets/vendor/leaflet/leaflet.js?v=20261002b"></script>
+<script src="assets/map.js?v=20261002b"></script>
+<script src="data/portraits.js?v=20261002b"></script>
+<script src="data/partenaires.js?v=20261002b"></script>
+<script src="data/exclusions.js?v=20261002b"></script>
+<script src="data/clubs.js?v=20261002b"></script>
+<script src="assets/commerces.js?v=20261002b"></script>
 </body>
 </html>

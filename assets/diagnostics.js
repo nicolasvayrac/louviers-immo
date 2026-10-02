@@ -50,6 +50,7 @@
     document.getElementById('dg-list').innerHTML = r.list.map(function (d) {
       return '<li class="dg-' + d.id + '"><a href="#d-' + d.id + '"><b>' + LI.esc(d.name) + '</b></a><span class="dg-v">' + LI.esc(d.valid) + '</span><span class="dg-w">' + LI.esc(d.why) + '</span></li>';
     }).join('');
+    var cta = document.getElementById('dg-cta'); if (cta) cta.hidden = !r.vente;
     var a = document.getElementById('dg-alert');
     a.hidden = !r.alert; a.textContent = r.alert;
     document.getElementById('dg-extra').innerHTML = r.extra.map(function (t) { return '<p>' + t + '</p>'; }).join('');
