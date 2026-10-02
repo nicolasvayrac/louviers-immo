@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261002b'
+VER = '20261002c'
 
 NAV = [('adresse.html', 'Mon adresse'), ('commerces.html', 'Commerces'), ('quartiers.html', 'Quartiers'), ('prix.html', 'Prix'),
        ('conciergerie.html', 'S’installer'), ('diagnostics.html', 'Diagnostics'), ('outils.html', 'Outils')]
@@ -514,9 +514,7 @@ def page_adresse():
     body += header('adresse.html', r, topbar=False)
     body += f'''<main id="contenu">
 <section class="page-head">
-  <div class="print-only print-head">
-    <img src="{r}assets/img/logo-navy.png" alt="CV Immobilier" width="600" height="218">
-    <div><strong>Fiche adresse louviers.immo</strong><br><span id="print-date"></span></div>
+  
   </div>
   <div class="wrap res-head">
     <div style="max-width:780px">
@@ -539,7 +537,6 @@ def page_adresse():
 <div id="results" hidden>
 <section class="section" style="padding-top:56px;padding-bottom:40px">
   <div class="wrap">
-    <div class="no-print res-tools"><button type="button" class="btn btn-line plausible-event-name=Fiche+Imprimee" onclick="window.print()">Imprimer la fiche</button></div>
     <p id="far" class="empty-data" hidden style="margin-bottom:28px">Cette adresse est assez loin de Louviers : louviers.immo est conçu pour Louviers et l’Agglomération Seine-Eure, les résultats restent indicatifs.</p>
     <div class="res-grid">
       <div class="stack">
@@ -614,7 +611,6 @@ def page_adresse():
     </div>
   </div>
 </section>
-<div class="print-only print-foot">CV Immobilier · 27 rue du Général de Gaulle, 27400 Louviers · 02 32 40 22 28 · contact@cvimmobilier.fr · cvimmobilier.fr<br>Temps de trajet estimés et prix issus des ventes DVF : informations indicatives.</div>
 </div>
 </main>
 '''

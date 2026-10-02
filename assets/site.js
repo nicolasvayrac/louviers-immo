@@ -256,7 +256,7 @@
     if (!ps.length) return; // le message « à venir » est déjà dans le HTML
     box.innerHTML = ps.map(function (p, i) {
       return '<a class="p-card" href="' + LI.esc(LI.root + p.url) + '">' +
-        (p.photo ? '<div class="ph"><img src="' + LI.esc(LI.root + p.photo) + '" alt="" loading="lazy"></div>'
+        (p.photo ? '<div class="ph"><picture>' + (/\.jpg$/.test(p.photo) ? '<source srcset="' + LI.esc(LI.root + p.photo.replace(/\.jpg$/, '.webp')) + '" type="image/webp">' : '') + '<img src="' + LI.esc(LI.root + p.photo) + '" alt="" loading="lazy" width="1200" height="800"></picture></div>'
           : '<div class="ph ph-type"><span>' + LI.esc(p.name) + '</span><small>' + LI.esc(p.category || '') + '</small></div>') +
         '<span class="eyebrow">Portrait n°' + String(i + 1).padStart(2, '0') + (p.quartier ? ' · ' + LI.esc(p.quartier) : '') + '</span>' +
         '<span class="t">' + LI.esc(p.name) + (p.title ? ' — ' + LI.esc(p.title) : '') + '</span>' +

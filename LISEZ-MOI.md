@@ -51,7 +51,7 @@ Services gratuits utilisés directement par le navigateur du visiteur (aucune cl
 2. **Domaine** : Netlify → Domain management → Add a domain → `louviers.immo`, puis suivez les instructions DNS chez OVH. Attendez que le cadenas HTTPS s'active.
 3. **Formulaires** : Netlify → Forms → vérifiez que la détection des formulaires est activée et que `alerte-quartier` et `proposer-commerce` apparaissent ; ajoutez une notification par mail vers contact@cvimmobilier.fr (Forms → Form notifications). Faites un envoi d'essai de chaque formulaire.
 4. **Google** : Search Console → propriété `louviers.immo` → Sitemaps → envoyez `https://louviers.immo/sitemap.xml`. Demandez l'indexation de l'accueil.
-5. **Plausible** : ouvrez le tableau de bord, visitez le site depuis votre téléphone et vérifiez que la visite apparaît. Ajoutez les objectifs (Goals) : Estimation Click, Estimation Rapide, Diagnostics Vendeur, Biens Quartier, Alerte Quartier, Proposer Commerce, Fiche Imprimee, Comparateur.
+5. **Plausible** : ouvrez le tableau de bord, visitez le site depuis votre téléphone et vérifiez que la visite apparaît. Ajoutez les objectifs (Goals) : Estimation Click, Estimation Rapide, Diagnostics Vendeur, Biens Quartier, Alerte Quartier, Proposer Commerce, Comparateur.
 6. **Contrôle final** : testez « Mon adresse » avec une vraie adresse, la carte des prix, un portrait, l'annuaire, et le partage d'un portrait sur Facebook (l'image du commerçant doit apparaître).
 
 ## À faire avant d'annoncer le site

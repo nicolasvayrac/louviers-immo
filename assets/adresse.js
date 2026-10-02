@@ -361,7 +361,6 @@
     history.replaceState(null, '', 'adresse.html?q=' + encodeURIComponent(r.label) + '&lat=' + r.lat.toFixed(6) + '&lon=' + r.lon.toFixed(6));
     $('results').hidden = false;
     var fa = document.getElementById('alerte-adresse'); if (fa) fa.value = r.label;
-    var pd = document.getElementById('print-date'); if (pd) pd.textContent = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
     $('intro').hidden = true;
     loadPlace();
   }
