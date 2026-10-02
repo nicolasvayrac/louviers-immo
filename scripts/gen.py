@@ -10,7 +10,9 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261002d'
+VER = '20261002f'
+# Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
+PASSERELLE = False
 
 NAV = [('adresse.html', 'Mon adresse'), ('commerces.html', 'Commerces'), ('quartiers.html', 'Quartiers'), ('prix.html', 'Prix'),
        ('conciergerie.html', 'S’installer'), ('diagnostics.html', 'Diagnostics'), ('outils.html', 'Outils')]
@@ -114,6 +116,7 @@ def footer(root, scripts=()):
           <li><a href="{root}commerces.html">Commerces</a></li>
           <li><a href="{root}quartiers.html">Quartiers</a></li>
           <li><a href="{root}prix.html">Prix de l’immobilier</a></li>
+          <li><a href="{root}a-vendre.html">Biens à vendre</a></li>
           <li><a href="{root}portraits.html">Portraits</a></li>
           <li><a href="{root}conciergerie.html">S’installer</a></li>
           <li><a href="{root}diagnostics.html">Diagnostics</a></li>
@@ -219,7 +222,20 @@ def pictures(content, path):
     return re.sub(r'<img [^>]*src="[^"]+\.jpg"[^>]*>', rep, content)
 
 
+def sans_passerelle(content):
+    """Retire les blocs « biens à vendre » quand PASSERELLE = False."""
+    import re
+    content = re.sub(r'\n<section class="section"[^>]*data-biens-sec>.*?</section>\n', '\n', content, flags=re.S)
+    content = re.sub(r'    <div class="stack-lg biens-pres".*?<div class="alerte', '    <div class="alerte', content, flags=re.S)
+    content = re.sub(r'\s*<li><a href="[^"]*a-vendre\.html">Biens à vendre</a></li>', '', content)
+    return re.sub(r'<script src="[^"]*assets/biens\.js[^"]*"></script>\n', '', content)
+
+
 def write(path, content):
+    if not PASSERELLE:
+        if path == 'a-vendre.html':
+            return
+        content = sans_passerelle(content)
     content = tag_estimation(content, path)
     if path in OG_IMG:
         content = content.replace(f'{DOMAIN}assets/img/og-image.png', f'{DOMAIN}assets/img/og/{OG_IMG[path]}.jpg')
@@ -463,6 +479,20 @@ def page_index():
   </div>
 </section>
 
+<section class="section" id="a-vendre" data-biens-sec>
+  <div class="wrap">
+    <div class="head2">
+      <h2>Les derniers biens à vendre</h2>
+      <p>Maisons et appartements proposés par notre agence, CV Immobilier, à Louviers et dans les communes voisines. Un clic ouvre l’annonce complète.</p>
+    </div>
+    <div class="biens" data-biens data-max="6" data-where="accueil"></div>
+    <div class="biens-foot">
+      <p class="note" data-biens-maj>Annonces de cvimmobilier.fr, mises à jour chaque nuit.</p>
+      <a class="link-u" href="{r}a-vendre.html">Voir tous les biens à vendre</a>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="wrap">
     <div class="head2">
@@ -494,7 +524,7 @@ def page_index():
 </section>
 </main>
 '''
-    body += footer(r, ['data/portraits.js'])
+    body += footer(r, ['data/portraits.js', 'assets/biens.js'])
     write('index.html', body)
 
 
@@ -595,6 +625,15 @@ def page_adresse():
       </div>
     </div>
 
+    <div class="stack-lg biens-pres" data-biens-sec hidden>
+      <div class="head2" style="margin-bottom:0">
+        <h2 style="font-size:clamp(28px,2.6vw,38px)">À vendre près de cette adresse</h2>
+        <p>Les biens de notre agence les plus proches, dans la commune ou les communes voisines.</p>
+      </div>
+      <div class="biens" id="biens-pres"></div>
+      <div class="biens-foot"><p class="note" data-biens-maj>Annonces de cvimmobilier.fr, mises à jour chaque nuit.</p><a class="link-u" href="{r}a-vendre.html">Tous les biens à vendre</a></div>
+    </div>
+
     <div class="alerte no-print" id="alerte">
       <div class="stack">
         <h2 style="font-size:clamp(26px,2.4vw,34px)">Recevoir les biens à vendre dans ce quartier</h2>
@@ -614,7 +653,7 @@ def page_adresse():
 </div>
 </main>
 '''
-    body += footer(r, ['assets/vendor/leaflet/leaflet.js', 'assets/map.js', 'data/portraits.js', 'data/partenaires.js', 'data/exclusions.js', 'assets/adresse.js'])
+    body += footer(r, ['assets/vendor/leaflet/leaflet.js', 'assets/map.js', 'data/portraits.js', 'data/partenaires.js', 'data/exclusions.js', 'assets/biens.js', 'assets/adresse.js'])
     write('adresse.html', body)
 
 
@@ -840,12 +879,19 @@ def page_centre_ville():
     </aside>
   </div>
 </section>
+<section class="section" style="padding-top:0" data-biens-sec>
+  <div class="wrap">
+    <div class="head2"><h2>À vendre à Louviers</h2><p>Les derniers biens de notre agence dans la commune.</p></div>
+    <div class="biens" data-biens data-commune="Louviers" data-max="3" data-where="centre-ville"></div>
+    <div class="biens-foot"><p class="note" data-biens-maj>Annonces de cvimmobilier.fr, mises à jour chaque nuit.</p><a class="link-u" href="{r}a-vendre.html?commune=Louviers">Tous les biens à Louviers</a></div>
+  </div>
+</section>
 <section class="section bg-sand" style="padding-top:64px;padding-bottom:64px">
   <div class="wrap"><p class="note">Sources : Ville de Louviers (commerce de proximité, Conseil municipal de jeunes) ; Agglomération Seine-Eure (Caséo) ; ventes DVF, DGFiP.</p></div>
 </section>
 </main>
 '''
-    body += footer(r, ['assets/quartier.js'])
+    body += footer(r, ['assets/quartier.js', 'assets/biens.js'])
     write('quartiers/centre-ville.html', body)
 
 
@@ -1107,7 +1153,7 @@ def page_apropos():
   <div class="wrap word">
     <img class="avatar" src="{r}assets/img/equipe/nicolas-vayrac.jpg" alt="Nicolas Vayrac" width="400" height="400" loading="lazy">
     <div class="stack">
-      <blockquote>« Depuis 1992, on nous pose les mêmes questions : l’école est-elle loin, où acheter son pain, combien de temps pour la gare ? louviers.immo, c’est notre réponse, ouverte à tous — que vous achetiez avec nous ou non. »</blockquote>
+      <blockquote>« Depuis 1992, on nous pose les mêmes questions : l’école est-elle loin, où acheter son pain, combien de temps pour la gare ? louviers.immo, c’est notre réponse, ouverte à tous, que vous achetiez avec nous ou non. »</blockquote>
       <div><span style="font-family:var(--serif);font-size:20px;color:var(--navy)">Nicolas Vayrac</span> <span class="muted" style="margin-left:10px">Directeur de CV Immobilier</span></div>
     </div>
   </div>
@@ -2016,6 +2062,44 @@ def page_comparer():
     write('comparer.html', body)
 
 
-for fn in [page_merci, page_qr, page_comparer, page_georget, page_guincetre, page_portes_eau, page_diagnostics, page_conciergerie, page_index, page_adresse, page_prix, page_quartiers, page_centre_ville, page_portraits,
+def page_a_vendre():
+    r = ''
+    body = head('Biens à vendre à Louviers et alentour · louviers.immo',
+                'Les maisons et appartements à vendre par CV Immobilier à Louviers et dans l’Agglomération Seine-Eure, mis à jour chaque nuit.',
+                'a-vendre.html', r)
+    body += header(None, r, topbar=False)
+    opts = lambda L: ''.join(f'<option value="{v}">{l}</option>' for v, l in L)
+    body += f'''<main id="contenu">
+<section class="page-head">
+  <div class="wrap">
+    <div class="crumbs"><a href="{r}index.html">Accueil</a> · À vendre</div>
+    <span class="eyebrow">Les biens de l’agence</span>
+    <h1 style="margin-top:12px">À vendre à Louviers <span class="it">et alentour</span></h1>
+    <p class="lede" style="margin-top:20px">Les maisons et appartements proposés par CV Immobilier. Chaque fiche ouvre l’annonce complète, avec toutes les photos, sur cvimmobilier.fr.</p>
+  </div>
+</section>
+<section class="section" style="padding-top:48px">
+  <div class="wrap">
+    <form id="bv-form" class="bv-form" novalidate>
+      <div class="field"><label for="bv-commune">Commune</label><select id="bv-commune" name="commune"><option value="">Toutes les communes</option></select></div>
+      <div class="field"><label for="bv-type">Type de bien</label><select id="bv-type" name="type">{opts([('', 'Tous'), ('Maison', 'Maison'), ('Appartement', 'Appartement'), ('Autre', 'Autre (terrain, propriété…)')])}</select></div>
+      <div class="field"><label for="bv-budget">Budget maximum</label><select id="bv-budget" name="budget">{opts([('', 'Sans limite'), ('150000', '150 000 €'), ('200000', '200 000 €'), ('250000', '250 000 €'), ('300000', '300 000 €'), ('400000', '400 000 €')])}</select></div>
+      <div class="field"><label for="bv-tri">Trier par</label><select id="bv-tri" name="tri">{opts([('', 'Les plus récents'), ('prix', 'Prix croissant'), ('prix-', 'Prix décroissant')])}</select></div>
+    </form>
+    <p class="bv-count" id="bv-count" aria-live="polite">Chargement des annonces…</p>
+    <div class="biens biens-all" data-biens data-all></div>
+    <div class="biens-foot">
+      <p class="note" data-biens-maj>Annonces de cvimmobilier.fr, mises à jour chaque nuit.</p>
+      <a class="link-u" href="{CV_SITE}">Le site de l’agence, cvimmobilier.fr</a>
+    </div>
+  </div>
+</section>
+</main>
+'''
+    body += footer(r, ['assets/biens.js'])
+    write('a-vendre.html', body)
+
+
+for fn in [page_a_vendre, page_merci, page_qr, page_comparer, page_georget, page_guincetre, page_portes_eau, page_diagnostics, page_conciergerie, page_index, page_adresse, page_prix, page_quartiers, page_centre_ville, page_portraits,
            page_portrait_modele, page_outils, page_commerces, page_barbe, page_apropos, page_mentions, page_404]:
     fn()
