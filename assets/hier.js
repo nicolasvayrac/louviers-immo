@@ -1,5 +1,5 @@
 /* louviers.immo — « Mon adresse » : votre rue, hier et aujourd'hui
-   Comparaison de photographies aériennes IGN (deux périodes au choix, curseur à glisser)
+   Comparaison des photographies aériennes IGN 1950-1965 et d'aujourd'hui (curseur à glisser)
    et histoire de la rue quand elle est connue (data/rues.js). */
 (function () {
   'use strict';
@@ -7,8 +7,6 @@
   var WMTS = 'https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}';
   var P = {
     '1950': { label: '1950–1965', q: '&LAYER=ORTHOIMAGERY.ORTHOPHOTOS.1950-1965&STYLE=BDORTHOHISTORIQUE&FORMAT=image/png' },
-    '1965': { label: '1965–1980', q: '&LAYER=ORTHOIMAGERY.ORTHOPHOTOS.1965-1980&STYLE=BDORTHOHISTORIQUE&FORMAT=image/png' },
-    '1980': { label: '1980–1995', q: '&LAYER=ORTHOIMAGERY.ORTHOPHOTOS.1980-1995&STYLE=BDORTHOHISTORIQUE&FORMAT=image/png' },
     'now':  { label: 'Aujourd’hui', q: '&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg' }
   };
   var S = { map: null, left: null, right: null, me: null };
@@ -24,7 +22,7 @@
     $('av-bar').style.left = x + 'px';
   }
   function setSide(side) {
-    var sel = $(side === 'G' ? 'av-g' : 'av-d'), key = sel.value;
+    var key = side === 'G' ? '1950' : 'now';
     var cur = side === 'G' ? S.left : S.right;
     if (cur) S.map.removeLayer(cur);
     var l = layer(key, side === 'G' ? 'avG' : 'avD').addTo(S.map);
@@ -39,8 +37,6 @@
     S.map.createPane('avD').style.zIndex = 240;
     S.map.createPane('avG').style.zIndex = 250;
     setSide('D'); setSide('G');
-    $('av-g').addEventListener('change', function () { setSide('G'); clip(); });
-    $('av-d').addEventListener('change', function () { setSide('D'); clip(); });
     $('av-range').addEventListener('input', clip);
     S.map.on('move zoom resize', clip);
     var bar = $('av-bar'), drag = false;

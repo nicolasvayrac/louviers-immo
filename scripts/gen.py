@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261003a'
+VER = '20261003b'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -357,7 +357,8 @@ def page_index():
         f'<a class="envie envie-{c}" href="{r}commerces.html#{k}">{ico(d)}<span class="en">{l}</span><span class="ed">{s}</span></a>'
         for k, l, s, c, d in ENVIES)
     faces = ''.join(
-        f'<img src="{r}assets/img/equipe/{img}.jpg" alt="{n}, {role.lower()}" title="{n}" width="400" height="400" loading="lazy">'
+        f'<span class="face" tabindex="0"><img src="{r}assets/img/equipe/{img}.jpg" alt="{n}, {role.lower()}" width="400" height="400" loading="lazy">'
+        f'<span class="face-tip" aria-hidden="true"><b>{n}</b>{role}</span></span>'
         for n, role, tel, img in TEAM)
     body = head('louviers.immo — Louviers, mode d’emploi · le guide par CV Immobilier',
                 'Le guide de Louviers et de l’Agglomération Seine-Eure : testez une adresse pour voir les commerces, écoles et temps de trajet autour, découvrez les quartiers, les prix réels de l’immobilier et les portraits de ceux qui font Louviers.',
@@ -527,7 +528,7 @@ def page_index():
 <section class="section team-sec">
   <div class="wrap team-band">
     <div class="faces">{faces}</div>
-    <blockquote>« Depuis 1992, on nous pose les mêmes questions : l’école est-elle loin, où acheter son pain, combien de temps pour la gare ? louviers.immo, c’est notre réponse, ouverte à tous, que vous achetiez avec nous ou non. »</blockquote>
+    <blockquote>« Depuis 1992, on nous pose les mêmes questions : l’école est-elle loin, où acheter son pain, combien de temps pour la gare ? louviers.immo, c’est notre réponse, ouverte à tous, que vous achetiez avec nous ou non. »</blockquote>
     <p class="team-sign"><b>Nicolas Vayrac</b>, directeur de CV Immobilier, et toute l’équipe des agences de Louviers et de Saint-Pierre-du-Vauvray. <a class="link-u" href="{r}a-propos.html">Rencontrer l’équipe</a></p>
   </div>
 </section>
@@ -646,7 +647,7 @@ def page_adresse():
     <div class="avant" id="avant">
       <div class="head2" style="margin-bottom:0">
         <h2 style="font-size:clamp(28px,2.6vw,38px)">Votre rue, <span class="it">hier et aujourd’hui</span></h2>
-        <p>Faites glisser la poignée pour comparer les photographies aériennes de l’IGN, des années 1950 à aujourd’hui.</p>
+        <p>Faites glisser la poignée pour comparer votre quartier vu du ciel dans les années 1950 et aujourd’hui.</p>
       </div>
       <div class="av-rue" id="av-rue" hidden>
         <div><span class="av-plaque" id="av-plaque"></span></div>
@@ -656,10 +657,6 @@ def page_adresse():
           <div id="av-voir-w" class="stack" hidden><b style="color:var(--navy);font-weight:500">À voir en passant</b><ul id="av-voir" style="padding-left:20px"></ul></div>
         </div>
       </div>
-      <div class="av-ctrl">
-        <div class="field"><label for="av-g">À gauche</label><select id="av-g"><option value="1950" selected>1950–1965</option><option value="1965">1965–1980</option><option value="1980">1980–1995</option><option value="now">Aujourd’hui</option></select></div>
-        <div class="field"><label for="av-d">À droite</label><select id="av-d"><option value="1950">1950–1965</option><option value="1965">1965–1980</option><option value="1980">1980–1995</option><option value="now" selected>Aujourd’hui</option></select></div>
-      </div>
       <div class="av-box">
         <div id="av-map" role="region" aria-label="Comparaison des photographies aériennes"></div>
         <span class="av-lab g" id="av-lg">1950–1965</span><span class="av-lab d" id="av-ld">Aujourd’hui</span>
@@ -667,7 +664,7 @@ def page_adresse():
       </div>
       <label class="small muted" for="av-range">Position du curseur</label>
       <input id="av-range" type="range" min="0" max="100" value="50">
-      <p class="note">Photographies aériennes : IGN, BD ORTHO® historique et BD ORTHO®, via la Géoplateforme (licence ouverte Etalab). Selon les secteurs, certaines périodes peuvent être incomplètes.</p>
+      <p class="note">Photographies aériennes : IGN, BD ORTHO® historique 1950-1965 et BD ORTHO®, via la Géoplateforme (licence ouverte Etalab).</p>
     </div>
 
     <div class="alerte no-print" id="alerte">
@@ -1189,7 +1186,7 @@ def page_apropos():
   <div class="wrap word">
     <img class="avatar" src="{r}assets/img/equipe/nicolas-vayrac.jpg" alt="Nicolas Vayrac" width="400" height="400" loading="lazy">
     <div class="stack">
-      <blockquote>« Depuis 1992, on nous pose les mêmes questions : l’école est-elle loin, où acheter son pain, combien de temps pour la gare ? louviers.immo, c’est notre réponse, ouverte à tous, que vous achetiez avec nous ou non. »</blockquote>
+      <blockquote>« Depuis 1992, on nous pose les mêmes questions : l’école est-elle loin, où acheter son pain, combien de temps pour la gare ? louviers.immo, c’est notre réponse, ouverte à tous, que vous achetiez avec nous ou non. »</blockquote>
       <div><span style="font-family:var(--serif);font-size:20px;color:var(--navy)">Nicolas Vayrac</span> <span class="muted" style="margin-left:10px">Directeur de CV Immobilier</span></div>
     </div>
   </div>
