@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261002f'
+VER = '20261002g'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -429,15 +429,24 @@ def page_index():
 
 <section class="section bg-sand">
   <div class="wrap feat">
-    <a class="feat-card" href="{r}portraits/maison-barbe.html">
-      <div class="feat-art feat-photo"><img src="{r}assets/img/portraits/maison-barbe-facade.jpg" alt="La devanture de la Maison Barbé à Louviers" width="1800" height="1201" loading="lazy"></div>
-      <div class="feat-body">
-        <span class="kicker">Portrait · Centre-ville</span>
-        <h2>La charcuterie du Parvis fait peau neuve</h2>
-        <p>Rue du Maréchal Foch, Sylvie et Patrice Barbé perpétuent une charcuterie artisanale, entièrement repensée après de gros travaux.</p>
-        <span class="link-u">Lire le portrait</span>
+    <div class="feat-car" id="feat-car" aria-roledescription="carrousel" aria-label="Nos portraits">
+      <div class="feat-track" id="feat-track">
+        <a class="feat-card" href="{r}portraits/maison-barbe.html">
+          <div class="feat-art feat-photo"><img src="{r}assets/img/portraits/maison-barbe-facade.jpg" alt="" width="1800" height="1201" loading="lazy"></div>
+          <div class="feat-body">
+            <span class="kicker">Maison Barbé · Centre-ville</span>
+            <h2>La charcuterie du Parvis fait peau neuve</h2>
+            <p>Rue du Maréchal Foch, Sylvie et Patrice Barbé perpétuent une charcuterie artisanale, entièrement repensée après de gros travaux.</p>
+            <span class="link-u">Lire le portrait</span>
+          </div>
+        </a>
       </div>
-    </a>
+      <div class="feat-nav" id="feat-nav" hidden>
+        <button type="button" class="feat-btn" data-dir="-1" aria-label="Portrait précédent"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="feat-dots" id="feat-dots"></div>
+        <button type="button" class="feat-btn" data-dir="1" aria-label="Portrait suivant"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
     <div class="feat-side">
       <h3>Ceux qui font Louviers</h3>
       <p>Commerçants, artisans, restaurateurs : notre équipe pousse une porte et raconte une histoire. Vous tenez une boutique à Louviers et vous aimeriez raconter la vôtre ? C’est gratuit.</p>

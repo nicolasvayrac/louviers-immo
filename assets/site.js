@@ -264,6 +264,47 @@
     }).join('');
   }
 
+  /* ---------- Accueil : carrousel des portraits (tous ceux de data/portraits.js) ---------- */
+  function renderFeatCarousel() {
+    var track = document.getElementById('feat-track');
+    if (!track) return;
+    var ps = LI.portraits().filter(function (p) { return p.listed !== false && p.photo; }).reverse(); // le plus récent d'abord
+    if (ps.length < 2) return; // un seul portrait : la carte fixe du HTML suffit
+    function cap(s) { s = String(s || ''); return s.charAt(0).toUpperCase() + s.slice(1); }
+    track.innerHTML = ps.map(function (p, i) {
+      var webp = /\.jpg$/.test(p.photo) ? '<source srcset="' + LI.esc(LI.root + p.photo.replace(/\.jpg$/, '.webp')) + '" type="image/webp">' : '';
+      return '<a class="feat-card" href="' + LI.esc(LI.root + p.url) + '" role="group" aria-roledescription="diapositive" aria-label="' + (i + 1) + ' sur ' + ps.length + '">' +
+        '<div class="feat-art feat-photo"><picture>' + webp + '<img src="' + LI.esc(LI.root + p.photo) + '" alt="" loading="' + (i ? 'lazy' : 'eager') + '" width="1200" height="800"></picture></div>' +
+        '<div class="feat-body"><span class="kicker">' + LI.esc(p.name) + (p.quartier ? ' · ' + LI.esc(p.quartier) : '') + '</span>' +
+        '<h2>' + LI.esc(cap(p.title || p.name)) + '</h2>' + (p.chapo ? '<p>' + LI.esc(p.chapo) + '</p>' : '') +
+        '<span class="link-u">Lire le portrait</span></div></a>';
+    }).join('');
+    var dots = document.getElementById('feat-dots'), nav = document.getElementById('feat-nav');
+    dots.innerHTML = ps.map(function (p, i) {
+      return '<button type="button" class="feat-dot" aria-label="' + LI.esc(p.name) + '"' + (i ? '' : ' aria-current="true"') + '></button>';
+    }).join('');
+    nav.hidden = false;
+    var cur = 0, cards = track.children;
+    function go(i) {
+      cur = (i + ps.length) % ps.length;
+      track.scrollTo({ left: cards[cur].offsetLeft - track.offsetLeft, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+    function mark() {
+      var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+      cur = Math.min(ps.length - 1, Math.max(0, i));
+      Array.prototype.forEach.call(dots.children, function (d, k) { if (k === cur) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+    }
+    nav.querySelectorAll('.feat-btn').forEach(function (b) {
+      b.addEventListener('click', function () { go(cur + parseInt(b.getAttribute('data-dir'), 10)); });
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.addEventListener('click', function () { go(k); }); });
+    var t; track.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(mark, 80); }, { passive: true });
+    track.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+    });
+  }
+
   function fillKpis() {
     var els = document.querySelectorAll('[data-kpi]');
     if (!els.length) return;
@@ -308,6 +349,7 @@
       document.querySelectorAll('.rv, .stagger').forEach(function (el) { el.classList.add('in'); });
     }
     renderHomePortraits();
+    renderFeatCarousel();
     fillKpis();
   });
 })();

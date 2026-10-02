@@ -821,3 +821,16 @@ picture > source { display: none; }
 @media (max-width: 560px) { .biens-all { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .bien { transition: none; } .bien:hover { transform: none; } }
 .biens-pres { margin-top: clamp(48px, 6vw, 80px); }
+
+/* ---------- Accueil : carrousel des portraits ---------- */
+.feat-car { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.feat-track { display: grid; grid-auto-flow: column; grid-auto-columns: 100%; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 26px; }
+.feat-track::-webkit-scrollbar { display: none; }
+.feat-track > .feat-card { scroll-snap-align: start; }
+.feat-nav { display: flex; align-items: center; gap: 16px; }
+.feat-btn { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--white); color: var(--navy); display: grid; place-items: center; cursor: pointer; transition: border-color .2s, background .2s; }
+.feat-btn:hover { border-color: var(--gold-dark); background: var(--gold-tint); }
+.feat-dots { display: flex; gap: 8px; }
+.feat-dot { width: 10px; height: 10px; padding: 0; border-radius: 999px; border: 0; background: var(--line-strong); cursor: pointer; transition: width .25s, background .25s; }
+.feat-dot[aria-current="true"] { width: 28px; background: var(--gold-dark); }
+@media (prefers-reduced-motion: reduce) { .feat-dot { transition: none; } }

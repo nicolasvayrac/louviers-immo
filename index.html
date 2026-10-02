@@ -25,7 +25,7 @@
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/style.css?v=20261002f">
+<link rel="stylesheet" href="assets/style.css?v=20261002g">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://louviers.immo/#site", "url": "https://louviers.immo/", "name": "louviers.immo", "description": "Le guide de Louviers et de l’Agglomération Seine-Eure, par CV Immobilier", "inLanguage": "fr-FR", "publisher": {"@id": "https://louviers.immo/#cv"}}, {"@type": "RealEstateAgent", "@id": "https://louviers.immo/#cv", "name": "CV Immobilier", "url": "https://www.cvimmobilier.fr/", "logo": "https://louviers.immo/assets/img/logo-navy.png", "foundingDate": "1992", "telephone": "+33232402228", "address": {"@type": "PostalAddress", "streetAddress": "27 rue du Général de Gaulle", "postalCode": "27400", "addressLocality": "Louviers", "addressCountry": "FR"}, "areaServed": ["Louviers", "Saint-Pierre-du-Vauvray", "Le Vaudreuil", "Val-de-Reuil", "Agglomération Seine-Eure"], "department": [{"@type": "RealEstateAgent", "name": "CV Immobilier Saint-Pierre-du-Vauvray", "telephone": "+33279492171", "address": {"@type": "PostalAddress", "streetAddress": "15 Grande Rue", "postalCode": "27430", "addressLocality": "Saint-Pierre-du-Vauvray", "addressCountry": "FR"}}], "memberOf": [{"@type": "Organization", "name": "FNAIM"}, {"@type": "Organization", "name": "Interkab"}]}]}</script>
 </head>
 <body>
@@ -236,15 +236,24 @@
 
 <section class="section bg-sand">
   <div class="wrap feat">
-    <a class="feat-card" href="portraits/maison-barbe.html">
-      <div class="feat-art feat-photo"><picture><source srcset="assets/img/portraits/maison-barbe-facade.webp" type="image/webp"><img src="assets/img/portraits/maison-barbe-facade.jpg" alt="La devanture de la Maison Barbé à Louviers" width="1800" height="1201" loading="lazy"></picture></div>
-      <div class="feat-body">
-        <span class="kicker">Portrait · Centre-ville</span>
-        <h2>La charcuterie du Parvis fait peau neuve</h2>
-        <p>Rue du Maréchal Foch, Sylvie et Patrice Barbé perpétuent une charcuterie artisanale, entièrement repensée après de gros travaux.</p>
-        <span class="link-u">Lire le portrait</span>
+    <div class="feat-car" id="feat-car" aria-roledescription="carrousel" aria-label="Nos portraits">
+      <div class="feat-track" id="feat-track">
+        <a class="feat-card" href="portraits/maison-barbe.html">
+          <div class="feat-art feat-photo"><picture><source srcset="assets/img/portraits/maison-barbe-facade.webp" type="image/webp"><img src="assets/img/portraits/maison-barbe-facade.jpg" alt="" width="1800" height="1201" loading="lazy"></picture></div>
+          <div class="feat-body">
+            <span class="kicker">Maison Barbé · Centre-ville</span>
+            <h2>La charcuterie du Parvis fait peau neuve</h2>
+            <p>Rue du Maréchal Foch, Sylvie et Patrice Barbé perpétuent une charcuterie artisanale, entièrement repensée après de gros travaux.</p>
+            <span class="link-u">Lire le portrait</span>
+          </div>
+        </a>
       </div>
-    </a>
+      <div class="feat-nav" id="feat-nav" hidden>
+        <button type="button" class="feat-btn" data-dir="-1" aria-label="Portrait précédent"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="feat-dots" id="feat-dots"></div>
+        <button type="button" class="feat-btn" data-dir="1" aria-label="Portrait suivant"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
     <div class="feat-side">
       <h3>Ceux qui font Louviers</h3>
       <p>Commerçants, artisans, restaurateurs : notre équipe pousse une porte et raconte une histoire. Vous tenez une boutique à Louviers et vous aimeriez raconter la vôtre ? C’est gratuit.</p>
@@ -397,7 +406,7 @@
     </div>
   </div>
 </footer>
-<script src="assets/site.js?v=20261002f"></script>
-<script src="data/portraits.js?v=20261002f"></script>
+<script src="assets/site.js?v=20261002g"></script>
+<script src="data/portraits.js?v=20261002g"></script>
 </body>
 </html>
