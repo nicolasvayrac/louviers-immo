@@ -26,7 +26,7 @@
 <link rel="preload" href="assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="assets/style.css?v=20261002g">
+<link rel="stylesheet" href="assets/style.css?v=20261003a">
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -136,6 +136,33 @@
       </div>
     </div>
 
+    <div class="avant" id="avant">
+      <div class="head2" style="margin-bottom:0">
+        <h2 style="font-size:clamp(28px,2.6vw,38px)">Votre rue, <span class="it">hier et aujourd’hui</span></h2>
+        <p>Faites glisser la poignée pour comparer les photographies aériennes de l’IGN, des années 1950 à aujourd’hui.</p>
+      </div>
+      <div class="av-rue" id="av-rue" hidden>
+        <div><span class="av-plaque" id="av-plaque"></span></div>
+        <div class="stack">
+          <p class="av-texte" id="av-texte"></p>
+          <p class="note" id="av-src"></p>
+          <div id="av-voir-w" class="stack" hidden><b style="color:var(--navy);font-weight:500">À voir en passant</b><ul id="av-voir" style="padding-left:20px"></ul></div>
+        </div>
+      </div>
+      <div class="av-ctrl">
+        <div class="field"><label for="av-g">À gauche</label><select id="av-g"><option value="1950" selected>1950–1965</option><option value="1965">1965–1980</option><option value="1980">1980–1995</option><option value="now">Aujourd’hui</option></select></div>
+        <div class="field"><label for="av-d">À droite</label><select id="av-d"><option value="1950">1950–1965</option><option value="1965">1965–1980</option><option value="1980">1980–1995</option><option value="now" selected>Aujourd’hui</option></select></div>
+      </div>
+      <div class="av-box">
+        <div id="av-map" role="region" aria-label="Comparaison des photographies aériennes"></div>
+        <span class="av-lab g" id="av-lg">1950–1965</span><span class="av-lab d" id="av-ld">Aujourd’hui</span>
+        <div id="av-bar" aria-hidden="true"></div>
+      </div>
+      <label class="small muted" for="av-range">Position du curseur</label>
+      <input id="av-range" type="range" min="0" max="100" value="50">
+      <p class="note">Photographies aériennes : IGN, BD ORTHO® historique et BD ORTHO®, via la Géoplateforme (licence ouverte Etalab). Selon les secteurs, certaines périodes peuvent être incomplètes.</p>
+    </div>
+
     <div class="alerte no-print" id="alerte">
       <div class="stack">
         <h2 style="font-size:clamp(26px,2.4vw,34px)">Recevoir les biens à vendre dans ce quartier</h2>
@@ -202,12 +229,14 @@
     </div>
   </div>
 </footer>
-<script src="assets/site.js?v=20261002g"></script>
-<script src="assets/vendor/leaflet/leaflet.js?v=20261002g"></script>
-<script src="assets/map.js?v=20261002g"></script>
-<script src="data/portraits.js?v=20261002g"></script>
-<script src="data/partenaires.js?v=20261002g"></script>
-<script src="data/exclusions.js?v=20261002g"></script>
-<script src="assets/adresse.js?v=20261002g"></script>
+<script src="assets/site.js?v=20261003a"></script>
+<script src="assets/vendor/leaflet/leaflet.js?v=20261003a"></script>
+<script src="assets/map.js?v=20261003a"></script>
+<script src="data/portraits.js?v=20261003a"></script>
+<script src="data/partenaires.js?v=20261003a"></script>
+<script src="data/exclusions.js?v=20261003a"></script>
+<script src="data/rues.js?v=20261003a"></script>
+<script src="assets/hier.js?v=20261003a"></script>
+<script src="assets/adresse.js?v=20261003a"></script>
 </body>
 </html>

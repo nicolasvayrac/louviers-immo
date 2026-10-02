@@ -5,6 +5,5 @@ Disallow: /scripts/
 Disallow: /portraits/modele.html
 Disallow: /outil-qr.html
 Disallow: /merci.html
-Disallow: /labo/
 
 Sitemap: https://louviers.immo/sitemap.xml
