@@ -17,6 +17,8 @@
       box.querySelector('[data-k="M"]').textContent = med('M');
       box.querySelector('[data-k="A"]').textContent = med('A');
       box.querySelector('[data-k="N"]').textContent = LI.fmt(near.length);
+      var per = box.querySelector('[data-k="P"]');
+      if (per && d.meta.period) per.textContent = LI.monthFR(d.meta.period.from) + ' – ' + LI.monthFR(d.meta.period.to) + ' · DVF';
       var lk = document.getElementById('q-prices-link');
       if (lk) lk.href = LI.root + 'prix.html?lat=' + pt.lat.toFixed(5) + '&lon=' + pt.lon.toFixed(5);
     }).catch(function () { /* chiffres laissés à « — » */ });

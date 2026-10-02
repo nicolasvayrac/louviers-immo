@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261002c'
+VER = '20261002d'
 
 NAV = [('adresse.html', 'Mon adresse'), ('commerces.html', 'Commerces'), ('quartiers.html', 'Quartiers'), ('prix.html', 'Prix'),
        ('conciergerie.html', 'S’installer'), ('diagnostics.html', 'Diagnostics'), ('outils.html', 'Outils')]
@@ -819,7 +819,7 @@ def page_centre_ville():
         <div class="kpis" id="q-prices" data-ref="Place de la Halle aux Drapiers 27400 Louviers" data-radius="500">
           <div class="kpi light"><div class="l">Maison</div><div class="v" data-k="M">—</div><div class="u">€/m² médian</div></div>
           <div class="kpi light"><div class="l">Appartement</div><div class="v" data-k="A">—</div><div class="u">€/m² médian</div></div>
-          <div class="kpi light"><div class="l">Ventes</div><div class="v" data-k="N">—</div><div class="u">2024 – 2025 · DVF</div></div>
+          <div class="kpi light"><div class="l">Ventes</div><div class="v" data-k="N">—</div><div class="u" data-k="P">ventes DVF</div></div>
         </div>
         <a class="link-u" id="q-prices-link" style="align-self:flex-start" href="{r}prix.html">Voir les ventes sur la carte</a>
       </div>
