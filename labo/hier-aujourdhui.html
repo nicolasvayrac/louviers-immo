@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="fr" data-root="../" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.className='js';</script>
+<title>Louviers d’hier et d’aujourd’hui · louviers.immo</title>
+<meta name="description" content="Faites glisser le curseur entre les photos aériennes des années 1950 et celles d’aujourd’hui.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://louviers.immo/labo/hier-aujourdhui.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="louviers.immo">
+<meta property="og:title" content="Louviers d’hier et d’aujourd’hui · louviers.immo">
+<meta property="og:description" content="Faites glisser le curseur entre les photos aériennes des années 1950 et celles d’aujourd’hui.">
+<meta property="og:url" content="https://louviers.immo/labo/hier-aujourdhui.html">
+<meta property="og:image" content="https://louviers.immo/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1B2E40">
+<meta name="google-site-verification" content="GoHdQ6W1nZJ7YV2Tz9iZWKYWoI4cij_dAX-F8a0LJ_o">
+<!-- Plausible Analytics : mesure d'audience sans cookies -->
+<script defer data-domain="louviers.immo" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
+<script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<link rel="icon" type="image/png" href="../assets/img/favicon.png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="preload" href="../assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
+<style>
+.lb-proto{display:inline-flex;align-items:center;gap:8px;background:var(--gold-tint);color:var(--gold-text);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:500}
+.lb-wrap{display:grid;gap:clamp(24px,3vw,40px)}
+.lb-pills{display:flex;flex-wrap:wrap;gap:10px}
+.lb-pills button{min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line-strong);background:var(--white);color:var(--navy);font:inherit;font-size:15px;cursor:pointer}
+.lb-pills a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line-strong);background:var(--white);color:var(--navy);font-size:15px}
+.lb-pills a[aria-pressed="true"],.lb-pills button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+.hier-box{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#D9D3C4}
+#hier-map{height:clamp(380px,62vh,640px)}
+.hier-lab{position:absolute;top:16px;z-index:500;background:var(--navy);color:var(--cream);font-family:var(--serif);font-size:20px;padding:8px 16px;border-radius:12px;pointer-events:none}
+.hier-lab.l{left:16px}.hier-lab.r{right:64px;background:var(--cream);color:var(--navy)}
+#hier-bar{position:absolute;top:0;bottom:0;width:4px;margin-left:-2px;background:var(--cream);z-index:450;cursor:ew-resize;touch-action:none;box-shadow:0 0 0 1px rgba(27,46,64,.25)}
+#hier-bar::after{content:'';position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--cream);border:3px solid var(--navy);box-shadow:0 6px 16px rgba(0,0,0,.25)}
+#hier-range{width:100%;accent-color:var(--navy)}
+.lb-rue{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,56px);align-items:start}
+.lb-plaque{display:inline-block;background:#1F3E66;color:#fff;border:4px solid #fff;outline:2px solid #1F3E66;border-radius:10px;padding:10px 26px;font-family:var(--serif);font-size:clamp(30px,3.4vw,46px);box-shadow:0 10px 24px rgba(27,46,64,.18)}
+.lb-quote{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(22px,2.2vw,30px);line-height:1.4;color:var(--navy)}
+.lb-src{font-size:14px;color:var(--muted)}
+.lb-side{background:var(--sand);border-radius:var(--radius);padding:clamp(22px,3vw,34px);display:grid;gap:14px;min-width:0}
+.lb-big{font-family:var(--serif);font-size:44px;color:var(--navy);line-height:1.1}
+.lb-big span{display:block;font-family:var(--sans);font-size:15px;color:var(--text);margin-top:6px}
+.lb-table{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
+.lb-table th{text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:6px 4px;border-bottom:1px solid var(--line-strong)}
+.lb-table td{padding:9px 4px;border-bottom:1px solid var(--line)}
+.lb-table td:last-child,.lb-table th:last-child{text-align:right}
+.ec-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.ec-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:8px;border-top:5px solid var(--gold)}
+.ec-card:nth-child(2){border-top-color:var(--pomme-deep)}.ec-card:nth-child(3){border-top-color:var(--ciel-deep)}.ec-card:nth-child(4){border-top-color:var(--brique-deep)}
+.ec-k{font-family:var(--serif);font-style:italic;color:var(--gold-text);font-size:18px}
+.ec-n{font-family:var(--serif);font-weight:400;font-size:23px;color:var(--navy);line-height:1.2}
+.ec-t{color:var(--text);font-size:15px}
+.ec-note{border:1px dashed var(--line-strong);border-radius:var(--radius);padding:20px 24px;color:var(--text)}
+@media (max-width:1000px){.ec-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lb-rue{grid-template-columns:1fr}}
+@media (max-width:520px){.ec-grid{grid-template-columns:1fr}.hier-lab{font-size:16px}}
+</style>
+<link rel="stylesheet" href="../assets/style.css?v=20261002g">
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="../index.html" aria-label="louviers.immo — accueil">
+      <img src="../assets/img/logo-navy.png" alt="CV Immobilier" width="600" height="218">
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-name">louviers<b>.immo</b></span>
+    </a>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    <nav class="menu" id="menu" aria-label="Navigation principale">
+      <a href="../adresse.html">Mon adresse</a><a href="../commerces.html">Commerces</a><a href="../quartiers.html">Quartiers</a><a href="../prix.html">Prix</a><a href="../conciergerie.html">S’installer</a><a href="../diagnostics.html">Diagnostics</a><a href="../outils.html">Outils</a>
+      <a class="plausible-event-name=Estimation+Click plausible-event-position=labo-hier-aujourdhui btn btn-gold" href="https://www.cvimmobilier.fr/estimation">Estimer mon bien</a>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+<section class="page-head ph-ciel">
+  <div class="wrap">
+    <div class="crumbs"><a href="../index.html">Accueil</a> · Labo · Hier et aujourd’hui</div>
+    <span class="lb-proto">Prototype, non publié</span>
+    <span class="eyebrow" style="display:block;margin-top:18px">Louviers vu du ciel</span>
+    <h1 style="margin-top:12px">Louviers d’hier <span class="it">et d’aujourd’hui</span></h1>
+    <p class="lede" style="margin-top:20px;max-width:40em">Faites glisser la poignée : à gauche, les photographies aériennes de l’IGN prises entre 1950 et 1965 ; à droite, la ville aujourd’hui.</p>
+  </div>
+</section>
+<section class="section" style="padding-top:40px">
+  <div class="wrap lb-wrap">
+    <form class="search" role="search" action="../adresse.html" autocomplete="off">
+    <label for="hier-q">Votre adresse</label>
+    <div class="search-row">
+      <div class="search-field"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C7C33" stroke-width="1.8" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <input id="hier-q" name="q" type="text" placeholder="Numéro, rue, commune" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="hier-q-list" enterkeyhint="search">
+      </div>
+      <button class="btn btn-navy" type="submit">Voir</button>
+      <ul class="suggest" id="hier-q-list" role="listbox" aria-label="Suggestions d’adresses"></ul>
+    </div>
+  </form>
+    <div class="lb-pills" role="group" aria-label="Lieux à comparer">
+      <button type="button" data-go="49.2154,1.1659,17" aria-pressed="true">Place de la Halle</button>
+      <button type="button" data-go="49.2178,1.1690,17">Les bras de l’Eure</button>
+      <button type="button" data-go="49.2738,1.2104,16">Val-de-Reuil, ville nouvelle</button>
+      <button type="button" data-go="49.2550,1.2090,16">Le Vaudreuil</button>
+    </div>
+    <div class="hier-box">
+      <div id="hier-map" role="region" aria-label="Comparaison des photographies aériennes"></div>
+      <span class="hier-lab l">1950–1965</span><span class="hier-lab r">Aujourd’hui</span>
+      <div id="hier-bar" aria-hidden="true"></div>
+    </div>
+    <label class="small muted" for="hier-range">Position du curseur</label>
+    <input id="hier-range" type="range" min="0" max="100" value="50">
+    <p class="note">Photographies aériennes : IGN, BD ORTHO® historique 1950-1965 et BD ORTHO® actuelle, via la Géoplateforme (licence ouverte Etalab).</p>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="stack">
+        <img src="../assets/img/logo-cream.png" alt="CV Immobilier" width="600" height="218" loading="lazy" style="align-self:flex-start">
+        <p style="color:#9FB0C0;max-width:28em">louviers.immo est un guide proposé par CV Immobilier, agence immobilière indépendante membre de la FNAIM et du réseau Interkab, à Louviers depuis 1992.</p>
+      </div>
+      <div>
+        <h4>Le guide</h4>
+        <ul>
+          <li><a href="../adresse.html">Mon adresse</a></li>
+          <li><a href="../commerces.html">Commerces</a></li>
+          <li><a href="../quartiers.html">Quartiers</a></li>
+          <li><a href="../prix.html">Prix de l’immobilier</a></li>
+          <li><a href="../portraits.html">Portraits</a></li>
+          <li><a href="../conciergerie.html">S’installer</a></li>
+          <li><a href="../diagnostics.html">Diagnostics</a></li>
+          <li><a href="../outils.html">Outils</a></li>
+          <li><a href="../a-propos.html">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Agence de Louviers</h4>
+        <ul>
+          <li>27 rue du Général de Gaulle<br>27400 Louviers</li>
+          <li><a class="tel" href="tel:+33232402228">02 32 40 22 28</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Saint-Pierre-du-Vauvray</h4>
+        <ul>
+          <li>15 Grande Rue<br>27430 Saint-Pierre-du-Vauvray</li>
+          <li><a class="tel" href="tel:+33279492171">02 79 49 21 71</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CV Immobilier · Carte professionnelle CPI 2701 2016 000 005 229</span>
+      <nav aria-label="Liens légaux">
+        <a href="../mentions-legales.html">Mentions légales</a>
+        <a href="../mentions-legales.html#donnees">Sources des données</a>
+        <a href="https://www.cvimmobilier.fr/">cvimmobilier.fr</a>
+        <a href="https://www.ville-louviers.fr/" target="_blank" rel="noopener">Ville de Louviers</a>
+        <a href="https://www.agglo-seine-eure.fr/" target="_blank" rel="noopener">Agglomération Seine-Eure</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<script src="../assets/site.js?v=20261002g"></script>
+<script src="../assets/vendor/leaflet/leaflet.js?v=20261002g"></script>
+<script src="../assets/labo.js?v=20261002g"></script>
+</body>
+</html>

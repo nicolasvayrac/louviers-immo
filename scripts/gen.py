@@ -2109,6 +2109,142 @@ def page_a_vendre():
     write('a-vendre.html', body)
 
 
-for fn in [page_a_vendre, page_merci, page_qr, page_comparer, page_georget, page_guincetre, page_portes_eau, page_diagnostics, page_conciergerie, page_index, page_adresse, page_prix, page_quartiers, page_centre_ville, page_portraits,
+# =========================================================
+# LABO : prototypes non publiés (noindex, sans lien dans le menu)
+# =========================================================
+LABO_CSS = """<style>
+.lb-proto{display:inline-flex;align-items:center;gap:8px;background:var(--gold-tint);color:var(--gold-text);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:500}
+.lb-wrap{display:grid;gap:clamp(24px,3vw,40px)}
+.lb-pills{display:flex;flex-wrap:wrap;gap:10px}
+.lb-pills button{min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line-strong);background:var(--white);color:var(--navy);font:inherit;font-size:15px;cursor:pointer}
+.lb-pills a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line-strong);background:var(--white);color:var(--navy);font-size:15px}
+.lb-pills a[aria-pressed="true"],.lb-pills button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+.hier-box{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:#D9D3C4}
+#hier-map{height:clamp(380px,62vh,640px)}
+.hier-lab{position:absolute;top:16px;z-index:500;background:var(--navy);color:var(--cream);font-family:var(--serif);font-size:20px;padding:8px 16px;border-radius:12px;pointer-events:none}
+.hier-lab.l{left:16px}.hier-lab.r{right:64px;background:var(--cream);color:var(--navy)}
+#hier-bar{position:absolute;top:0;bottom:0;width:4px;margin-left:-2px;background:var(--cream);z-index:450;cursor:ew-resize;touch-action:none;box-shadow:0 0 0 1px rgba(27,46,64,.25)}
+#hier-bar::after{content:'';position:absolute;top:50%;left:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--cream);border:3px solid var(--navy);box-shadow:0 6px 16px rgba(0,0,0,.25)}
+#hier-range{width:100%;accent-color:var(--navy)}
+.lb-rue{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,4vw,56px);align-items:start}
+.lb-plaque{display:inline-block;background:#1F3E66;color:#fff;border:4px solid #fff;outline:2px solid #1F3E66;border-radius:10px;padding:10px 26px;font-family:var(--serif);font-size:clamp(30px,3.4vw,46px);box-shadow:0 10px 24px rgba(27,46,64,.18)}
+.lb-quote{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(22px,2.2vw,30px);line-height:1.4;color:var(--navy)}
+.lb-src{font-size:14px;color:var(--muted)}
+.lb-side{background:var(--sand);border-radius:var(--radius);padding:clamp(22px,3vw,34px);display:grid;gap:14px;min-width:0}
+.lb-big{font-family:var(--serif);font-size:44px;color:var(--navy);line-height:1.1}
+.lb-big span{display:block;font-family:var(--sans);font-size:15px;color:var(--text);margin-top:6px}
+.lb-table{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
+.lb-table th{text-align:left;font-weight:500;color:var(--muted);font-size:13px;padding:6px 4px;border-bottom:1px solid var(--line-strong)}
+.lb-table td{padding:9px 4px;border-bottom:1px solid var(--line)}
+.lb-table td:last-child,.lb-table th:last-child{text-align:right}
+.ec-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.ec-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:8px;border-top:5px solid var(--gold)}
+.ec-card:nth-child(2){border-top-color:var(--pomme-deep)}.ec-card:nth-child(3){border-top-color:var(--ciel-deep)}.ec-card:nth-child(4){border-top-color:var(--brique-deep)}
+.ec-k{font-family:var(--serif);font-style:italic;color:var(--gold-text);font-size:18px}
+.ec-n{font-family:var(--serif);font-weight:400;font-size:23px;color:var(--navy);line-height:1.2}
+.ec-t{color:var(--text);font-size:15px}
+.ec-note{border:1px dashed var(--line-strong);border-radius:var(--radius);padding:20px 24px;color:var(--text)}
+@media (max-width:1000px){.ec-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lb-rue{grid-template-columns:1fr}}
+@media (max-width:520px){.ec-grid{grid-template-columns:1fr}.hier-lab{font-size:16px}}
+</style>
+"""
+
+def labo_head(r, crumb, eyebrow, h1, lede):
+    return f"""<section class="page-head">
+  <div class="wrap">
+    <div class="crumbs"><a href="{r}index.html">Accueil</a> · Labo · {crumb}</div>
+    <span class="lb-proto">Prototype, non publié</span>
+    <span class="eyebrow" style="display:block;margin-top:18px">{eyebrow}</span>
+    <h1 style="margin-top:12px">{h1}</h1>
+    <p class="lede" style="margin-top:20px;max-width:40em">{lede}</p>
+  </div>
+</section>"""
+
+def page_labo_hier():
+    r = '../'
+    css = f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n' + LABO_CSS
+    body = head('Louviers d’hier et d’aujourd’hui · louviers.immo', 'Faites glisser le curseur entre les photos aériennes des années 1950 et celles d’aujourd’hui.', 'labo/hier-aujourdhui.html', r, noindex=True, css=css)
+    body += header(None, r, topbar=False)
+    body += f"""<main id="contenu">
+{labo_head(r, 'Hier et aujourd’hui', 'Louviers vu du ciel', 'Louviers d’hier <span class="it">et d’aujourd’hui</span>', 'Faites glisser la poignée : à gauche, les photographies aériennes de l’IGN prises entre 1950 et 1965 ; à droite, la ville aujourd’hui.')}
+<section class="section" style="padding-top:40px">
+  <div class="wrap lb-wrap">
+    {search_form('hier-q', label='Votre adresse', placeholder='Numéro, rue, commune', btn='Voir', chips=False, root=r)}
+    <div class="lb-pills" role="group" aria-label="Lieux à comparer">
+      <button type="button" data-go="49.2154,1.1659,17" aria-pressed="true">Place de la Halle</button>
+      <button type="button" data-go="49.2178,1.1690,17">Les bras de l’Eure</button>
+      <button type="button" data-go="49.2738,1.2104,16">Val-de-Reuil, ville nouvelle</button>
+      <button type="button" data-go="49.2550,1.2090,16">Le Vaudreuil</button>
+    </div>
+    <div class="hier-box">
+      <div id="hier-map" role="region" aria-label="Comparaison des photographies aériennes"></div>
+      <span class="hier-lab l">1950–1965</span><span class="hier-lab r">Aujourd’hui</span>
+      <div id="hier-bar" aria-hidden="true"></div>
+    </div>
+    <label class="small muted" for="hier-range">Position du curseur</label>
+    <input id="hier-range" type="range" min="0" max="100" value="50">
+    <p class="note">Photographies aériennes : IGN, BD ORTHO® historique 1950-1965 et BD ORTHO® actuelle, via la Géoplateforme (licence ouverte Etalab).</p>
+  </div>
+</section>
+</main>
+"""
+    body += footer(r, ['assets/vendor/leaflet/leaflet.js', 'assets/labo.js'])
+    write('labo/hier-aujourdhui.html', body)
+
+def page_labo_rue():
+    r = '../'
+    body = head('L’histoire de votre rue · louviers.immo', 'D’où vient le nom de votre rue, ce qu’on y voit, et ce qui s’y est vendu.', 'labo/histoire-rue.html', r, noindex=True, css=LABO_CSS)
+    body += header(None, r, topbar=False)
+    body += f"""<main id="contenu">
+{labo_head(r, 'Histoire de votre rue', 'Louviers, cité drapière', 'L’histoire <span class="it">de votre rue</span>', 'D’où vient son nom, ce qu’il reste à voir, et ce qui s’y est vendu ces dernières années.')}
+<section class="section" style="padding-top:40px" id="rue">
+  <div class="wrap lb-wrap">
+    <div class="lb-pills" role="group" aria-label="Choisir une rue">
+      <a class="pill" data-rue="rue-du-quai" href="?r=rue-du-quai">Rue du Quai</a>
+      <a class="pill" data-rue="rue-ternaux" href="?r=rue-ternaux">Rue Ternaux</a>
+    </div>
+    <div class="lb-rue">
+      <article class="stack-lg">
+        <div><span class="lb-plaque" id="rue-nom">Rue du Quai</span></div>
+        <div class="stack"><h2 style="font-size:clamp(26px,2.4vw,34px)">Pourquoi ce nom ?</h2>
+          <p class="lb-quote" id="rue-origine"></p>
+          <p class="lb-src">Source : <span id="rue-src"></span></p></div>
+        <div class="stack"><h2 style="font-size:clamp(26px,2.4vw,34px)">À voir en passant</h2><ul id="rue-voir" class="stack" style="padding-left:20px"></ul></div>
+        <a class="link-u" id="rue-adr" href="{r}adresse.html" style="align-self:flex-start">Commerces, écoles et trajets autour de cette rue</a>
+      </article>
+      <aside class="lb-side">
+        <span class="eyebrow">Ce qui s’est vendu ici</span>
+        <div id="rue-ventes"></div>
+        <p class="lb-src">Ventes réelles enregistrées par l’État (DVF).</p>
+      </aside>
+    </div>
+  </div>
+</section>
+</main>
+"""
+    body += footer(r, ['assets/labo.js'])
+    write('labo/histoire-rue.html', body)
+
+def page_labo_ecole():
+    r = '../'
+    body = head('L’école de secteur · louviers.immo', 'Pour une adresse de Louviers, les écoles maternelle et élémentaire, le collège et le lycée.', 'labo/ecole-secteur.html', r, noindex=True, css=LABO_CSS)
+    body += header(None, r, topbar=False)
+    body += f"""<main id="contenu">
+{labo_head(r, 'École de secteur', 'Inscrire ses enfants', 'Votre école <span class="it">de secteur</span>', 'Tapez votre adresse : l’école maternelle, l’école élémentaire, le collège et le lycée qui correspondent.')}
+<section class="section" style="padding-top:40px">
+  <div class="wrap lb-wrap">
+    {search_form('ec-q', label='Votre adresse', placeholder='Numéro, rue, commune', btn='Trouver mes écoles', chips=False, root=r)}
+    <h2 style="font-size:clamp(24px,2.2vw,30px)">Pour <span class="it" id="ec-adr">—</span></h2>
+    <div class="ec-grid" id="ec-out" aria-live="polite"></div>
+    <div class="ec-note"><b>Prototype.</b> Pour l’instant, ce sont les établissements les plus proches. La version finale utilisera la carte scolaire officielle de la Ville de Louviers, qui fixe l’école de chaque rue. Inscriptions : <a class="link-u" href="https://www.ville-louviers.fr/ma-ville/enfance-education-jeunesse/" target="_blank" rel="noopener">Ville de Louviers</a>.</div>
+  </div>
+</section>
+</main>
+"""
+    body += footer(r, ['assets/adresse.js', 'assets/labo.js'])
+    write('labo/ecole-secteur.html', body)
+
+
+for fn in [page_labo_hier, page_labo_rue, page_labo_ecole, page_a_vendre, page_merci, page_qr, page_comparer, page_georget, page_guincetre, page_portes_eau, page_diagnostics, page_conciergerie, page_index, page_adresse, page_prix, page_quartiers, page_centre_ville, page_portraits,
            page_portrait_modele, page_outils, page_commerces, page_barbe, page_apropos, page_mentions, page_404]:
     fn()
