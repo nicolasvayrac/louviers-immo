@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261003b'
+VER = '20261003c'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 

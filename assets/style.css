@@ -518,6 +518,7 @@ table.data td.num, table.data th.num { text-align: right; font-variant-numeric: 
 @media (max-width: 900px) {
   .hero2 { background: var(--sky); }
   .street { aspect-ratio: auto; height: 190px; width: 100%; }
+  .street .pin { display: none; }
   .callout { position: static; transform: none; width: auto; margin: 8px var(--gutter) 28px; animation: none; }
   .street-wrap { display: flex; flex-direction: column-reverse; margin-top: 24px; }
 }
