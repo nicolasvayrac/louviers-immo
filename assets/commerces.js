@@ -49,6 +49,9 @@
     pharmacy: 'Pharmacie', optician: 'Opticien', hearing_aids: 'Audioprothésiste', medical_supply: 'Matériel médical', chemist: 'Droguerie',
     bank: 'Banque', post_office: 'Bureau de poste', laundry: 'Laverie', dry_cleaning: 'Pressing', travel_agency: 'Agence de voyages', copyshop: 'Reprographie', mobile_phone: 'Téléphonie', electronics: 'Électronique', computer: 'Informatique', car_repair: 'Garage', car: 'Automobile', funeral_directors: 'Pompes funèbres', insurance: 'Assurance', locksmith: 'Serrurier', shoe_repair: 'Cordonnier', repair: 'Réparation'
   };
+  // Liens qui ouvrent plusieurs rubriques à la fois
+  var GROUPES = { 'notaires-financement': ['notaires', 'financement'] };
+  function dansRub(r) { return S.rub === 'all' || r === S.rub || (GROUPES[S.rub] || []).indexOf(r) >= 0; }
   var KIND2RUB = {};
   RUB.forEach(function (r) { r[3].forEach(function (k) { if (!KIND2RUB[k]) KIND2RUB[k] = r[0]; }); });
 
@@ -76,7 +79,7 @@
     if (la == null || !t.name || t.office || LI.isExclu(t.name)) return null;
     var k = kindOf(t), r = KIND2RUB[k];
     if (!r) return null;
-    return { id: id, name: t.name, lat: la, lon: lo, kind: k, rub: r, addr: addrOf(t), web: safeUrl(t.website || t['contact:website']), phone: t.phone || t['contact:phone'] || '' };
+    return { id: id, name: t.name, lat: la, lon: lo, kind: k, rub: LI.rubriqueDe(t.name) || r, addr: addrOf(t), web: safeUrl(t.website || t['contact:website']), phone: t.phone || t['contact:phone'] || '' };
   }
   function dedupe(list) {
     var seen = {};
@@ -119,7 +122,7 @@
         if (!r) return null;
         var key2 = LI.norm(t.name) + '|' + Math.round(la * 2000) + '|' + Math.round(lo * 2000);
         if (seen[key2]) return null; seen[key2] = 1;
-        return { id: e.type + '/' + e.id, name: t.name, lat: la, lon: lo, kind: k, rub: r, addr: addrOf(t), web: safeUrl(t.website || t['contact:website']), phone: t.phone || t['contact:phone'] || '' };
+        return { id: e.type + '/' + e.id, name: t.name, lat: la, lon: lo, kind: k, rub: LI.rubriqueDe(t.name) || r, addr: addrOf(t), web: safeUrl(t.website || t['contact:website']), phone: t.phone || t['contact:phone'] || '' };
       }).filter(Boolean);
       try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), d: d })); } catch (e) { /* plein ou bloqué */ }
       return d;
@@ -131,14 +134,12 @@
       var com = (COMMUNES.filter(function (c) { return c[0] === S.insee; })[0] || [])[1];
       ps.forEach(function (p) {
         var names = [p.name].concat(p.aliases || []).map(LI.norm);
-        var hit = null;
-        list.forEach(function (s) {
-          if (hit) return;
-          if (p.osm && p.osm === s.id) { hit = s; return; }
-          var near = p.lat != null && LI.dist(p.lat, p.lon, s.lat, s.lon) < 120;
-          if (names.indexOf(LI.norm(s.name)) >= 0 && (near || p.lat == null)) hit = s;
-          else if (p.lat != null && LI.dist(p.lat, p.lon, s.lat, s.lon) < 15) hit = s;
-        });
+        // 1) identifiant OpenStreetMap, 2) même nom à proximité, 3) à défaut, le commerce situé au même point
+        var hit = p.osm ? list.filter(function (s) { return s.id === p.osm; })[0] : null;
+        if (!hit) hit = list.filter(function (s) {
+          return names.indexOf(LI.norm(s.name)) >= 0 && (p.lat == null || LI.dist(p.lat, p.lon, s.lat, s.lon) < 120);
+        })[0];
+        if (!hit && p.lat != null) hit = list.filter(function (s) { return !s.portrait && LI.dist(p.lat, p.lon, s.lat, s.lon) < 15; })[0];
         if (hit) {
           hit.portrait = p;
           if (p.mapName) hit.name = p.mapName;
@@ -149,6 +150,11 @@
           list.push({ id: 'portrait/' + p.url, name: p.mapName || p.name, lat: p.lat, lon: p.lon, kind: p.kind || '', rub: p.rubrique || 'bouche',
             addr: (p.address || '').replace(/\s*\d{5}.*$/, ''), web: p.website || '', phone: p.phone || '', portrait: p, label: p.category });
         }
+      });
+      list.slice().forEach(function (s) {
+        ((s.portrait && s.portrait.aussi) || []).forEach(function (r2) {
+          if (r2 !== s.rub) list.push(Object.assign({}, s, { id: s.id + '#' + r2, rub: r2, copie: true }));
+        });
       });
       return list;
     });
@@ -179,17 +185,17 @@
   function render() {
     var q = LI.norm(S.q);
     var list = S.all.filter(function (s) {
-      return (S.rub === 'all' || s.rub === S.rub) && (!q || LI.norm(s.name + ' ' + (LABEL[s.kind] || s.label || '') + ' ' + (s.lieu || s.addr || '')).indexOf(q) >= 0);
+      return dansRub(s.rub) && (!q || LI.norm(s.name + ' ' + (LABEL[s.kind] || s.label || '') + ' ' + (s.lieu || s.addr || '')).indexOf(q) >= 0);
     });
     // Compteurs
     RUB.forEach(function (r) {
       var el = document.querySelector('.rub[data-rub="' + r[0] + '"] .n');
       if (el) el.textContent = S.all.filter(function (s) { return s.rub === r[0]; }).length;
     });
-    var tot = document.querySelector('.rub[data-rub="all"] .n'); if (tot) tot.textContent = S.all.length;
+    var tot = document.querySelector('.rub[data-rub="all"] .n'); if (tot) tot.textContent = S.all.filter(function (s) { return !s.copie; }).length;
 
     var sortFn = function (a, b) { return (b.own && b.own.badge ? 1 : 0) - (a.own && a.own.badge ? 1 : 0) || (b.portrait ? 1 : 0) - (a.portrait ? 1 : 0) || a.name.localeCompare(b.name, 'fr'); };
-    var html = RUB.filter(function (r) { return S.rub === 'all' || r[0] === S.rub; }).map(function (r) {
+    var html = RUB.filter(function (r) { return dansRub(r[0]); }).map(function (r) {
       var items = list.filter(function (s) { return s.rub === r[0]; }).sort(sortFn);
       if (!items.length) return '';
       return '<section class="rub-sec" id="r-' + r[0] + '"><div class="rub-head"><h2>' + LI.esc(r[1]) + '</h2><p>' + LI.esc(r[2]) + ' · ' + items.length + '</p></div>' +
@@ -255,7 +261,7 @@
     if (u.get('commune') && COMMUNES.some(function (c) { return c[0] === u.get('commune'); })) S.insee = u.get('commune');
     sel.value = S.insee;
     var h = (location.hash || '').replace('#', '');
-    if (RUB.some(function (r) { return r[0] === h; })) S.rub = h;
+    if (RUB.some(function (r) { return r[0] === h; }) || GROUPES[h]) S.rub = h;
 
     // Boutons de rubriques
     var bar = $('rubs');
@@ -263,7 +269,7 @@
       RUB.map(function (r) { return '<button type="button" class="rub" data-rub="' + r[0] + '" aria-pressed="false">' + LI.esc(r[1]) + ' <span class="n"></span></button>'; }).join('');
     function setRub(id) {
       S.rub = id;
-      bar.querySelectorAll('.rub').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-rub') === id ? 'true' : 'false'); });
+      bar.querySelectorAll('.rub').forEach(function (b) { var d = b.getAttribute('data-rub'); b.setAttribute('aria-pressed', d === id || (GROUPES[id] || []).indexOf(d) >= 0 ? 'true' : 'false'); });
       history.replaceState(null, '', location.pathname + location.search + (id === 'all' ? '' : '#' + id));
       if (S.all.length) render();
     }

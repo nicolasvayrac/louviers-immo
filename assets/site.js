@@ -206,7 +206,7 @@
   var agResolved = null;
   LI.resolveAgences = function () {
     if (!agResolved) {
-      var list = (window.LI_PARTENAIRES || []).filter(function (a) { return a && a.name && a.address; });
+      var list = (window.LI_PARTENAIRES || []).concat((window.LI_AJOUTS || []).map(function (a) { a.badge = a.badge || ''; a.ajout = true; return a; })).filter(function (a) { return a && a.name && a.address; });
       agResolved = Promise.all(list.map(function (a) {
         if (!a.addr) a.addr = a.address.replace(/\s*\d{5}.*$/, '');
         if (a.lat != null) return Promise.resolve(a);
@@ -226,6 +226,17 @@
       (window.LI_EXCLUS || []).forEach(function (n) { if (n) exclu[LI.norm(n)] = 1; });
     }
     return !!exclu[LI.norm(name || '')];
+  };
+
+  /* ---------- Rubrique corrigée à la main (data/exclusions.js) ---------- */
+  var rubFix = null;
+  LI.rubriqueDe = function (name) {
+    if (!rubFix) {
+      rubFix = {};
+      var m = window.LI_RUBRIQUES || {};
+      Object.keys(m).forEach(function (k) { rubFix[LI.norm(k)] = m[k]; });
+    }
+    return rubFix[LI.norm(name || '')] || '';
   };
 
   /* ---------- Clubs sportifs (data/clubs.js) ---------- */

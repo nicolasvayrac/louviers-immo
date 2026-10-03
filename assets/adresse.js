@@ -212,18 +212,15 @@
     }).filter(function (p) { return p.d <= 1500; });
     var portraits = LI.portraits();
     var used = {};
-    P.forEach(function (p) {
-      var hit = null;
-      portraits.forEach(function (pr, i) {
-        if (hit) return;
-        if (pr.osm && pr.osm === p.id) hit = i;
-        else if (pr.lat != null && pr.lon != null) {
-          var dd = LI.dist(pr.lat, pr.lon, p.lat, p.lon);
-          var names = [pr.name].concat(pr.aliases || []).map(LI.norm);
-          if (dd < 15 || (dd < 150 && names.indexOf(LI.norm(p.name)) >= 0)) hit = i;
-        }
-      });
-      if (hit != null) { p.portrait = portraits[hit]; used[hit] = 1; if (p.portrait.mapName) p.name = p.portrait.mapName; }
+    // Chaque portrait se rattache à un seul commerce : identifiant OSM, sinon même nom à moins de 150 m, sinon même point
+    portraits.forEach(function (pr, i) {
+      var hit = pr.osm ? P.filter(function (p) { return p.id === pr.osm; })[0] : null;
+      if (!hit && pr.lat != null) {
+        var names = [pr.name].concat(pr.aliases || []).map(LI.norm);
+        hit = P.filter(function (p) { return !p.portrait && names.indexOf(LI.norm(p.name)) >= 0 && LI.dist(pr.lat, pr.lon, p.lat, p.lon) < 150; })[0] ||
+              P.filter(function (p) { return !p.portrait && LI.dist(pr.lat, pr.lon, p.lat, p.lon) < 15; })[0];
+      }
+      if (hit && !hit.portrait) { hit.portrait = pr; used[i] = 1; if (pr.mapName) hit.name = pr.mapName; }
     });
     // Portraits absents d'OpenStreetMap mais situés dans le périmètre
     portraits.forEach(function (pr, i) {
@@ -234,7 +231,7 @@
     (S.agences || []).forEach(function (a) {
       if (a.lat == null) return;
       var d = LI.dist(S.lat, S.lon, a.lat, a.lon);
-      if (d <= 1500) P.push({ id: 'partenaire/' + a.name, lat: a.lat, lon: a.lon, name: a.name, d: d, t: { shop: a.rubrique === 'immobilier' ? 'estate_agent' : (a.rubrique === 'notaires' ? 'notary' : 'bank') }, label: a.category || '', own: a });
+      if (d <= 1500) P.push({ id: 'partenaire/' + a.name, lat: a.lat, lon: a.lon, name: a.name, d: d, t: { shop: a.kind || (a.rubrique === 'immobilier' ? 'estate_agent' : (a.rubrique === 'notaires' ? 'notary' : 'bank')) }, label: a.category || '', own: a });
     });
     P.sort(function (a, b) { return a.d - b.d; });
     return P;

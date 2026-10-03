@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261003c'
+VER = '20261003d'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -347,7 +347,7 @@ ENVIES = [
      '<path d="M6 34l14-14"/><path d="M18 14l8-8 8 8-4 4-4-4-4 4z"/><path d="M22 18l4 4"/>'),
     ('sport', 'Clubs sportifs', 'Tennis, volley, pétanque, patinage : une quarantaine de clubs', 'pomme',
      '<circle cx="20" cy="20" r="14"/><path d="M8 13c6 3 10 9 10 21M32 13c-6 3-10 9-10 21M6 22h28"/>'),
-    ('notaires', 'Notaires & financement', 'Les offices notariaux, nos courtiers partenaires', 'ocre',
+    ('notaires-financement', 'Notaires & financement', 'Les offices notariaux, nos courtiers partenaires', 'ocre',
      '<path d="M10 5h14l6 6v24H10z"/><path d="M24 5v6h6M15 18h10M15 23h10M15 28h6"/>'),
 ]
 

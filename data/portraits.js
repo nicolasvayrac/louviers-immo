@@ -17,6 +17,8 @@
      lat, lon  (facultatif) coordonnées exactes, si l'adresse ne suffit pas
      aliases   Autres noms du commerce (enseigne, ancien nom)
      mapName   (facultatif) nom affiché sur les cartes et dans l'annuaire
+     aussi     (facultatif) autres rubriques où l'afficher, ex. ["restaurer"]
+     osm       (facultatif) identifiant OpenStreetMap du commerce, ex. "node/123"
      listed    (facultatif) false pour une seconde boutique : sur les cartes,
                mais pas en double dans la liste des portraits
      website   Site du commerce
@@ -43,6 +45,8 @@ window.LI_PORTRAITS = [
     aliases: ["Charcuterie du Parvis", "Maison Barbé - Charcuterie du Parvis"],
     title: "la charcuterie du Parvis fait peau neuve",
     url: "portraits/maison-barbe.html",
+    osm: "node/11252269478",
+    aussi: ["restaurer"],
     photo: "assets/img/portraits/maison-barbe-facade.jpg",
     mapName: "Maison Barbé - Charcuterie du Parvis",
     chapo: "Rue du Maréchal Foch, Sylvie et Patrice Barbé perpétuent une charcuterie artisanale, entièrement repensée après de gros travaux.",
@@ -75,6 +79,8 @@ window.LI_PORTRAITS = [
     mapName: "Aux Délices de Louviers - Maison Guincêtre",
     title: "une histoire de famille, de Louviers au Vaudreuil",
     url: "portraits/aux-delices-de-louviers.html",
+    osm: "node/4482528537",
+    lat: 49.212166, lon: 1.170481,
     photo: "assets/img/portraits/guincetre-facades.jpg",
     chapo: "Rue du Maréchal Foch, la famille Guincêtre, finaliste de La Meilleure Boulangerie de France sur M6, fait tout sur place depuis 1996.",
     quartier: "Centre-ville",
