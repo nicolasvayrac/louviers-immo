@@ -1152,7 +1152,7 @@ def page_outils():
 AG = '02 32 40 22 28'
 TEAM = [('Nicolas Vayrac', 'Directeur', '06 76 66 56 20', 'nicolas-vayrac'),
         ('Jessica Mourad', 'Négociation · vente', '06 69 50 44 35', 'jessica-mourad'),
-        ('Brigitte Bramille', 'Négociation · vente', '06 62 83 69 95', 'brigitte-bramille'),
+        ('Brigitte Bramille', 'Négociation · vente', '06 62 83 69 95', 'brigitte-bramille-2'),
         ('Maxime Bal', 'Négociation · vente', '06 76 33 88 73', 'maxime-bal'),
         ('Gaétan Hugues', 'Négociation · vente', '06 73 97 32 47', 'gaetan-hugues'),
         ('Arthur Godefroy', 'Négociation · vente', '06 41 07 69 70', 'arthur-godefroy'),
