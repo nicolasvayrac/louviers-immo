@@ -12,6 +12,16 @@
       '&FORMAT=image/png&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',
       { maxZoom: 19, minZoom: 9, attribution: '&copy; <a href="https://www.ign.fr/" target="_blank" rel="noopener">IGN</a> · Plan IGN' }
     ).addTo(map);
+    // Une tuile IGN qui échoue (coupure passagère) est redemandée une fois, au lieu de laisser un carré gris
+    map.eachLayer(function (l) {
+      if (!l.on || !l.getTileUrl) return;
+      l.on('tileerror', function (e) {
+        var t = e.tile;
+        if (t.getAttribute('data-retry')) return;
+        t.setAttribute('data-retry', '1');
+        setTimeout(function () { t.src = e.tile.src.split('&_r=')[0] + '&_r=' + Date.now(); }, 700);
+      });
+    });
     map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
     // Molette active seulement après un clic (évite de « piéger » le défilement de la page)
     map.on('click', function () { map.scrollWheelZoom.enable(); });

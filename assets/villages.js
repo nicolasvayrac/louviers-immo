@@ -73,7 +73,7 @@
           l.on('mouseover', function () { l.setStyle({ weight: 3 }); }); l.on('mouseout', function () { l.setStyle({ weight: 1.5 }); });
         }
       }).addTo(map);
-      map.options.zoomSnap = 0.25; map.fitBounds(layer.getBounds(), { padding: [10, 10] });
+      map.fitBounds(layer.getBounds(), { padding: [10, 10] });
       document.querySelectorAll('.vl-modes button').forEach(function (b) {
         b.addEventListener('click', function () {
           mode = b.getAttribute('data-mode');
