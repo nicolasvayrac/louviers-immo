@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261005a'
+VER = '20261005b'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -462,10 +462,11 @@ def page_index():
 <section class="section" id="quartiers">
   <div class="wrap">
     <div class="head2">
-      <h2>Sept quartiers, sept façons de vivre Louviers</h2>
-      <p>Ambiance, écoles, types de maisons, prix : chaque quartier raconté par ceux qui le connaissent depuis 1992.</p>
+      <h2>18 quartiers, les « villages dans la ville »</h2>
+      <p>Le découpage de la Ville de Louviers, avec pour chaque quartier ses prix réels, ses commerces et ses écoles.</p>
     </div>
-    {q_grid(r)}
+    {vl_grid(r)}
+    <p style="margin-top:20px"><a class="link-u" href="{r}quartiers.html">Voir la carte des 18 quartiers</a></p>
   </div>
 </section>
 
@@ -577,6 +578,7 @@ def page_adresse():
 <div id="results" hidden>
 <section class="section" style="padding-top:56px;padding-bottom:40px">
   <div class="wrap">
+    <a id="q-badge" class="q-badge plausible-event-name=Quartier+Adresse" hidden href="quartiers.html"></a>
     <p id="far" class="empty-data" hidden style="margin-bottom:28px">Cette adresse est assez loin de Louviers : louviers.immo est conçu pour Louviers et l’Agglomération Seine-Eure, les résultats restent indicatifs.</p>
     <div class="res-grid">
       <div class="stack">
@@ -686,7 +688,7 @@ def page_adresse():
 </div>
 </main>
 '''
-    body += footer(r, ['assets/vendor/leaflet/leaflet.js', 'assets/map.js', 'data/portraits.js', 'data/partenaires.js', 'data/exclusions.js', 'data/rues.js', 'assets/biens.js', 'assets/hier.js', 'assets/adresse.js'])
+    body += footer(r, ['assets/vendor/leaflet/leaflet.js', 'assets/map.js', 'data/portraits.js', 'data/partenaires.js', 'data/exclusions.js', 'data/rues.js', 'assets/biens.js', 'assets/hier.js', 'assets/villages.js', 'assets/adresse.js'])
     write('adresse.html', body)
 
 
@@ -2181,6 +2183,8 @@ def page_a_vendre():
     write('a-vendre.html', body)
 
 
-for fn in [page_a_vendre, page_merci, page_qr, page_comparer, page_georget, page_guincetre, page_portes_eau, page_diagnostics, page_conciergerie, page_index, page_adresse, page_prix, page_quartiers, page_centre_ville, page_portraits,
+exec(open(os.path.join(HERE, 'pages_villages.py'), encoding='utf-8').read())
+
+for fn in [page_a_vendre, page_merci, page_qr, page_comparer, page_georget, page_guincetre, page_portes_eau, page_diagnostics, page_conciergerie, page_index, page_adresse, page_prix, page_quartiers, page_villages, page_portraits,
            page_portrait_modele, page_outils, page_commerces, page_barbe, page_apropos, page_mentions, page_404]:
     fn()

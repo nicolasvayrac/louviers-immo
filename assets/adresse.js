@@ -345,6 +345,7 @@
     renderPrices();
     if (LI.renderBiensNear) LI.renderBiensNear(S.lat, S.lon);
     if (LI.renderAvant) LI.renderAvant(S.lat, S.lon, S.label);
+    if (LI.renderQuartier) LI.renderQuartier(S.lat, S.lon);
     setLoading();
     Promise.all([getPois(S.lat, S.lon), LI.resolvePortraits(), LI.resolveAgences()]).then(function (res) {
       S.pois = res[0];

@@ -877,3 +877,13 @@ picture > source { display: none; }
 .pt-actions .btn { flex: 1 1 auto; min-height: 46px; padding: 0 18px; font-size: 15px; }
 .pt-actions .btn-line { border-color: var(--line-strong); color: var(--navy); background: transparent; }
 @media (max-width: 960px) { .pt-grid { grid-template-columns: 1fr; max-width: 520px; } .pt-logo { height: 160px; } }
+
+/* Mon adresse : le quartier (« villages dans la ville ») */
+.q-badge { display: grid; grid-template-columns: 48px 1fr auto; gap: 16px; align-items: center; margin-bottom: 28px; padding: 16px 20px; border-radius: 20px; background: var(--white); border: 1px solid var(--line); color: var(--text); transition: border-color .2s; }
+.q-badge:hover { border-color: var(--gold); }
+.q-badge .qb-n { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: 18px; color: var(--navy); }
+.q-badge .qb-l { display: block; font-size: 13px; color: var(--muted); }
+.q-badge strong { display: block; font-family: var(--serif); font-weight: 400; font-size: 24px; color: var(--navy); line-height: 1.15; }
+.q-badge .qb-s { display: block; font-size: 14px; color: var(--text); margin-top: 2px; }
+.q-badge .qb-go { color: var(--gold-text); font-weight: 600; white-space: nowrap; }
+@media (max-width: 640px) { .q-badge { grid-template-columns: 40px 1fr; } .q-badge .qb-go { grid-column: 2; } .q-badge .qb-n { width: 40px; height: 40px; } }

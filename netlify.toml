@@ -14,6 +14,13 @@
   status = 301
   force = true
 
+# Anciennes pages quartiers (7 secteurs) → découpage officiel de la Ville (18 quartiers)
+[[redirects]]
+  from = "/quartiers/centre-ville.html"
+  to = "/quartiers/coeur-de-ville.html"
+  status = 301
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]

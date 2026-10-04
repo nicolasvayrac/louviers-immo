@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="fr" data-root="../" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.className='js';</script>
+<title>Maupassant, quartier de Louviers : prix, ventes, commerces · louviers.immo</title>
+<meta name="description" content="Le quartier Maupassant à Louviers (9e des 18 « villages dans la ville ») : 37 ventes réelles, prix médian au m² des maisons et des appartements, commerces, écoles et bus.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://louviers.immo/quartiers/maupassant.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="louviers.immo">
+<meta property="og:title" content="Maupassant, quartier de Louviers : prix, ventes, commerces · louviers.immo">
+<meta property="og:description" content="Le quartier Maupassant à Louviers (9e des 18 « villages dans la ville ») : 37 ventes réelles, prix médian au m² des maisons et des appartements, commerces, écoles et bus.">
+<meta property="og:url" content="https://louviers.immo/quartiers/maupassant.html">
+<meta property="og:image" content="https://louviers.immo/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1B2E40">
+<meta name="google-site-verification" content="GoHdQ6W1nZJ7YV2Tz9iZWKYWoI4cij_dAX-F8a0LJ_o">
+<!-- Plausible Analytics : mesure d'audience sans cookies -->
+<script defer data-domain="louviers.immo" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
+<script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+<link rel="icon" type="image/png" href="../assets/img/favicon.png">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="preload" href="../assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
+<style>
+.vq-hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,3vw,48px);align-items:stretch}
+.vq-num{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;font:600 20px var(--sans,inherit);color:var(--navy);border:2px solid rgba(27,46,64,.25)}
+.vq-map{min-height:420px;border-radius:24px;overflow:hidden;border:1px solid var(--line)}
+.vq-k{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.vq-prix{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.vq-pcard{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:26px 28px;display:flex;flex-direction:column;gap:8px}
+.vq-pcard h3{font-size:26px}
+.vq-big{font-family:var(--serif);font-size:clamp(40px,4vw,54px);color:var(--navy);line-height:1}
+.vq-big small{font-family:inherit;font-size:16px;color:var(--muted)}
+.vq-cmp{font-size:14px;color:var(--gold-text);font-weight:600}
+.vq-bar{position:relative;height:12px;border-radius:6px;background:var(--sand);margin-top:12px}
+.vq-rng{position:absolute;top:0;height:12px;border-radius:6px;background:var(--gold-light)}
+.vq-med{position:absolute;top:-5px;width:4px;height:22px;margin-left:-2px;border-radius:2px;background:var(--navy)}
+.vq-lou{position:absolute;top:-3px;width:2px;height:18px;margin-left:-1px;background:var(--eure);opacity:.8}
+.vq-axis{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.vq-list{list-style:none;margin:10px 0 0;padding:0;font-size:15px}
+.vq-list li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--sand)}
+.vq-list b{color:var(--navy);font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.vq-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.vq-facts div{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column}
+.vq-facts b{font-family:var(--serif);font-weight:400;font-size:30px;color:var(--navy)}
+.vq-facts span{font-size:13px;color:var(--muted)}
+.vq-rubs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.vq-rub{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.vq-rub h3{font-size:19px;display:flex;justify-content:space-between}
+.vq-rub h3 span{font-size:14px;color:var(--gold-text)}
+.vq-rub p{font-size:14px;color:var(--text);margin-top:6px;line-height:1.5}
+.vq-nb{display:flex;flex-wrap:wrap;gap:10px}
+.vq-nb a{display:flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--navy);font-weight:500}
+.vq-nb i{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:600}
+.vq-cta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.vq-cta a{display:flex;flex-direction:column;gap:8px;border-radius:22px;padding:24px;background:var(--navy);color:var(--on-dark)}
+.vq-cta a strong{font-family:var(--serif);font-weight:400;font-size:23px;color:var(--cream)}
+.vq-cta a .go{margin-top:auto;color:var(--gold);font-weight:600}
+.vq-cta a.alt{background:var(--white);color:var(--text);border:1px solid var(--line)}
+.vq-cta a.alt strong{color:var(--navy)}.vq-cta a.alt .go{color:var(--gold-text)}
+.vq-pors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.vq-por{display:flex;flex-direction:column;gap:6px;background:var(--navy);border-radius:20px;overflow:hidden;padding-bottom:16px;color:var(--on-dark)}
+.vq-por img{width:100%;aspect-ratio:16/10;object-fit:cover}
+.vq-por span,.vq-por strong{padding:0 18px}.vq-por .c{color:var(--gold);font-size:13px;margin-top:8px}
+.vq-por strong{color:var(--cream);font-family:var(--serif);font-weight:400;font-size:21px}
+.vq-sec{padding:clamp(44px,5vw,72px) 0}
+.vq-sec h2{margin-bottom:22px}
+.vq-tbl th button{all:unset;cursor:pointer}
+.vl-map{height:clamp(420px,62vh,640px);border-radius:24px;overflow:hidden;border:1px solid var(--line)}
+.vl-modes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.vl-modes button{font:500 15px inherit;padding:9px 16px;border-radius:999px;border:1px solid var(--line-strong);background:var(--white);color:var(--navy);cursor:pointer}
+.vl-modes button[aria-pressed=true]{background:var(--navy);color:var(--cream);border-color:var(--navy)}
+.vl-leg{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin-top:10px}
+.vl-leg .g{flex:0 0 220px;height:10px;border-radius:5px;background:linear-gradient(90deg,#E8F0E9,#C9A961,#7E3B2B)}
+.vl-lbl{font:600 13px/1 var(--sans,sans-serif);color:#1B2E40;background:#fff;border:2px solid #1B2E40;border-radius:50%;width:26px;height:26px;display:grid!important;place-items:center;padding:0!important;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.vl-lbl:before{display:none}
+.vl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.vl-card{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:18px;padding:14px 16px;color:var(--text);transition:border-color .2s,transform .2s}
+.vl-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.vl-card i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:600;color:var(--navy)}
+.vl-card strong{display:block;font-family:var(--serif);font-weight:400;font-size:20px;color:var(--navy);line-height:1.15}
+.vl-card span{font-size:13px;color:var(--muted)}
+@media(max-width:900px){.vq-hero,.vq-prix{grid-template-columns:1fr}.vq-k,.vq-facts{grid-template-columns:repeat(2,1fr)}.vq-rubs,.vq-cta,.vq-pors,.vl-grid{grid-template-columns:1fr}.vq-map{min-height:320px}}
+</style>
+<link rel="stylesheet" href="../assets/style.css?v=20261005b">
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="../index.html" aria-label="louviers.immo — accueil">
+      <img src="../assets/img/logo-navy.png" alt="CV Immobilier" width="600" height="218">
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-name">louviers<b>.immo</b></span>
+    </a>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    <nav class="menu" id="menu" aria-label="Navigation principale">
+      <a href="../adresse.html">Mon adresse</a><a href="../commerces.html">Commerces</a><a href="../quartiers.html" aria-current="page">Quartiers</a><a href="../prix.html">Prix</a><a href="../conciergerie.html">S’installer</a><a href="../diagnostics.html">Diagnostics</a><a href="../outils.html">Outils</a>
+      <a class="plausible-event-name=Estimation+Click plausible-event-position=quartiers-maupassant btn btn-gold" href="https://www.cvimmobilier.fr/estimation">Estimer mon bien</a>
+    </nav>
+  </div>
+</header>
+<main id="contenu">
+<section class="page-head" style="padding-bottom:40px"><div class="wrap vq-hero">
+  <div class="stack">
+    <div class="crumbs"><a href="../index.html">Accueil</a> · <a href="../quartiers.html">Quartiers</a> · Maupassant</div>
+    <span class="vq-num" style="background:#b078b4">9</span>
+    <h1 style="margin-top:4px">Maupassant</h1>
+    <p class="lede">Le 9<sup>e</sup> des 18 quartiers de Louviers, les « villages dans la ville » définis par la Ville. 46 hectares, 37 ventes enregistrées de janvier 2024 à décembre 2025, 3 commerces recensés.</p>
+    <div class="vq-k" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:8px">
+      <div class="kpi light"><div class="l">Maisons</div><div class="v">2 110 €</div><div class="u">m² médian</div></div><div class="kpi light"><div class="l">Appartements</div><div class="v">1 410 €</div><div class="u">m² médian</div></div>
+    </div>
+    <a class="btn btn-gold plausible-event-name=Estimation+Click plausible-event-position=quartier-maupassant" style="align-self:flex-start" href="https://www.cvimmobilier.fr/estimation">Estimer mon bien dans ce quartier</a>
+  </div>
+  <div class="vq-map" id="vq-map" data-n="9" role="img" aria-label="Carte du quartier Maupassant et des ventes"></div>
+</div></section>
+
+<section class="vq-sec bg-sand"><div class="wrap">
+  <div class="head2"><h2>Les prix du quartier</h2><p>Ventes réelles enregistrées par l’État (DVF), de janvier 2024 à décembre 2025. Le trait bleu situe la médiane de Louviers.</p></div>
+  <div class="vq-prix"><div class="vq-pcard"><span class="eyebrow">Maisons · 23 ventes</span>
+      <div class="vq-big">2 110 <small>€/m² médian</small></div>
+      <p class="vq-cmp">+6 % par rapport à Louviers</p>
+      <div class="vq-bar" aria-hidden="true"><div class="vq-rng" style="left:32.6%;width:33.5%"></div><div class="vq-med" style="left:46.8%"></div><div class="vq-lou" style="left:42.2%" title="Louviers"></div></div>
+      <div class="vq-axis"><span>800 €/m²</span><span>Louviers</span><span>3 600 €/m²</span></div>
+      <ul class="vq-list">
+        <li><span>Moyenne au m²</span><b>2 190 €/m²</b></li>
+        <li><span>La moitié des ventes entre</span><b>1 710 et 2 650 €/m²</b></li>
+        <li><span>Prix moyen</span><b>169 000 €</b></li>
+        <li><span>Prix médian</span><b>159 000 €</b></li>
+        <li><span>Surface moyenne</span><b>81 m², 4 pièces</b></li>
+        <li><span>Médiane 2024 → 2025</span><b>1 950 → 2 180 €/m² (+12 %)</b></li>
+      </ul></div><div class="vq-pcard"><span class="eyebrow">Appartements · 14 ventes</span>
+      <div class="vq-big">1 410 <small>€/m² médian</small></div>
+      <p class="vq-cmp">−19 % par rapport à Louviers</p>
+      <div class="vq-bar" aria-hidden="true"><div class="vq-rng" style="left:16.7%;width:22.8%"></div><div class="vq-med" style="left:21.9%"></div><div class="vq-lou" style="left:33.6%" title="Louviers"></div></div>
+      <div class="vq-axis"><span>800 €/m²</span><span>Louviers</span><span>3 600 €/m²</span></div>
+      <ul class="vq-list">
+        <li><span>Moyenne au m²</span><b>1 590 €/m²</b></li>
+        <li><span>La moitié des ventes entre</span><b>1 270 et 1 910 €/m²</b></li>
+        <li><span>Prix moyen</span><b>100 000 €</b></li>
+        <li><span>Prix médian</span><b>82 000 €</b></li>
+        <li><span>Surface moyenne</span><b>63 m², 3 pièces</b></li>
+        <li><span>Médiane 2024 → 2025</span><b>1 410 → 1 320 €/m² (−7 %)</b></li>
+      </ul></div></div>
+  <div class="vq-k" style="margin-top:16px">
+    <div class="kpi light"><div class="l">Ventes</div><div class="v">37</div><div class="u">sur la période</div></div><div class="kpi light"><div class="l">Maisons</div><div class="v">62 %</div><div class="u">des ventes</div></div>
+    <div class="kpi light"><div class="l">Louviers, maisons</div><div class="v">1 980 €</div><div class="u">m² médian, toute la ville</div></div><div class="kpi light"><div class="l">Louviers, appartements</div><div class="v">1 740 €</div><div class="u">m² médian, toute la ville</div></div>
+  </div>
+  <div class="box-sand stack" style="margin-top:20px;border-radius:22px;background:var(--white)">
+    <h3 style="font-size:23px">Le prix au m² ne suffit pas</h3>
+    <p class="muted">Deux maisons de la même rue peuvent avoir des prix très différents : état et travaux, étiquette énergie, terrain, garage, exposition, stationnement, qualité de la rénovation. Les ventes disent ce que le marché a payé, pas ce que vaut votre bien.</p>
+    <a class="btn btn-navy plausible-event-name=Estimation+Click plausible-event-position=quartier-prix-maupassant" style="align-self:flex-start" href="https://www.cvimmobilier.fr/estimation">Obtenir un avis de valeur</a>
+  </div>
+</div></section>
+
+<section class="vq-sec"><div class="wrap"><div class="head2"><h2>Les dernières ventes</h2><p>Une ligne par vente, de la plus récente à la plus ancienne. Les ventes atypiques (plusieurs lots, prix au m² hors norme) sont écartées.</p></div><div class="table-wrap" style="overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--white)"><table class="data">
+      <thead><tr><th>Date</th><th>Type</th><th class="num">Pièces</th><th class="num">Surface</th><th class="num">Prix</th><th class="num">€/m²</th></tr></thead><tbody><tr><td>décembre 2025</td><td>Maison</td><td class="num">4</td><td class="num">98 m²</td><td class="num">155 000 €</td><td class="num">1 580 €</td></tr><tr><td>novembre 2025</td><td>Appartement</td><td class="num">2</td><td class="num">49 m²</td><td class="num">144 000 €</td><td class="num">2 940 €</td></tr><tr><td>novembre 2025</td><td>Appartement</td><td class="num">1</td><td class="num">40 m²</td><td class="num">37 500 €</td><td class="num">940 €</td></tr><tr><td>octobre 2025</td><td>Appartement</td><td class="num">2</td><td class="num">62 m²</td><td class="num">66 000 €</td><td class="num">1 060 €</td></tr><tr><td>octobre 2025</td><td>Appartement</td><td class="num">2</td><td class="num">64 m²</td><td class="num">76 000 €</td><td class="num">1 190 €</td></tr><tr><td>octobre 2025</td><td>Maison</td><td class="num">5</td><td class="num">82 m²</td><td class="num">111 000 €</td><td class="num">1 350 €</td></tr><tr><td>octobre 2025</td><td>Maison</td><td class="num">3</td><td class="num">30 m²</td><td class="num">110 000 €</td><td class="num">3 670 €</td></tr><tr><td>septembre 2025</td><td>Maison</td><td class="num">3</td><td class="num">72 m²</td><td class="num">152 000 €</td><td class="num">2 110 €</td></tr><tr><td>septembre 2025</td><td>Maison</td><td class="num">4</td><td class="num">108 m²</td><td class="num">261 000 €</td><td class="num">2 420 €</td></tr><tr><td>septembre 2025</td><td>Maison</td><td class="num">6</td><td class="num">94 m²</td><td class="num">115 000 €</td><td class="num">1 220 €</td></tr><tr><td>août 2025</td><td>Maison</td><td class="num">4</td><td class="num">78 m²</td><td class="num">170 000 €</td><td class="num">2 180 €</td></tr><tr><td>juin 2025</td><td>Maison</td><td class="num">5</td><td class="num">80 m²</td><td class="num">195 000 €</td><td class="num">2 440 €</td></tr><tr><td>mai 2025</td><td>Appartement</td><td class="num">3</td><td class="num">55 m²</td><td class="num">80 000 €</td><td class="num">1 450 €</td></tr><tr><td>février 2025</td><td>Maison</td><td class="num">5</td><td class="num">92 m²</td><td class="num">192 000 €</td><td class="num">2 090 €</td></tr><tr><td>février 2025</td><td>Maison</td><td class="num">5</td><td class="num">130 m²</td><td class="num">308 000 €</td><td class="num">2 370 €</td></tr><tr><td>février 2025</td><td>Maison</td><td class="num">5</td><td class="num">100 m²</td><td class="num">270 000 €</td><td class="num">2 700 €</td></tr><tr><td>janvier 2025</td><td>Appartement</td><td class="num">1</td><td class="num">36 m²</td><td class="num">70 000 €</td><td class="num">1 940 €</td></tr><tr><td>décembre 2024</td><td>Maison</td><td class="num">5</td><td class="num">102 m²</td><td class="num">240 000 €</td><td class="num">2 350 €</td></tr><tr><td>décembre 2024</td><td>Appartement</td><td class="num">3</td><td class="num">66 m²</td><td class="num">125 000 €</td><td class="num">1 890 €</td></tr><tr><td>décembre 2024</td><td>Maison</td><td class="num">3</td><td class="num">60 m²</td><td class="num">159 000 €</td><td class="num">2 650 €</td></tr><tr><td>décembre 2024</td><td>Appartement</td><td class="num">1</td><td class="num">35 m²</td><td class="num">45 300 €</td><td class="num">1 290 €</td></tr><tr><td>novembre 2024</td><td>Maison</td><td class="num">4</td><td class="num">115 m²</td><td class="num">233 900 €</td><td class="num">2 030 €</td></tr><tr><td>novembre 2024</td><td>Appartement</td><td class="num">4</td><td class="num">165 m²</td><td class="num">227 000 €</td><td class="num">1 380 €</td></tr><tr><td>septembre 2024</td><td>Maison</td><td class="num">4</td><td class="num">84 m²</td><td class="num">145 400 €</td><td class="num">1 730 €</td></tr><tr><td>septembre 2024</td><td>Maison</td><td class="num">3</td><td class="num">64 m²</td><td class="num">205 000 €</td><td class="num">3 200 €</td></tr><tr><td>septembre 2024</td><td>Maison</td><td class="num">3</td><td class="num">30 m²</td><td class="num">110 000 €</td><td class="num">3 670 €</td></tr><tr><td>août 2024</td><td>Appartement</td><td class="num">3</td><td class="num">59 m²</td><td class="num">84 000 €</td><td class="num">1 420 €</td></tr><tr><td>août 2024</td><td>Maison</td><td class="num">3</td><td class="num">49 m²</td><td class="num">135 000 €</td><td class="num">2 760 €</td></tr><tr><td>août 2024</td><td>Maison</td><td class="num">3</td><td class="num">76 m²</td><td class="num">110 000 €</td><td class="num">1 450 €</td></tr><tr><td>juin 2024</td><td>Maison</td><td class="num">3</td><td class="num">114 m²</td><td class="num">199 000 €</td><td class="num">1 750 €</td></tr></tbody></table></div><p class="note" style="margin-top:12px">Les 30 ventes les plus récentes sur 37.</p></div></section>
+
+
+<section class="vq-sec"><div class="wrap">
+  <h2>Vivre ici</h2>
+  <div class="vq-facts">
+        <div><b>3</b><span>commerces recensés</span></div>
+        <div><b>4</b><span>écoles et établissements</span></div>
+        <div><b>8</b><span>arrêts de bus</span></div>
+        <div><b>1</b><span>pharmacies et médecins</span></div>
+      </div>
+      <p style="margin-top:18px"><b style="color:var(--navy)">Écoles :</b> Collège Notre-Dame-Saint-Louis, Collège Saint-Louis, École maternelle Roger Salengro, École élémentaire Anatole France.</p>
+      <div class="vq-rubs"><div class="vq-rub"><h3>Se restaurer <span>1</span></h3><p>Le Mekong</p></div><div class="vq-rub"><h3>Tabac & presse <span>1</span></h3><p>La Tabatière</p></div><div class="vq-rub"><h3>Services <span>1</span></h3><p>Caisse d&#x27;Épargne</p></div></div>
+  <p style="margin-top:20px"><a class="link-u" href="../adresse.html?q=Maupassant%2C%20Louviers&lat=49.216791&lon=1.161269">Temps à pied, à vélo et en voiture depuis une adresse du quartier</a></p>
+</div></section>
+
+
+
+
+<section class="vq-sec"><div class="wrap stack-lg">
+  <div><h2 style="font-size:clamp(24px,2.4vw,32px)">Les quartiers voisins</h2><div class="vq-nb" style="margin-top:16px"><a href="coeur-de-ville.html"><i style="background:#bad735">1</i>Cœur de Ville</a><a href="saint-germain.html"><i style="background:#8bbf3c">7</i>Saint-Germain</a><a href="la-londe-les-oiseaux.html"><i style="background:#01a248">8</i>La Londe – Les Oiseaux</a><a href="les-amoureux.html"><i style="background:#64b6ac">10</i>Les Amoureux</a><a href="le-hameau-saint-lubin.html"><i style="background:#a6c34a">15</i>Le Hameau Saint-Lubin</a><a href="les-defends.html"><i style="background:#9bd9e3">16</i>Les Défends</a></div></div>
+  <div class="vq-cta">
+    <a href="https://www.cvimmobilier.fr/" class="plausible-event-name=Biens+Quartier plausible-event-position=maupassant"><span class="eyebrow">Acheter</span><strong>Vous cherchez&nbsp;ici&nbsp;?</strong><span>Nos biens à vendre à Louviers.</span><span class="go">Voir les biens</span></a>
+    <a href="https://www.cvimmobilier.fr/estimation" class="plausible-event-name=Estimation+Click plausible-event-position=quartier-cta-maupassant"><span class="eyebrow">Vendre</span><strong>Vous possédez un bien ici ?</strong><span>Un avis de valeur fondé sur les ventes du quartier.</span><span class="go">Estimer mon bien</span></a>
+    <a class="alt" href="../commerces.html#proposer"><span class="eyebrow">Contribuer</span><strong>Une adresse à nous recommander ?</strong><span>Un commerce, un lieu, une information à corriger.</span><span class="go">Proposer une adresse</span></a>
+  </div>
+  <p class="note">Découpage : « Les villages dans la ville », Ville de Louviers. Limites numérisées par CV Immobilier depuis le plan de la Ville, précision de l’ordre de 20 à 40 mètres. Ventes : DVF, DGFiP, janvier 2024 à décembre 2025. Commerces et équipements : OpenStreetMap.</p>
+</div></section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="stack">
+        <img src="../assets/img/logo-cream.png" alt="CV Immobilier" width="600" height="218" loading="lazy" style="align-self:flex-start">
+        <p style="color:#9FB0C0;max-width:28em">louviers.immo est un guide proposé par CV Immobilier, agence immobilière indépendante membre de la FNAIM et du réseau Interkab, à Louviers depuis 1992.</p>
+      </div>
+      <div>
+        <h4>Le guide</h4>
+        <ul>
+          <li><a href="../adresse.html">Mon adresse</a></li>
+          <li><a href="../commerces.html">Commerces</a></li>
+          <li><a href="../quartiers.html">Quartiers</a></li>
+          <li><a href="../prix.html">Prix de l’immobilier</a></li>
+          <li><a href="../portraits.html">Portraits</a></li>
+          <li><a href="../conciergerie.html">S’installer</a></li>
+          <li><a href="../diagnostics.html">Diagnostics</a></li>
+          <li><a href="../outils.html">Outils</a></li>
+          <li><a href="../a-propos.html">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Agence de Louviers</h4>
+        <ul>
+          <li>27 rue du Général de Gaulle<br>27400 Louviers</li>
+          <li><a class="tel" href="tel:+33232402228">02 32 40 22 28</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Saint-Pierre-du-Vauvray</h4>
+        <ul>
+          <li>15 Grande Rue<br>27430 Saint-Pierre-du-Vauvray</li>
+          <li><a class="tel" href="tel:+33279492171">02 79 49 21 71</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 CV Immobilier · Carte professionnelle CPI 2701 2016 000 005 229</span>
+      <nav aria-label="Liens légaux">
+        <a href="../mentions-legales.html">Mentions légales</a>
+        <a href="../mentions-legales.html#donnees">Sources des données</a>
+        <a href="https://www.cvimmobilier.fr/">cvimmobilier.fr</a>
+        <a href="https://www.ville-louviers.fr/" target="_blank" rel="noopener">Ville de Louviers</a>
+        <a href="https://www.agglo-seine-eure.fr/" target="_blank" rel="noopener">Agglomération Seine-Eure</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<script src="../assets/site.js?v=20261005b"></script>
+<script src="../assets/vendor/leaflet/leaflet.js?v=20261005b"></script>
+<script src="../assets/map.js?v=20261005b"></script>
+<script src="../assets/villages.js?v=20261005b"></script>
+</body>
+</html>
