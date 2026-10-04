@@ -2,7 +2,7 @@ name: Mettre à jour les prix (DVF)
 
 on:
   schedule:
-    - cron: "41 4 6 * *"   # le 6 de chaque mois, vers 6 h (heure de Paris)
+    - cron: "41 4 * * 1"   # chaque lundi vers 6 h (heure de Paris) ; ne publie que si l’État a sorti de nouvelles ventes
   workflow_dispatch:        # bouton « Run workflow » dans l'onglet Actions
 
 permissions:
