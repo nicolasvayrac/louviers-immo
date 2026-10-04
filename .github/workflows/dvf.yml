@@ -19,7 +19,9 @@ jobs:
       - name: Télécharger les ventes DVF et recalculer les prix
         run: python3 scripts/update_dvf.py
       - name: Régénérer les pages (prix par quartier, pages quartiers)
-        run: python3 scripts/gen.py
+        run: |
+          pip install --quiet pillow
+          python3 scripts/gen.py
       - name: Enregistrer s'il y a du nouveau
         run: |
           git config user.name "louviers.immo (robot)"
