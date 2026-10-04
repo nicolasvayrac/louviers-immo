@@ -900,3 +900,19 @@ picture > source { display: none; }
 
 /* Fond des cartes : crème plutôt que gris pendant le chargement des tuiles */
 .leaflet-container { background: #EEEAE1; }
+
+/* Accueil : carte des quartiers et « Je cherche… » */
+.vl-map { height: clamp(380px, 56vh, 600px); border-radius: 24px; overflow: hidden; border: 1px solid var(--line); }
+.vh-map { margin: 14px 0 18px; }
+.vl-lbl { font: 600 13px/1 var(--sans, sans-serif); color: #1B2E40; background: #fff; border: 2px solid #1B2E40; border-radius: 50%; width: 26px; height: 26px; display: grid !important; place-items: center; padding: 0 !important; box-shadow: 0 2px 6px rgba(0,0,0,.2); transition: opacity .25s; }
+.vl-lbl:before { display: none; }
+.vl-lbl.off { opacity: .25; }
+.vh-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.vh-lab { font-family: var(--serif); font-style: italic; font-size: 20px; color: var(--gold-text); margin-right: 6px; }
+.vh-chips button { font: 500 15px var(--sans, inherit); padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--white); color: var(--navy); cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.vh-chips button:hover { border-color: var(--gold); }
+.vh-chips button[aria-pressed="true"] { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+.vh-chips button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.vh-ex { margin-top: 12px; font-size: 14px; color: var(--muted); min-height: 1.5em; }
+.vl-card.off { opacity: .35; }
+.vl-card.on { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-tint); }

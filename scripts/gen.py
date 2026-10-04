@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261005d'
+VER = '20261005f'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -362,7 +362,7 @@ def page_index():
         for n, role, tel, img in TEAM)
     body = head('louviers.immo — Louviers, mode d’emploi · le guide par CV Immobilier',
                 'Le guide de Louviers et de l’Agglomération Seine-Eure : testez une adresse pour voir les commerces, écoles et temps de trajet autour, découvrez les quartiers, les prix réels de l’immobilier et les portraits de ceux qui font Louviers.',
-                'index.html', r, jsonld=ORG)
+                'index.html', r, jsonld=ORG, css=f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n')
     body += header(None, r)
     body += f'''<main id="contenu">
 <section class="hero2">
@@ -463,10 +463,10 @@ def page_index():
   <div class="wrap">
     <div class="head2">
       <h2>18 quartiers, les « villages dans la ville »</h2>
-      <p>Le découpage de la Ville de Louviers, avec pour chaque quartier ses prix réels, ses commerces et ses écoles.</p>
+      <p>Le découpage de la Ville de Louviers. Cliquez un quartier pour découvrir ses commerces, ses écoles et sa vie de tous les jours.</p>
     </div>
-    {vl_grid(r)}
-    <p style="margin-top:20px"><a class="link-u" href="{r}quartiers.html">Voir la carte des 18 quartiers</a></p>
+    {vl_home(r)}
+    <p style="margin-top:20px"><a class="link-u" href="{r}quartiers.html">Découvrir les 18 quartiers</a></p>
   </div>
 </section>
 
@@ -535,7 +535,7 @@ def page_index():
 </section>
 </main>
 '''
-    body += footer(r, ['data/portraits.js', 'assets/biens.js'])
+    body += footer(r, ['data/portraits.js', 'assets/biens.js', 'assets/vendor/leaflet/leaflet.js', 'assets/map.js', 'assets/villages.js'])
     write('index.html', body)
 
 

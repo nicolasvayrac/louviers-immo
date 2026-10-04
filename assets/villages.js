@@ -73,7 +73,7 @@
           l.on('mouseover', function () { l.setStyle({ weight: 3 }); }); l.on('mouseout', function () { l.setStyle({ weight: 1.5 }); });
         }
       }).addTo(map);
-      map.fitBounds(layer.getBounds(), { padding: [10, 10] });
+      map.options.zoomSnap = 0.5; map.fitBounds(layer.getBounds(), { padding: [10, 10] });
       document.querySelectorAll('.vl-modes button').forEach(function (b) {
         b.addEventListener('click', function () {
           mode = b.getAttribute('data-mode');
@@ -146,7 +146,49 @@
     }).catch(function () {});
   };
 
+
+  /* ---------- Accueil : carte + « Je cherche… » ---------- */
+  function initHome(el) {
+    LI.loadVillages().then(function (gj) {
+      var map = LI.makeMap(el, 49.212, 1.168, 13), crit = '', lays = [];
+      function style(f) {
+        var ok = !crit || f.properties.crit.indexOf(crit) >= 0;
+        return { color: '#1B2E40', weight: ok && crit ? 2.5 : 1.2, fillColor: f.properties.c, fillOpacity: ok ? (crit ? 0.7 : 0.45) : 0.06 };
+      }
+      var layer = L.geoJSON(gj, {
+        style: style,
+        onEachFeature: function (f, l) {
+          var p = f.properties, v = p.v, it = [];
+          if (v.com) it.push(v.com + ' commerce' + (v.com > 1 ? 's' : ''));
+          if (v.eco) it.push(v.eco + ' école' + (v.eco > 1 ? 's' : ''));
+          if (v.bus) it.push(v.bus + ' arrêt' + (v.bus > 1 ? 's' : '') + ' de bus');
+          l.bindPopup('<strong style="font-size:16px;color:#1B2E40">' + p.n + '. ' + LI.esc(p.nom) + '</strong><br>' + (it.join(' · ') || '') +
+            '<br><a href="quartiers/' + p.slug + '.html">Découvrir le quartier</a>');
+          l.bindTooltip(String(p.n), { permanent: true, direction: 'center', className: 'vl-lbl' });
+          lays.push(l);
+        }
+      }).addTo(map);
+      map.options.zoomSnap = 0.5; map.fitBounds(layer.getBounds(), { padding: [8, 8] });
+      var cards = document.querySelectorAll('#vl-grid .vl-card');
+      document.querySelectorAll('.vh-chips button').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var k = b.getAttribute('data-crit'); crit = crit === k ? '' : k;
+          document.querySelectorAll('.vh-chips button').forEach(function (x) { x.setAttribute('aria-pressed', x.getAttribute('data-crit') === crit ? 'true' : 'false'); });
+          document.querySelectorAll('#vh-ex span').forEach(function (s) { s.hidden = s.getAttribute('data-for') !== crit; });
+          layer.setStyle(style);
+          lays.forEach(function (l) { var t = l.getTooltip() && l.getTooltip().getElement(); if (t) t.classList.toggle('off', !!crit && l.feature.properties.crit.indexOf(crit) < 0); });
+          cards.forEach(function (c) {
+            var ok = (' ' + c.getAttribute('data-crit') + ' ').indexOf(' ' + crit + ' ') >= 0;
+            c.classList.toggle('off', !!crit && !ok); c.classList.toggle('on', !!crit && ok);
+          });
+          if (window.plausible && crit) window.plausible('Quartier Critere', { props: { critere: crit } });
+        });
+      });
+    }).catch(function () { el.hidden = true; });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
+    if ($('vh-map')) initHome($('vh-map'));
     if ($('vl-map')) initListe($('vl-map'));
     if ($('vl-tbl')) initTri($('vl-tbl'));
     if ($('vq-map')) initQuartier($('vq-map'));

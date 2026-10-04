@@ -120,6 +120,22 @@ for _blk in re.findall(r'\{(.*?)\n  \}', _PJS, re.S):
     if not n: n = _QTXT.get(g('quartier'))
     if n: VPORT[n].append({'name': g('name'), 'title': g('title'), 'url': g('url'), 'photo': g('photo'), 'cat': g('category')})
 
+# ---------- repères de vie par quartier (pour l'accueil et les cartes)
+_ECH = [(49.237849, 1.186267), (49.221612, 1.179477), (49.205573, 1.179995), (49.189169, 1.170085), (49.248772, 1.176256), (49.189576, 1.233928)]  # échangeurs A154 et A13
+
+
+def _km(a, b, c, d):
+    return math.hypot((d - b) * math.cos(math.radians(a)) * 111.32, (c - a) * 110.574)
+
+
+VVIE = {}
+for _f in VFEAT:
+    _n = _f['properties']['n']; _V = VPOI[_n]; _S = VSTATS[_n]; _c = _f['properties']['centre']
+    VVIE[_n] = {'com': sum(len(v) for v in _V['shops'].values()), 'eco': len(_V['ecoles']), 'bus': len(_V['bus']),
+                'pm': round(100 * _S['M']['n'] / _S['n']) if _S['n'] >= 5 else None,
+                'ech': round(min(_km(_c[0], _c[1], a, b) for a, b in _ECH), 1)}
+
+
 # ---------- textes rédigés (seulement quand ils existent : aucun texte générique inventé)
 VTEXTES = {
     1: '''<div class="qa"><h2>Le rendez-vous incontournable du marché</h2>
@@ -342,13 +358,37 @@ def page_village(f):
     write(f'quartiers/{slug}.html', body)
 
 
+def _vie_ligne(n):
+    v = VVIE[n]; it = []
+    if v['com']: it.append(f"{v['com']} commerce{'s' if v['com'] > 1 else ''}")
+    if v['eco']: it.append(f"{v['eco']} école{'s' if v['eco'] > 1 else ''}")
+    if v['bus']: it.append(f"{v['bus']} arrêt{'s' if v['bus'] > 1 else ''} de bus")
+    return ' · '.join(it) or 'Voir le quartier'
+
+
+VCRIT = [  # (clé, libellé du bouton, explication, test)
+    ('pied', 'Tout à pied', 'au moins 10 commerces dans le quartier', lambda v: v['com'] >= 10),
+    ('maison', 'Une maison', 'quartiers où au moins 80 % des ventes sont des maisons', lambda v: (v['pm'] or 0) >= 80),
+    ('ecoles', 'Près des écoles', 'au moins 2 écoles ou établissements scolaires dans le quartier', lambda v: v['eco'] >= 2),
+    ('bus', 'Bien desservi', 'au moins 6 arrêts de bus dans le quartier', lambda v: v['bus'] >= 6),
+    ('route', 'Accès rapide à l’A154', 'un échangeur à moins d’1 km du cœur du quartier, à vol d’oiseau', lambda v: v['ech'] <= 1.0),
+]
+
+
 def vl_grid(root):
     cards = ''
     for f in VFEAT:
-        p = f['properties']; S = VSTATS[p['n']]
-        sub = f'Maisons {_fr(S["M"]["med"])} €/m² · {S["n"]} ventes' if S['M'].get('med') else f'{S["n"]} vente{"s" if S["n"] > 1 else ""}'
-        cards += f'<a class="vl-card" href="{root}quartiers/{p["slug"]}.html"><i style="background:{p["c"]}">{p["n"]}</i><span><strong>{_e(p["nom"])}</strong><span>{sub}</span></span></a>'
-    return f'<div class="vl-grid">{cards}</div>'
+        p = f['properties']; n = p['n']
+        crit = ' '.join(k for k, _, _, t in VCRIT if t(VVIE[n]))
+        cards += f'<a class="vl-card" data-n="{n}" data-crit="{crit}" href="{root}quartiers/{p["slug"]}.html"><i style="background:{p["c"]}">{n}</i><span><strong>{_e(p["nom"])}</strong><span>{_vie_ligne(n)}</span></span></a>'
+    return f'<div class="vl-grid" id="vl-grid">{cards}</div>'
+
+
+def vl_home(root):
+    return f'''<div class="vh">
+      <div class="vl-map vh-map" id="vh-map" role="img" aria-label="Carte des 18 quartiers de Louviers"></div>
+      {vl_grid(root)}
+    </div>'''
 
 
 def page_quartiers():
@@ -428,6 +468,7 @@ def page_villages():
         p['s'] = {'n': S['n'], 'M': [round(S['M']['med']) if S['M'].get('med') else None, S['M']['n']],
                   'A': [round(S['A']['med']) if S['A'].get('med') else None, S['A']['n']],
                   'pm': round(S['M']['prix_moy'], -3) if S['M'].get('med') else None}
+        p['v'] = VVIE[p['n']]; p['crit'] = [k for k, _, _, t in VCRIT if t(VVIE[p['n']])]
         out['features'].append({'type': 'Feature', 'properties': p, 'geometry': f['geometry']})
     with open(os.path.join(OUT, 'data/villages.json'), 'w', encoding='utf-8') as fh:
         json.dump(out, fh, ensure_ascii=False, separators=(',', ':'))
