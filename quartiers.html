@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>document.documentElement.className='js';</script>
-<title>Les 18 quartiers de Louviers : prix, ventes, carte · louviers.immo</title>
-<meta name="description" content="Les 18 quartiers de Louviers, « les villages dans la ville » : carte, prix médian au m² des maisons et des appartements, nombre de ventes, et une page par quartier.">
+<title>Les 18 quartiers de Louviers : carte, vie de quartier · louviers.immo</title>
+<meta name="description" content="Les 18 quartiers de Louviers, « les villages dans la ville » : carte, et une page par quartier pour découvrir ses commerces, ses écoles, son histoire vue du ciel et ses habitants.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://louviers.immo/quartiers.html">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="louviers.immo">
-<meta property="og:title" content="Les 18 quartiers de Louviers : prix, ventes, carte · louviers.immo">
-<meta property="og:description" content="Les 18 quartiers de Louviers, « les villages dans la ville » : carte, prix médian au m² des maisons et des appartements, nombre de ventes, et une page par quartier.">
+<meta property="og:title" content="Les 18 quartiers de Louviers : carte, vie de quartier · louviers.immo">
+<meta property="og:description" content="Les 18 quartiers de Louviers, « les villages dans la ville » : carte, et une page par quartier pour découvrir ses commerces, ses écoles, son histoire vue du ciel et ses habitants.">
 <meta property="og:url" content="https://louviers.immo/quartiers.html">
 <meta property="og:image" content="https://louviers.immo/assets/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -68,6 +68,15 @@
 .vq-por img{width:100%;aspect-ratio:16/10;object-fit:cover}
 .vq-por span,.vq-por strong{padding:0 18px}.vq-por .c{color:var(--gold);font-size:13px;margin-top:8px}
 .vq-por strong{color:var(--cream);font-family:var(--serif);font-weight:400;font-size:21px}
+.vq-pb{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,4fr) auto;gap:24px;align-items:center;background:var(--sand);border-radius:24px;padding:28px 32px}
+.vq-pb-k{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vq-pb-a{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.pq-pick{display:flex;flex-direction:column;gap:6px;max-width:360px}.pq-pick label{font-size:14px;font-weight:500;color:var(--navy)}
+.pq-panel{background:var(--white);border:1px solid var(--line);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:22px}
+.pq-head{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.pq-head>div{flex:1;min-width:220px}.pq-head h3{font-size:clamp(24px,2.2vw,30px)}
+.pq-warn{background:var(--gold-tint);border-radius:16px;padding:16px 20px;font-size:15px;color:var(--text)}.pq-warn strong{color:var(--navy)}
+.pq-h4{font-family:var(--serif);font-size:22px;color:var(--navy);font-weight:500}
+.pq-row{cursor:pointer}.pq-row:hover td{background:#FBFAF7}.pq-row.on td{background:var(--gold-tint)}
 .vq-sec{padding:clamp(44px,5vw,72px) 0}
 .vq-sec h2{margin-bottom:22px}
 .vq-tbl th button{all:unset;cursor:pointer}
@@ -85,9 +94,9 @@
 .vl-card i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:600;color:var(--navy)}
 .vl-card strong{display:block;font-family:var(--serif);font-weight:400;font-size:20px;color:var(--navy);line-height:1.15}
 .vl-card span{font-size:13px;color:var(--muted)}
-@media(max-width:900px){.vq-hero,.vq-prix{grid-template-columns:1fr}.vq-k,.vq-facts{grid-template-columns:repeat(2,1fr)}.vq-rubs,.vq-cta,.vq-pors,.vl-grid{grid-template-columns:1fr}.vq-map{min-height:320px}}
+@media(max-width:900px){.vq-pb{grid-template-columns:1fr}.vq-hero,.vq-prix{grid-template-columns:1fr}.vq-k,.vq-facts{grid-template-columns:repeat(2,1fr)}.vq-rubs,.vq-cta,.vq-pors,.vl-grid{grid-template-columns:1fr}.vq-map{min-height:320px}}
 </style>
-<link rel="stylesheet" href="assets/style.css?v=20261005f">
+<link rel="stylesheet" href="assets/style.css?v=20261005h">
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -111,35 +120,19 @@
     <div class="crumbs"><a href="index.html">Accueil</a> · Quartiers</div>
     <span class="eyebrow">Les villages dans la ville</span>
     <h1 style="margin-top:12px">Les 18 quartiers <span class="it">de Louviers.</span></h1>
-    <p class="lede" style="margin-top:20px;max-width:46em">La Ville de Louviers découpe la commune en 18 quartiers, qu’elle appelle « les villages dans la ville ». Pour chacun : ses limites, ses prix réels, ses commerces et ses écoles.</p>
+    <p class="lede" style="margin-top:20px;max-width:46em">La Ville de Louviers découpe la commune en 18 quartiers, qu’elle appelle « les villages dans la ville ». Pour chacun : ses limites, ses commerces, ses écoles, et le quartier vu du ciel dans les années 1950.</p>
   </div>
 </section>
 <section class="section" style="padding-top:24px">
   <div class="wrap">
-    <div class="vl-modes" role="group" aria-label="Couleur de la carte">
-      <button type="button" data-mode="q" aria-pressed="true">Quartiers</button>
-      <button type="button" data-mode="M" aria-pressed="false">Prix des maisons</button>
-      <button type="button" data-mode="A" aria-pressed="false">Prix des appartements</button>
-    </div>
     <div class="vl-map" id="vl-map" role="img" aria-label="Carte des 18 quartiers de Louviers"></div>
-    <div class="vl-leg" id="vl-leg" hidden><span id="vl-lo"></span><span class="g"></span><span id="vl-hi"></span><span>· médiane au m², quartiers d’au moins 3 ventes</span></div>
+    <p class="small muted" style="margin-top:14px">Les prix de chaque quartier sont sur la page Prix. <a class="link-u" href="prix.html#prix-quartiers">Comparer les prix des 18 quartiers</a></p>
   </div>
 </section>
 <section class="section bg-sand" style="padding-top:56px">
   <div class="wrap">
-    <div class="head2"><h2>Une page par quartier</h2><p>Prix détaillés, dernières ventes, commerces, écoles, quartiers voisins.</p></div>
+    <div class="head2"><h2>Une page par quartier</h2><p>Commerces, écoles, bus, le quartier vu du ciel hier et aujourd’hui, et ceux qui le font vivre.</p></div>
     <div class="vl-grid" id="vl-grid"><a class="vl-card" data-n="1" data-crit="pied bus" href="quartiers/coeur-de-ville.html"><i style="background:#bad735">1</i><span><strong>Cœur de Ville</strong><span>119 commerces · 1 école · 6 arrêts de bus</span></span></a><a class="vl-card" data-n="2" data-crit="maison ecoles bus route" href="quartiers/le-hamelet-le-clos-morlet.html"><i style="background:#97bd3d">2</i><span><strong>Le Hamelet – Le Clos Morlet</strong><span>3 écoles · 9 arrêts de bus</span></span></a><a class="vl-card" data-n="3" data-crit="pied bus route" href="quartiers/roquette-villette.html"><i style="background:#fcbc62">3</i><span><strong>Roquette &amp; Villette</strong><span>15 commerces · 1 école · 8 arrêts de bus</span></span></a><a class="vl-card" data-n="4" data-crit="maison" href="quartiers/les-monts.html"><i style="background:#e974ad">4</i><span><strong>Les Monts</strong><span>5 arrêts de bus</span></span></a><a class="vl-card" data-n="5" data-crit="maison route" href="quartiers/les-acacias.html"><i style="background:#dd1e77">5</i><span><strong>Les Acacias</strong><span>1 commerce · 1 école · 1 arrêt de bus</span></span></a><a class="vl-card" data-n="6" data-crit="maison route" href="quartiers/saint-hildevert.html"><i style="background:#f58348">6</i><span><strong>Saint-Hildevert</strong><span>3 arrêts de bus</span></span></a><a class="vl-card" data-n="7" data-crit="ecoles route" href="quartiers/saint-germain.html"><i style="background:#8bbf3c">7</i><span><strong>Saint-Germain</strong><span>2 commerces · 2 écoles · 3 arrêts de bus</span></span></a><a class="vl-card" data-n="8" data-crit="bus route" href="quartiers/la-londe-les-oiseaux.html"><i style="background:#01a248">8</i><span><strong>La Londe – Les Oiseaux</strong><span>6 commerces · 1 école · 6 arrêts de bus</span></span></a><a class="vl-card" data-n="9" data-crit="ecoles bus" href="quartiers/maupassant.html"><i style="background:#b078b4">9</i><span><strong>Maupassant</strong><span>3 commerces · 4 écoles · 8 arrêts de bus</span></span></a><a class="vl-card" data-n="10" data-crit="ecoles bus" href="quartiers/les-amoureux.html"><i style="background:#64b6ac">10</i><span><strong>Les Amoureux</strong><span>3 commerces · 4 écoles · 10 arrêts de bus</span></span></a><a class="vl-card" data-n="11" data-crit="ecoles" href="quartiers/maison-rouge.html"><i style="background:#fdcc87">11</i><span><strong>Maison Rouge</strong><span>2 écoles · 5 arrêts de bus</span></span></a><a class="vl-card" data-n="12" data-crit="pied bus" href="quartiers/pichou.html"><i style="background:#bfa4c9">12</i><span><strong>Pichou</strong><span>12 commerces · 1 école · 6 arrêts de bus</span></span></a><a class="vl-card" data-n="13" data-crit="maison" href="quartiers/le-clos-saint-lubin.html"><i style="background:#fcef08">13</i><span><strong>Le Clos Saint-Lubin</strong><span>Voir le quartier</span></span></a><a class="vl-card" data-n="14" data-crit="maison" href="quartiers/la-pommeraie.html"><i style="background:#729f74">14</i><span><strong>La Pommeraie</strong><span>2 arrêts de bus</span></span></a><a class="vl-card" data-n="15" data-crit="maison" href="quartiers/le-hameau-saint-lubin.html"><i style="background:#a6c34a">15</i><span><strong>Le Hameau Saint-Lubin</strong><span>1 école · 2 arrêts de bus</span></span></a><a class="vl-card" data-n="16" data-crit="maison" href="quartiers/les-defends.html"><i style="background:#9bd9e3">16</i><span><strong>Les Défends</strong><span>4 arrêts de bus</span></span></a><a class="vl-card" data-n="17" data-crit="route" href="quartiers/saint-jean-les-tisserands.html"><i style="background:#f9ef40">17</i><span><strong>Saint-Jean – Les Tisserands</strong><span>7 commerces · 2 arrêts de bus</span></span></a><a class="vl-card" data-n="18" data-crit="route" href="quartiers/la-plaquette.html"><i style="background:#7ac589">18</i><span><strong>La Plaquette</strong><span>2 commerces · 1 arrêt de bus</span></span></a></div>
-  </div>
-</section>
-<section class="section">
-  <div class="wrap">
-    <div class="head2"><h2>Les 18 quartiers côte à côte</h2><p>Ventes réelles de janvier 2024 à décembre 2025. Cliquez un titre de colonne pour trier.</p></div>
-    <div style="overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--white)">
-      <table class="data vq-tbl" id="vl-tbl"><thead><tr><th><button type="button" data-c="0">Quartier</button></th><th class="num"><button type="button" data-c="1">Ventes</button></th><th class="num"><button type="button" data-c="2">Maisons €/m²</button></th><th class="num"><button type="button" data-c="3">Appart. €/m²</button></th><th class="num"><button type="button" data-c="4">Prix moyen maison</button></th></tr></thead>
-      <tbody><tr><td data-v="1"><a class="link-u" href="quartiers/coeur-de-ville.html">1. Cœur de Ville</a></td><td class="num" data-v="66">66</td><td class="num" data-v="2029">2 030 €</td><td class="num" data-v="1606">1 610 €</td><td class="num" data-v="201381">201 000 €</td></tr><tr><td data-v="2"><a class="link-u" href="quartiers/le-hamelet-le-clos-morlet.html">2. Le Hamelet – Le Clos Morlet</a></td><td class="num" data-v="48">48</td><td class="num" data-v="1914">1 910 €</td><td class="num" data-v="0">—</td><td class="num" data-v="169769">170 000 €</td></tr><tr><td data-v="3"><a class="link-u" href="quartiers/roquette-villette.html">3. Roquette &amp; Villette</a></td><td class="num" data-v="28">28</td><td class="num" data-v="2119">2 120 €</td><td class="num" data-v="1857">1 860 €</td><td class="num" data-v="142182">142 000 €</td></tr><tr><td data-v="4"><a class="link-u" href="quartiers/les-monts.html">4. Les Monts</a></td><td class="num" data-v="8">8</td><td class="num" data-v="2373">2 370 €</td><td class="num" data-v="0">—</td><td class="num" data-v="291825">292 000 €</td></tr><tr><td data-v="5"><a class="link-u" href="quartiers/les-acacias.html">5. Les Acacias</a></td><td class="num" data-v="9">9</td><td class="num" data-v="1597">1 600 €</td><td class="num" data-v="0">—</td><td class="num" data-v="142667">143 000 €</td></tr><tr><td data-v="6"><a class="link-u" href="quartiers/saint-hildevert.html">6. Saint-Hildevert</a></td><td class="num" data-v="13">13</td><td class="num" data-v="2015">2 010 €</td><td class="num" data-v="0">—</td><td class="num" data-v="207822">208 000 €</td></tr><tr><td data-v="7"><a class="link-u" href="quartiers/saint-germain.html">7. Saint-Germain</a></td><td class="num" data-v="25">25</td><td class="num" data-v="1874">1 870 €</td><td class="num" data-v="1800">1 800 €</td><td class="num" data-v="186169">186 000 €</td></tr><tr><td data-v="8"><a class="link-u" href="quartiers/la-londe-les-oiseaux.html">8. La Londe – Les Oiseaux</a></td><td class="num" data-v="15">15</td><td class="num" data-v="1856">1 860 €</td><td class="num" data-v="1885">1 890 €</td><td class="num" data-v="163164">163 000 €</td></tr><tr><td data-v="9"><a class="link-u" href="quartiers/maupassant.html">9. Maupassant</a></td><td class="num" data-v="37">37</td><td class="num" data-v="2111">2 110 €</td><td class="num" data-v="1413">1 410 €</td><td class="num" data-v="169237">169 000 €</td></tr><tr><td data-v="10"><a class="link-u" href="quartiers/les-amoureux.html">10. Les Amoureux</a></td><td class="num" data-v="39">39</td><td class="num" data-v="1980">1 980 €</td><td class="num" data-v="1860">1 860 €</td><td class="num" data-v="166342">166 000 €</td></tr><tr><td data-v="11"><a class="link-u" href="quartiers/maison-rouge.html">11. Maison Rouge</a></td><td class="num" data-v="0">0</td><td class="num" data-v="0">—</td><td class="num" data-v="0">—</td><td class="num" data-v="0">—</td></tr><tr><td data-v="12"><a class="link-u" href="quartiers/pichou.html">12. Pichou</a></td><td class="num" data-v="59">59</td><td class="num" data-v="1793">1 790 €</td><td class="num" data-v="1628">1 630 €</td><td class="num" data-v="177342">177 000 €</td></tr><tr><td data-v="13"><a class="link-u" href="quartiers/le-clos-saint-lubin.html">13. Le Clos Saint-Lubin</a></td><td class="num" data-v="7">7</td><td class="num" data-v="2330">2 330 €</td><td class="num" data-v="0">—</td><td class="num" data-v="207100">207 000 €</td></tr><tr><td data-v="14"><a class="link-u" href="quartiers/la-pommeraie.html">14. La Pommeraie</a></td><td class="num" data-v="12">12</td><td class="num" data-v="2160">2 160 €</td><td class="num" data-v="0">—</td><td class="num" data-v="190673">191 000 €</td></tr><tr><td data-v="15"><a class="link-u" href="quartiers/le-hameau-saint-lubin.html">15. Le Hameau Saint-Lubin</a></td><td class="num" data-v="14">14</td><td class="num" data-v="2017">2 020 €</td><td class="num" data-v="0">—</td><td class="num" data-v="276392">276 000 €</td></tr><tr><td data-v="16"><a class="link-u" href="quartiers/les-defends.html">16. Les Défends</a></td><td class="num" data-v="23">23</td><td class="num" data-v="2000">2 000 €</td><td class="num" data-v="0">—</td><td class="num" data-v="183912">184 000 €</td></tr><tr><td data-v="17"><a class="link-u" href="quartiers/saint-jean-les-tisserands.html">17. Saint-Jean – Les Tisserands</a></td><td class="num" data-v="4">4</td><td class="num" data-v="1972">1 970 €</td><td class="num" data-v="0">—</td><td class="num" data-v="177333">177 000 €</td></tr><tr><td data-v="18"><a class="link-u" href="quartiers/la-plaquette.html">18. La Plaquette</a></td><td class="num" data-v="0">0</td><td class="num" data-v="0">—</td><td class="num" data-v="0">—</td><td class="num" data-v="0">—</td></tr></tbody>
-      <tfoot><tr><td><b>Louviers</b></td><td class="num"><b>409</b></td><td class="num"><b>1 980 €</b></td><td class="num"><b>1 740 €</b></td><td class="num"><b>185 000 €</b></td></tr></tfoot></table>
-    </div>
-    <p class="note" style="margin-top:12px">Médianes au m², calculées dès 3 ventes. Quand un quartier compte peu de ventes, le chiffre bouge beaucoup d’une année à l’autre : regardez aussi le nombre de ventes. Découpage : Ville de Louviers, numérisé par CV Immobilier (précision de l’ordre de 20 à 40 m).</p>
   </div>
 </section>
 <section class="section bg-sand">
@@ -212,9 +205,9 @@
     </div>
   </div>
 </footer>
-<script src="assets/site.js?v=20261005f"></script>
-<script src="assets/vendor/leaflet/leaflet.js?v=20261005f"></script>
-<script src="assets/map.js?v=20261005f"></script>
-<script src="assets/villages.js?v=20261005f"></script>
+<script src="assets/site.js?v=20261005h"></script>
+<script src="assets/vendor/leaflet/leaflet.js?v=20261005h"></script>
+<script src="assets/map.js?v=20261005h"></script>
+<script src="assets/villages.js?v=20261005h"></script>
 </body>
 </html>

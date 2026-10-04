@@ -6,8 +6,10 @@
   var LI = window.LI = window.LI || {};
   var $ = function (id) { return document.getElementById(id); };
   var promise = null;
+  // Même numéro de version que le script : évite qu'un navigateur garde d'anciennes données en cache
+  var VER = ((document.currentScript && document.currentScript.src.match(/[?&]v=([^&]+)/)) || [])[1] || '';
   LI.loadVillages = function () {
-    if (!promise) promise = LI.fetchJSON(LI.root + 'data/villages.json', null, 15000);
+    if (!promise) promise = LI.fetchJSON(LI.root + 'data/villages.json' + (VER ? '?v=' + VER : ''), null, 15000);
     return promise;
   };
   function inRing(lat, lon, ring) {
@@ -44,10 +46,12 @@
   }
   function ramp(k) { return k < 0.5 ? mix('#E8F0E9', '#C9A961', k * 2) : mix('#C9A961', '#7E3B2B', (k - 0.5) * 2); }
   function popup(p, root) {
-    var s = p.s;
-    return '<strong style="font-size:16px;color:#1B2E40">' + p.n + '. ' + LI.esc(p.nom) + '</strong><br>' +
-      s.n + ' ventes<br>Maisons : ' + (s.M[0] ? fmt(s.M[0]) + '/m²' : 'pas assez de ventes') + '<br>Appartements : ' + (s.A[0] ? fmt(s.A[0]) + '/m²' : 'pas assez de ventes') +
-      '<br><a href="' + root + 'quartiers/' + p.slug + '.html">Voir le quartier</a>';
+    var v = p.v || {}, it = [];
+    if (v.com) it.push(v.com + ' commerce' + (v.com > 1 ? 's' : ''));
+    if (v.eco) it.push(v.eco + ' école' + (v.eco > 1 ? 's' : ''));
+    if (v.bus) it.push(v.bus + ' arrêt' + (v.bus > 1 ? 's' : '') + ' de bus');
+    return '<strong style="font-size:16px;color:#1B2E40">' + p.n + '. ' + LI.esc(p.nom) + '</strong>' + (it.length ? '<br>' + it.join(' · ') : '') +
+      '<br><a href="' + root + 'quartiers/' + p.slug + '.html">Découvrir le quartier</a>';
   }
 
   /* ---------- quartiers.html : carte des 18 quartiers ---------- */
@@ -98,8 +102,8 @@
   /* ---------- quartiers/*.html : le quartier, ses voisins et ses ventes ---------- */
   function initQuartier(el) {
     var n = +el.getAttribute('data-n');
-    Promise.all([LI.loadVillages(), LI.loadDVF()]).then(function (r) {
-      var gj = r[0], dvf = r[1], me = null;
+    LI.loadVillages().then(function (gj) {
+      var me = null;
       var map = LI.makeMap(el, 49.212, 1.168, 15);
       var layer = L.geoJSON(gj, {
         style: function (f) {
@@ -115,19 +119,12 @@
         }
       }).addTo(map);
       map.fitBounds(me.getBounds(), { padding: [16, 16] });
-      var sales = dvf.sales.filter(function (s) {
-        if (s.commune !== 'Louviers' || !s.surf || s.pm2 < 400 || s.pm2 > 6000) return false;
-        var v = LI.villageDe(gj, s.lat, s.lon); return v && v.properties.n === n;
-      });
-      var m2 = sales.map(function (s) { return s.pm2; }).sort(function (a, b) { return a - b; });
-      var lo = m2[Math.floor(m2.length * 0.1)] || 1000, hi = m2[Math.floor(m2.length * 0.9)] || 3000;
-      sales.forEach(function (s) {
-        var k = Math.max(0, Math.min(1, (s.pm2 - lo) / (hi - lo || 1)));
-        L.circleMarker([s.lat, s.lon], { radius: 6, color: '#1B2E40', weight: 1, fillColor: ramp(k), fillOpacity: 0.95 })
-          .bindPopup('<strong>' + (s.type === 'M' ? 'Maison' : 'Appartement') + '</strong> · ' + s.surf + ' m²' + (s.rooms ? ' · ' + s.rooms + ' p.' : '') +
-            '<br>' + fmt(s.price) + ' · ' + fmt(s.pm2) + '/m²<br><span style="color:#5B5F63">' + s.ym.split('-').reverse().join('/') + '</span>')
-          .addTo(map);
-      });
+      if (LI.renderAvant && $('av-map')) {
+        var g = me.feature.geometry, rings = g.type === 'Polygon' ? [g.coordinates[0]] : g.coordinates.map(function (pp) { return pp[0]; });
+        var poly = rings.map(function (ring) { return ring.map(function (c) { return [c[1], c[0]]; }); });
+        var c = me.feature.properties.centre;
+        LI.renderAvant(c[0], c[1], '', { poly: poly, noPin: true });
+      }
     }).catch(function () { el.innerHTML = '<p class="empty-data" style="margin:24px">La carte n’a pas pu se charger. Rechargez la page.</p>'; });
   }
 

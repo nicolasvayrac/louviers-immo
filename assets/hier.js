@@ -9,7 +9,7 @@
     '1950': { label: '1950–1965', q: '&LAYER=ORTHOIMAGERY.ORTHOPHOTOS.1950-1965&STYLE=BDORTHOHISTORIQUE&FORMAT=image/png' },
     'now':  { label: 'Aujourd’hui', q: '&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&FORMAT=image/jpeg' }
   };
-  var S = { map: null, left: null, right: null, me: null };
+  var S = { map: null, left: null, right: null, me: null, poly: null };
 
   function layer(key, pane) {
     return L.tileLayer(WMTS + P[key].q, { pane: pane, maxZoom: 18, attribution: 'Photographies aériennes © <a href="https://www.ign.fr/" target="_blank" rel="noopener">IGN</a>' });
@@ -73,13 +73,20 @@
     $('av-voir-w').hidden = !(r.voir && r.voir.length);
   }
 
-  LI.renderAvant = function (lat, lon, label) {
+  // opts (facultatif) : { poly: [[lat, lon], …] contour à dessiner et cadrer, noPin: true }
+  LI.renderAvant = function (lat, lon, label, opts) {
+    opts = opts || {};
     if (!$('av-map') || !window.L) return;
     renderRue(label || '');
     if (!S.map) init(lat, lon);
     else { S.map.invalidateSize(); S.map.setView([lat, lon], 17); }
-    if (S.me) S.map.removeLayer(S.me);
-    S.me = L.marker([lat, lon], { pane: 'markerPane', icon: LI.divIcon('<div class="pin-me"></div>', '', 22), interactive: false }).addTo(S.map);
-    setTimeout(function () { S.map.invalidateSize(); clip(); }, 60);
+    if (S.me) { S.map.removeLayer(S.me); S.me = null; }
+    if (S.poly) { S.map.removeLayer(S.poly); S.poly = null; }
+    if (opts.poly) {
+      S.poly = L.polygon(opts.poly, { color: '#C9A961', weight: 3, fill: false, interactive: false }).addTo(S.map);
+      S.map.fitBounds(S.poly.getBounds(), { padding: [10, 10] });
+    }
+    if (!opts.noPin) S.me = L.marker([lat, lon], { pane: 'markerPane', icon: LI.divIcon('<div class="pin-me"></div>', '', 22), interactive: false }).addTo(S.map);
+    setTimeout(function () { S.map.invalidateSize(); if (S.poly) S.map.fitBounds(S.poly.getBounds(), { padding: [10, 10] }); clip(); }, 60);
   };
 })();
