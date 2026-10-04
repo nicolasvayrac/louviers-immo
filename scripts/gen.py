@@ -260,7 +260,7 @@ def write_sitemap():
         if p == 'index.html': return '1.0'
         if '/' not in p: return '0.8'
         return '0.6'
-    urls = ''.join(f'  <url><loc>{DOMAIN}{"" if p == "index.html" else p}</loc><lastmod>{date.today().isoformat()}</lastmod><priority>{prio(p)}</priority></url>\n'
+    urls = ''.join(f'  <url><loc>{DOMAIN}{"" if p == "index.html" else p}</loc><priority>{prio(p)}</priority></url>\n'
                    for p in sorted(set(SITEMAP), key=lambda p: (p != 'index.html', '/' in p, p)))
     with open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf-8') as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n')
