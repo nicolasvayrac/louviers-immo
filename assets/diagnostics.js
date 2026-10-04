@@ -65,3 +65,14 @@
     render(f);
   });
 })();
+
+/* Diagnostiqueurs partenaires : ordre tiré au hasard à chaque visite, pour qu'aucun ne soit toujours en premier */
+(function () {
+  var grid = document.getElementById('pt-grid');
+  if (!grid) return;
+  var cards = Array.prototype.slice.call(grid.children);
+  for (var i = cards.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1)), t = cards[i]; cards[i] = cards[j]; cards[j] = t;
+  }
+  cards.forEach(function (c) { grid.appendChild(c); });
+})();

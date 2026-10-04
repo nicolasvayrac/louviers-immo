@@ -856,3 +856,24 @@ picture > source { display: none; }
 #av-bar::after { content: ''; position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: var(--cream); border: 3px solid var(--navy); box-shadow: 0 6px 16px rgba(0,0,0,.25); }
 #av-range { width: 100%; accent-color: var(--navy); }
 @media (max-width: 700px) { .av-rue { grid-template-columns: 1fr; } .av-plaque { white-space: normal; } .av-lab { font-size: 15px; } }
+
+/* Diagnostics : diagnostiqueurs partenaires (cartes identiques, ordre tiré au hasard) */
+.dg-pt-link { display: block; margin-top: 10px; padding: 12px 16px; border-radius: 14px; border: 1px solid var(--line-strong); color: var(--navy); font-weight: 500; text-align: center; font-size: 15px; }
+.dg-pt-link:hover { border-color: var(--gold); background: var(--gold-tint); }
+.pt-band .head2 p { color: var(--on-dark); }
+.pt-band .note a { color: var(--gold-light); text-decoration: underline; }
+.pt-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.pt-card { display: flex; flex-direction: column; background: var(--cream); color: var(--text); border-radius: 22px; overflow: hidden; box-shadow: 0 24px 50px rgba(0, 0, 0, .22); }
+.pt-logo { display: flex; align-items: center; justify-content: center; height: 190px; padding: 26px 34px; background: var(--white); border-bottom: 1px solid var(--line); }
+.pt-logo img { max-width: 100%; max-height: 124px; width: auto; height: auto; object-fit: contain; transition: transform .3s; }
+.pt-logo:hover img { transform: scale(1.04); }
+.pt-body { flex: 1; padding: 24px 26px 6px; }
+.pt-body h3 { font-size: 26px; color: var(--navy); }
+.pt-where { margin-top: 10px; font-size: 15px; color: var(--text); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.pt-badge { display: inline-block; padding: 4px 12px; border-radius: 999px; background: var(--gold-tint); color: var(--gold-text); font-size: 13px; font-weight: 600; }
+.pt-zone { margin-top: 10px; font-size: 15px; line-height: 1.5; color: var(--text); }
+.pt-zone b { color: var(--navy); font-weight: 600; }
+.pt-actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 18px 26px 26px; }
+.pt-actions .btn { flex: 1 1 auto; min-height: 46px; padding: 0 18px; font-size: 15px; }
+.pt-actions .btn-line { border-color: var(--line-strong); color: var(--navy); background: transparent; }
+@media (max-width: 960px) { .pt-grid { grid-template-columns: 1fr; max-width: 520px; } .pt-logo { height: 160px; } }

@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261003d'
+VER = '20261005a'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -1470,6 +1470,52 @@ DIAGS = [
 ]
 
 
+UTM = 'utm_source=louviers.immo&utm_medium=referral&utm_campaign=diagnostics'
+# Diagnostiqueurs partenaires : même carte pour chacun, ordre tiré au hasard à chaque visite (assets/diagnostics.js)
+PARTENAIRES_DIAG = [
+    {'id': 'diagamter', 'nom': 'Diagamter Louviers', 'logo': 'diagamter.png', 'w': 334, 'h': 300,
+     'local': '9 bis place de la République, Louviers',
+     'zone': 'à Louviers, Val-de-Reuil, Elbeuf, Évreux, Vernon et alentours',
+     'devis': 'https://www.diagamter.com/devis/bienImmobilier/21', 'site': 'https://www.diagamter.com/franchises/diagnostic-immobilier-louviers',
+     'tel': '02 32 25 18 22'},
+    {'id': 'roldiag', 'nom': 'Rol’Diag', 'logo': 'roldiag.png', 'w': 303, 'h': 211,
+     'local': '',
+     'zone': 'de Saint-Valery-en-Caux à Vernon et de Bernay à Dieppe, dont Louviers, Le Neubourg et Rouen',
+     'devis': 'https://www.roldiag.fr/contact-page/', 'site': 'https://www.roldiag.fr/',
+     'tel': '06 01 02 17 10'},
+    {'id': 'activdiag', 'nom': 'Activdiag', 'logo': 'activdiag.png', 'w': 456, 'h': 79,
+     'local': '',
+     'zone': 'dans l’Eure et la Seine-Maritime, dont Louviers, Évreux, Vernon, Les Andelys et Rouen',
+     'devis': 'https://www.activdiag.fr/contact.php', 'site': 'https://www.activdiag.fr/activdiag-diagnostics-normandie.php',
+     'tel': '07 50 57 80 01'},
+]
+
+
+def partenaires_diag(r):
+    def u(url):
+        return url + ('&' if '?' in url else '?') + UTM
+    def card(p):
+        ev = 'plausible-event-partenaire=' + p['id']
+        where = (f'<p class="pt-where"><span class="pt-badge">Basé à Louviers</span>{p["local"]}</p>' if p['local'] else '')
+        zone = f'<p class="pt-zone"><b>Intervient</b> {p["zone"]}</p>' if p['zone'] else ''
+        tel = (f'<a class="btn btn-line plausible-event-name=Partenaire+Appel {ev}" href="tel:+33{p["tel"].replace(" ", "")[1:]}">{p["tel"]}</a>' if p['tel'] else '')
+        return f'''<article class="pt-card" data-partenaire="{p['id']}">
+        <a class="pt-logo plausible-event-name=Partenaire+Site {ev}" href="{u(p['site'])}" target="_blank" rel="noopener" aria-label="Site de {p['nom']}"><img src="{r}assets/img/partenaires/{p['logo']}" width="{p['w']}" height="{p['h']}" alt="Logo {p['nom']}" loading="lazy"></a>
+        <div class="pt-body"><h3>{p['nom']}</h3>{where}{zone}</div>
+        <div class="pt-actions"><a class="btn btn-navy plausible-event-name=Partenaire+Devis {ev}" href="{u(p['devis'])}" target="_blank" rel="noopener">Demander un devis</a>{tel}</div>
+      </article>'''
+    return f'''<section class="section bg-navy pt-band" id="partenaires">
+  <div class="wrap">
+    <div class="head2"><div><span class="eyebrow">Nos diagnostiqueurs partenaires</span>
+      <h2 style="margin-top:10px">Des diagnostiqueurs que nous connaissons.</h2></div>
+      <p>Trois cabinets avec qui nous travaillons. Demandez-leur un devis : les prix sont libres, comparez.</p></div>
+    <div class="pt-grid" id="pt-grid">{''.join(card(p) for p in PARTENAIRES_DIAG)}</div>
+    <p class="note" style="margin-top:22px">Présentés dans un ordre tiré au hasard à chaque visite. Tout diagnostiqueur doit être certifié : vous pouvez le vérifier dans l’<a href="https://diagnostiqueurs.din.developpement-durable.gouv.fr/index.action" target="_blank" rel="noopener">annuaire officiel du ministère</a>.</p>
+  </div>
+</section>
+'''
+
+
 def page_diagnostics():
     r = ''
     cards = ''.join(f'''<article class="dg-card" id="d-{k}">
@@ -1515,11 +1561,13 @@ def page_diagnostics():
       <div class="dg-alert" id="dg-alert" hidden></div>
       <div class="dg-extra" id="dg-extra"></div>
       <a class="dg-cta plausible-event-name=Diagnostics+Vendeur" id="dg-cta" href="{CV_EST}">Vous vendez ? CV Immobilier organise vos diagnostics</a>
+      <a class="dg-pt-link" href="#partenaires">Faire réaliser ces diagnostics : nos trois diagnostiqueurs partenaires</a>
       <p class="note" style="margin-top:14px">Indicatif, selon la réglementation en vigueur en 2026. Termites et mérule ne sont exigés que dans les communes couvertes par un arrêté préfectoral : votre diagnostiqueur le vérifie pour vous.</p>
     </div>
   </div>
 </section>
 
+{partenaires_diag(r)}
 <section class="section ph-band-brique" id="assainissement">
   <div class="wrap split">
     <div class="a stack-lg">
