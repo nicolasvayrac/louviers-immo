@@ -20,7 +20,8 @@
     var type = $('f-type').value, com = $('f-commune').value, per = $('f-period').value;
     var last = S.meta.period && S.meta.period.to;
     var cutoff = '';
-    if (per !== 'all' && last) {
+    var year = per.charAt(0) === 'y' ? per.slice(1) : '';
+    if (!year && per !== 'all' && last) {
       var y = parseInt(last.slice(0, 4), 10), m = parseInt(last.slice(5, 7), 10);
       var back = parseInt(per, 10);
       var tot = y * 12 + (m - 1) - back + 1;
@@ -30,7 +31,8 @@
       return (type === 'all' || s.type === type) &&
         (com === 'all' || s.commune === com) &&
         (!S.quartier || com !== 'Louviers' || s.q === S.quartier) &&
-        (!cutoff || s.ym >= cutoff);
+        (!cutoff || s.ym >= cutoff) &&
+        (!year || s.ym.slice(0, 4) === year);
     });
   }
 
@@ -150,7 +152,7 @@
     }
 
     LI.loadDVF().then(function (d) {
-      S.all = d.sales; S.meta = d.meta || {};
+      S.all = d.allSales || d.sales; S.meta = d.metaAll || d.meta || {};
       if (!S.all.length) {
         $('no-data').hidden = false;
         $('t-body').innerHTML = '<tr><td colspan="4" class="muted">Les données seront affichées dès leur intégration.</td></tr>';
@@ -165,6 +167,17 @@
         var o = document.createElement('option'); o.value = cm; o.textContent = cm; sel.appendChild(o);
       });
       if (!hasFocus && communes.Louviers) sel.value = 'Louviers';
+      // Une option par année disponible
+      var years = {}; S.all.forEach(function (s) { years[s.ym.slice(0, 4)] = 1; });
+      var ys = Object.keys(years).sort().reverse(), fp = $('f-period');
+      var allOpt = fp.querySelector('option[value="all"]');
+      if (allOpt && ys.length > 1) allOpt.textContent = 'Toute la période (' + ys[ys.length - 1] + '–' + ys[0] + ')';
+      ys.forEach(function (y) {
+        var o = document.createElement('option'); o.value = 'y' + y;
+        o.textContent = 'Année ' + y + (S.meta.period && S.meta.period.to.slice(0, 4) === y && S.meta.period.to.slice(5) !== '12' ? ' (jusqu’à ' + LI.monthFR(S.meta.period.to) + ')' : '');
+        fp.appendChild(o);
+      });
+      var py = u.get('periode'); if (py && fp.querySelector('option[value="' + py + '"]')) fp.value = py;
       ['f-type', 'f-period'].forEach(function (id) { $(id).addEventListener('change', render); });
       $('f-commune').addEventListener('change', function () { syncQuartierField(); render(); });
       syncQuartierField();

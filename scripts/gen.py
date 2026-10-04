@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261005f'
+VER = '20261005i'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -245,7 +245,26 @@ def write(path, content):
     os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, 'w', encoding='utf-8') as f:
         f.write(content)
+    if 'content="index, follow"' in content:
+        SITEMAP.append(path)
     print('écrit', path, len(content))
+
+
+SITEMAP = []
+
+
+def write_sitemap():
+    """sitemap.xml regénéré à chaque passage : toutes les pages indexables, rien d'autre."""
+    from datetime import date
+    def prio(p):
+        if p == 'index.html': return '1.0'
+        if '/' not in p: return '0.8'
+        return '0.6'
+    urls = ''.join(f'  <url><loc>{DOMAIN}{"" if p == "index.html" else p}</loc><lastmod>{date.today().isoformat()}</lastmod><priority>{prio(p)}</priority></url>\n'
+                   for p in sorted(set(SITEMAP), key=lambda p: (p != 'index.html', '/' in p, p)))
+    with open(os.path.join(OUT, 'sitemap.xml'), 'w', encoding='utf-8') as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n')
+    print('écrit sitemap.xml', len(set(SITEMAP)), 'pages')
 
 
 HERO_SVG = '''<svg viewBox="0 0 600 580" role="img" aria-label="Illustration : ce qui se trouve à 5, 10 et 15 minutes à pied d’une adresse">
@@ -697,9 +716,9 @@ def page_adresse():
 # =========================================================
 def page_prix():
     r = ''
-    css = f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n'
-    body = head('Prix de l’immobilier à Louviers : les ventes réelles, sur la carte · louviers.immo',
-                'Prix au m² à Louviers et dans l’Agglomération Seine-Eure à partir des ventes réelles enregistrées par l’État (DVF) : carte des ventes, médianes maisons et appartements par commune.',
+    css = f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n' + VCSS
+    body = head('Prix de l’immobilier à Louviers : ventes réelles par quartier · louviers.immo',
+                'Prix au m² à Louviers, quartier par quartier, et dans l’Agglomération Seine-Eure à partir des ventes réelles enregistrées par l’État (DVF) : carte des ventes, médianes maisons et appartements, dernières ventes.',
                 'prix.html', r, css=css)
     body += header('prix.html', r, topbar=False)
     body += f'''<main id="contenu">
@@ -726,6 +745,8 @@ def page_prix():
         <select id="f-commune"><option value="all">Toutes les communes</option></select></div>
       <div class="field"><label for="f-period">Période</label>
         <select id="f-period"><option value="12">12 derniers mois</option><option value="24" selected>24 derniers mois</option><option value="all">Toute la période</option></select></div>
+      <div class="field" id="f-quartier-w"><label for="f-quartier-top">Quartier (Louviers)</label>
+        <select id="f-quartier-top"><option value="">Tous les quartiers</option></select></div>
     </form>
     <div class="kpis" style="max-width:820px">
       <div class="kpi light"><div class="l">Maison</div><div class="v" id="k-maison">—</div><div class="u">€/m² médian</div></div>
@@ -742,7 +763,15 @@ def page_prix():
       <span class="muted">· couleurs calculées sur la sélection en cours (tiers)</span>
     </div>
 
-    <div class="stack" style="margin-top:24px">
+    <p class="small"><a class="link-u" href="#prix-quartiers">Voir les prix des 18 quartiers de Louviers</a></p>
+  </div>
+</section>
+
+{prix_quartiers(r)}
+
+<section class="section">
+  <div class="wrap stack-lg">
+    <div class="stack">
       <h2 style="font-size:clamp(28px,2.6vw,38px)">Par commune</h2>
       <div class="table-wrap"><table class="data">
         <thead><tr><th scope="col">Commune</th><th scope="col" class="num">Ventes</th><th scope="col" class="num">Maison · €/m²</th><th scope="col" class="num">Appartement · €/m²</th></tr></thead>
@@ -792,7 +821,7 @@ def page_prix():
 </section>
 </main>
 '''
-    body += footer(r, ['assets/vendor/leaflet/leaflet.js', 'assets/map.js', 'assets/prix.js', 'assets/estimation.js'])
+    body += footer(r, ['assets/vendor/leaflet/leaflet.js', 'assets/map.js', 'assets/villages.js', 'assets/prix.js', 'assets/estimation.js'])
     write('prix.html', body)
 
 
@@ -2188,3 +2217,4 @@ exec(open(os.path.join(HERE, 'pages_villages.py'), encoding='utf-8').read())
 for fn in [page_a_vendre, page_merci, page_qr, page_comparer, page_georget, page_guincetre, page_portes_eau, page_diagnostics, page_conciergerie, page_index, page_adresse, page_prix, page_quartiers, page_villages, page_portraits,
            page_portrait_modele, page_outils, page_commerces, page_barbe, page_apropos, page_mentions, page_404]:
     fn()
+write_sitemap()

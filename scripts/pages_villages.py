@@ -40,8 +40,18 @@ def village_de(lat, lon, maxd=250):
 # ---------- ventes DVF par quartier
 _DVF = json.load(open(os.path.join(OUT, 'data/dvf.json'), encoding='utf-8'))
 _PER = _DVF['period']
+
+
+def _ym_add(ym, k):
+    y, m = map(int, ym.split('-')); t = y * 12 + m - 1 + k
+    return f'{t // 12}-{t % 12 + 1:02d}'
+
+
+# Les chiffres des pages portent sur les 24 derniers mois disponibles (le fichier peut couvrir 5 ans).
+_W_TO = _PER['to']; _W_FROM = max(_PER['from'], _ym_add(_W_TO, -23)); _W_MID = _ym_add(_W_TO, -11)
+_WSALES = [s for s in _DVF['sales'] if _W_FROM <= s[2] <= _W_TO]
 VSALES = {n: [] for n in VBY}
-for _s in _DVF['sales']:
+for _s in _WSALES:
     if _s[7] != 'Louviers' or not _s[4] or not 400 <= _s[3] / _s[4] <= 6000: continue  # écarte les ventes aberrantes (lots multiples, terrains)
     _n = village_de(_s[0], _s[1])
     if _n: VSALES[_n].append(_s)
@@ -58,16 +68,16 @@ def _stats(sales):
             d.update(med=_st.median(m2), moy=_st.mean(m2), q1=q[0], q3=q[2], prix_moy=_st.mean(s[3] for s in xs),
                      prix_med=_st.median(s[3] for s in xs), surf=_st.mean(s[4] for s in xs),
                      pieces=_st.median([s[6] for s in xs if s[6]] or [0]))
-            for y in ('2024', '2025'):
-                ys = [s[3] / s[4] for s in xs if s[2].startswith(y)]
-                d['y' + y] = (_st.median(ys), len(ys)) if len(ys) >= 5 else None
+            for k, ok in (('y_av', lambda ym: ym < _W_MID), ('y_ap', lambda ym: ym >= _W_MID)):
+                ys = [s[3] / s[4] for s in xs if ok(s[2])]
+                d[k] = (_st.median(ys), len(ys)) if len(ys) >= 5 else None
         out[t] = d
     out['n'] = len(sales)
     return out
 
 
 VSTATS = {n: _stats(v) for n, v in VSALES.items()}
-LOUV = _stats([s for s in _DVF['sales'] if s[7] == 'Louviers' and s[4] and 400 <= s[3] / s[4] <= 6000])
+LOUV = _stats([s for s in _WSALES if s[7] == 'Louviers' and s[4] and 400 <= s[3] / s[4] <= 6000])
 
 
 def _fr(v, r=-1):
@@ -78,7 +88,7 @@ def _pm(s):
     y, m = s.split('-'); return f'{_MOIS[int(m) - 1]} {y}'
 
 
-VPERIODE = f'{_pm(_PER["from"])} à {_pm(_PER["to"])}'
+VPERIODE = f'{_pm(_W_FROM)} à {_pm(_W_TO)}'
 
 # ---------- commerces, équipements, portraits (OpenStreetMap + portraits publiés)
 _POIS = json.load(open(os.path.join(OUT, 'data/pois.json'), encoding='utf-8'))['pois']
@@ -169,9 +179,9 @@ def _bloc_prix(t, d, lv):
     lo, hi = 800, 3600
     x = lambda v: max(0, min(100, (v - lo) / (hi - lo) * 100))
     evo = ''
-    if d.get('y2024') and d.get('y2025'):
-        a, b = d['y2024'][0], d['y2025'][0]; p = round((b / a - 1) * 100)
-        evo = f'<li><span>Médiane 2024 → 2025</span><b>{_fr(a)} → {_fr(b)} €/m² ({"+" if p >= 0 else "−"}{abs(p)} %)</b></li>'
+    if d.get('y_av') and d.get('y_ap'):
+        a, b = d['y_av'][0], d['y_ap'][0]; p = round((b / a - 1) * 100)
+        evo = f'<li><span>Médiane : 12 mois précédents → 12 derniers mois</span><b>{_fr(a)} → {_fr(b)} €/m² ({"+" if p >= 0 else "−"}{abs(p)} %)</b></li>'
     pcs = d['pieces']; pcs = (str(int(pcs)) if pcs == int(pcs) else f'{int(pcs)} à {int(pcs) + 1}')
     return f'''<div class="vq-pcard"><span class="eyebrow">{lab} · {d["n"]} ventes</span>
       <div class="vq-big">{_fr(d["med"])} <small>€/m² médian</small></div>
@@ -254,6 +264,15 @@ VCSS = '''<style>
 .vq-por img{width:100%;aspect-ratio:16/10;object-fit:cover}
 .vq-por span,.vq-por strong{padding:0 18px}.vq-por .c{color:var(--gold);font-size:13px;margin-top:8px}
 .vq-por strong{color:var(--cream);font-family:var(--serif);font-weight:400;font-size:21px}
+.vq-pb{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,4fr) auto;gap:24px;align-items:center;background:var(--sand);border-radius:24px;padding:28px 32px}
+.vq-pb-k{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vq-pb-a{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.pq-pick{display:flex;flex-direction:column;gap:6px;max-width:360px}.pq-pick label{font-size:14px;font-weight:500;color:var(--navy)}
+.pq-panel{background:var(--white);border:1px solid var(--line);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:22px}
+.pq-head{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.pq-head>div{flex:1;min-width:220px}.pq-head h3{font-size:clamp(24px,2.2vw,30px)}
+.pq-warn{background:var(--gold-tint);border-radius:16px;padding:16px 20px;font-size:15px;color:var(--text)}.pq-warn strong{color:var(--navy)}
+.pq-h4{font-family:var(--serif);font-size:22px;color:var(--navy);font-weight:500}
+.pq-row{cursor:pointer}.pq-row:hover td{background:#FBFAF7}.pq-row.on td{background:var(--gold-tint)}
 .vq-sec{padding:clamp(44px,5vw,72px) 0}
 .vq-sec h2{margin-bottom:22px}
 .vq-tbl th button{all:unset;cursor:pointer}
@@ -271,7 +290,7 @@ VCSS = '''<style>
 .vl-card i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:600;color:var(--navy)}
 .vl-card strong{display:block;font-family:var(--serif);font-weight:400;font-size:20px;color:var(--navy);line-height:1.15}
 .vl-card span{font-size:13px;color:var(--muted)}
-@media(max-width:900px){.vq-hero,.vq-prix{grid-template-columns:1fr}.vq-k,.vq-facts{grid-template-columns:repeat(2,1fr)}.vq-rubs,.vq-cta,.vq-pors,.vl-grid{grid-template-columns:1fr}.vq-map{min-height:320px}}
+@media(max-width:900px){.vq-pb{grid-template-columns:1fr}.vq-hero,.vq-prix{grid-template-columns:1fr}.vq-k,.vq-facts{grid-template-columns:repeat(2,1fr)}.vq-rubs,.vq-cta,.vq-pors,.vl-grid{grid-template-columns:1fr}.vq-map{min-height:320px}}
 </style>
 '''
 _LEAF = '<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n'
@@ -284,17 +303,27 @@ def page_village(f):
     p = f['properties']; n = p['n']; nom = p['nom']; slug = p['slug']; r = '../'
     S = VSTATS[n]; M, A = S['M'], S['A']
     ncom, vie = _vie(n)
-    title = f'{nom}, quartier de Louviers : prix, ventes, commerces · louviers.immo'
-    desc = (f'Le quartier {nom} à Louviers ({n}e des 18 « villages dans la ville ») : {S["n"]} ventes réelles, prix médian au m² des maisons et des appartements, commerces, écoles et bus.')
+    title = f'{nom}, quartier de Louviers : vivre ici, commerces, écoles · louviers.immo'
+    desc = (f'Le quartier {nom} à Louviers, l’un des 18 « villages dans la ville » : vue du ciel hier et aujourd’hui, commerces, écoles, bus, portraits de commerçants et prix en bref.')
     body = head(title, desc, f'quartiers/{slug}.html', r, css=_LEAF.format(r=r) + VCSS)
     body += header('quartiers.html', r, topbar=False)
     mm = f'{_fr(M["med"])} €' if M.get('med') else '—'; ma = f'{_fr(A["med"])} €' if A.get('med') else '—'
-    part = round(100 * M['n'] / S['n']) if S['n'] else 0
     nb = ''.join(f'<a href="{VBY[v]["properties"]["slug"]}.html"><i style="background:{VBY[v]["properties"]["c"]}">{v}</i>{_e(VBY[v]["properties"]["nom"])}</a>' for v in p['voisins'])
     pors = ''.join(f'''<a class="vq-por" href="{r}{x['url']}"><img src="{r}{x['photo']}" alt="{_e(x['name'])}" loading="lazy"><span class="c">{_e(x['cat'])}</span><strong>{_e(x['name'])}</strong><span>{_e(x['title'])}</span></a>''' for x in VPORT[n] if x['photo'])
     txt = VTEXTES.get(n, '')
-    lead = (f'Le {n}<sup>e</sup> des 18 quartiers de Louviers, les « villages dans la ville » définis par la Ville. '
-            f'{_fr(p["surface_ha"], 0)} hectares, {S["n"]} ventes enregistrées de {VPERIODE}, {ncom} commerces recensés.')
+    VV = VVIE[n]
+    bits = [f'{_fr(p["surface_ha"], 0)} hectares']
+    if VV['com']: bits.append(f"{VV['com']} commerce{'s' if VV['com'] > 1 else ''}")
+    if VV['eco']: bits.append(f"{VV['eco']} école{'s' if VV['eco'] > 1 else ''}")
+    if VV['bus']: bits.append(f"{VV['bus']} arrêt{'s' if VV['bus'] > 1 else ''} de bus")
+    lead = f'Le {n}<sup>{"er" if n == 1 else "e"}</sup> des 18 quartiers de Louviers, les « villages dans la ville » définis par la Ville. ' + ', '.join(bits) + '.'
+    prixq = f'''<div class="vq-pb">
+      <div><span class="eyebrow">Les prix en bref</span><h2 style="font-size:clamp(26px,2.4vw,34px);margin-top:6px">L’immobilier à {_e(nom)}</h2>
+        <p class="muted" style="margin-top:8px">{S['n']} vente{'s' if S['n'] > 1 else ''} de {VPERIODE}. Les chiffres détaillés, les fourchettes et toutes les ventes sont sur la page Prix.</p></div>
+      <div class="vq-pb-k">{_kpi('Maisons', mm, 'm² médian')}{_kpi('Appartements', ma, 'm² médian')}</div>
+      <div class="vq-pb-a"><a class="btn btn-navy plausible-event-name=Prix+Quartier plausible-event-position={slug}" href="{r}prix.html?quartier={slug}#prix-quartiers">Toutes les ventes du quartier</a>
+        <a class="link-u plausible-event-name=Estimation+Click plausible-event-position=quartier-{slug}" href="{CV_EST}">Estimer mon bien</a></div>
+    </div>'''
     body += f'''<main id="contenu">
 <section class="page-head" style="padding-bottom:40px"><div class="wrap vq-hero">
   <div class="stack">
@@ -302,38 +331,40 @@ def page_village(f):
     <span class="vq-num" style="background:{p['c']}">{n}</span>
     <h1 style="margin-top:4px">{_e(nom)}</h1>
     <p class="lede">{lead}</p>
-    <div class="vq-k" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:8px">
-      {_kpi('Maisons', mm, 'm² médian')}{_kpi('Appartements', ma, 'm² médian')}
-    </div>
-    <a class="btn btn-gold plausible-event-name=Estimation+Click plausible-event-position=quartier-{slug}" style="align-self:flex-start" href="{CV_EST}">Estimer mon bien dans ce quartier</a>
+    <div class="vq-nb" style="margin-top:6px"><span class="small muted" style="align-self:center">Voisins :</span>{nb}</div>
   </div>
-  <div class="vq-map" id="vq-map" data-n="{n}" role="img" aria-label="Carte du quartier {_e(nom)} et des ventes"></div>
+  <div class="vq-map" id="vq-map" data-n="{n}" role="img" aria-label="Carte du quartier {_e(nom)}"></div>
 </div></section>
 
+'''
+    body += f'''{f'<section class="vq-sec"><div class="wrap" style="max-width:860px"><article class="stack-lg">{txt}</article></div></section>' if txt else ''}
 <section class="vq-sec bg-sand"><div class="wrap">
-  <div class="head2"><h2>Les prix du quartier</h2><p>Ventes réelles enregistrées par l’État (DVF), de {VPERIODE}. Le trait bleu situe la médiane de Louviers.</p></div>
-  <div class="vq-prix">{_bloc_prix('M', M, LOUV['M'])}{_bloc_prix('A', A, LOUV['A'])}</div>
-  <div class="vq-k" style="margin-top:16px">
-    {_kpi('Ventes', S['n'], 'sur la période')}{_kpi('Maisons', f'{part} %', 'des ventes')}
-    {_kpi('Louviers, maisons', f'{_fr(LOUV["M"]["med"])} €', 'm² médian, toute la ville')}{_kpi('Louviers, appartements', f'{_fr(LOUV["A"]["med"])} €', 'm² médian, toute la ville')}
-  </div>
-  <div class="box-sand stack" style="margin-top:20px;border-radius:22px;background:var(--white)">
-    <h3 style="font-size:23px">Le prix au m² ne suffit pas</h3>
-    <p class="muted">Deux maisons de la même rue peuvent avoir des prix très différents : état et travaux, étiquette énergie, terrain, garage, exposition, stationnement, qualité de la rénovation. Les ventes disent ce que le marché a payé, pas ce que vaut votre bien.</p>
-    <a class="btn btn-navy plausible-event-name=Estimation+Click plausible-event-position=quartier-prix-{slug}" style="align-self:flex-start" href="{CV_EST}">Obtenir un avis de valeur</a>
+  <div class="avant" id="avant">
+    <div class="head2" style="margin-bottom:0">
+      <h2 style="font-size:clamp(28px,2.6vw,38px)">{_e(nom)}, <span class="it">hier et aujourd’hui</span></h2>
+      <p>Le quartier vu du ciel dans les années 1950 et aujourd’hui. Faites glisser la poignée pour comparer.</p>
+    </div>
+    <div class="av-rue" id="av-rue" hidden><div><span class="av-plaque" id="av-plaque"></span></div><div class="stack"><p class="av-texte" id="av-texte"></p><p class="note" id="av-src"></p><div id="av-voir-w" class="stack" hidden><ul id="av-voir"></ul></div></div></div>
+    <div class="av-box">
+      <div id="av-map" role="region" aria-label="Comparaison des photographies aériennes du quartier"></div>
+      <span class="av-lab g" id="av-lg">1950–1965</span><span class="av-lab d" id="av-ld">Aujourd’hui</span>
+      <div id="av-bar" aria-hidden="true"></div>
+    </div>
+    <label class="small muted" for="av-range">Position du curseur</label>
+    <input id="av-range" type="range" min="0" max="100" value="50">
+    <p class="note">Photographies aériennes : IGN, BD ORTHO® historique 1950-1965 et BD ORTHO®, via la Géoplateforme (licence ouverte Etalab). En doré, les limites du quartier.</p>
   </div>
 </div></section>
 
-{f"""<section class="vq-sec"><div class="wrap"><div class="head2"><h2>Les dernières ventes</h2><p>Une ligne par vente, de la plus récente à la plus ancienne. Les ventes atypiques (plusieurs lots, prix au m² hors norme) sont écartées.</p></div>{_ventes_table(VSALES[n])}</div></section>""" if VSALES[n] else ''}
-
-{f'<section class="vq-sec"><div class="wrap" style="max-width:860px"><article class="stack-lg">{txt}</article></div></section>' if txt else ''}
-<section class="vq-sec{' bg-sand' if not VSALES[n] or txt else ''}"><div class="wrap">
+<section class="vq-sec"><div class="wrap">
   <h2>Vivre ici</h2>
   {vie}
   <p style="margin-top:20px"><a class="link-u" href="{r}adresse.html?q={quote(nom + ', Louviers')}&lat={p['centre'][0]}&lon={p['centre'][1]}">Temps à pied, à vélo et en voiture depuis une adresse du quartier</a></p>
 </div></section>
 
 {f"""<section class="vq-sec bg-sand"><div class="wrap"><div class="head2"><h2>Ils font le quartier</h2><p>Nos portraits de commerçants installés ici.</p></div><div class="vq-pors">{pors}</div></div></section>""" if pors else ''}
+
+<section class="vq-sec"><div class="wrap">{prixq}</div></section>
 
 <section class="section" style="padding-top:0" data-biens-sec>
   <div class="wrap">
@@ -344,17 +375,16 @@ def page_village(f):
 </section>
 
 <section class="vq-sec"><div class="wrap stack-lg">
-  <div><h2 style="font-size:clamp(24px,2.4vw,32px)">Les quartiers voisins</h2><div class="vq-nb" style="margin-top:16px">{nb}</div></div>
   <div class="vq-cta">
     <a href="{CV_SITE}" class="plausible-event-name=Biens+Quartier plausible-event-position={slug}"><span class="eyebrow">Acheter</span><strong>Vous cherchez&nbsp;ici&nbsp;?</strong><span>Nos biens à vendre à Louviers.</span><span class="go">Voir les biens</span></a>
     <a href="{CV_EST}" class="plausible-event-name=Estimation+Click plausible-event-position=quartier-cta-{slug}"><span class="eyebrow">Vendre</span><strong>Vous possédez un bien ici ?</strong><span>Un avis de valeur fondé sur les ventes du quartier.</span><span class="go">Estimer mon bien</span></a>
     <a class="alt" href="{r}commerces.html#proposer"><span class="eyebrow">Contribuer</span><strong>Une adresse à nous recommander ?</strong><span>Un commerce, un lieu, une information à corriger.</span><span class="go">Proposer une adresse</span></a>
   </div>
-  <p class="note">Découpage : « Les villages dans la ville », Ville de Louviers. Limites numérisées par CV Immobilier depuis le plan de la Ville, précision de l’ordre de 20 à 40 mètres. Ventes : DVF, DGFiP, {VPERIODE}. Commerces et équipements : OpenStreetMap.</p>
+  <p class="note">Découpage : « Les villages dans la ville », Ville de Louviers. Limites numérisées par CV Immobilier depuis le plan de la Ville, précision de l’ordre de 20 à 40 mètres. Ventes : DVF, DGFiP, {VPERIODE}. Commerces et équipements : OpenStreetMap. Photographies aériennes : IGN.</p>
 </div></section>
 </main>
 '''
-    body += footer(r, ['assets/vendor/leaflet/leaflet.js', 'assets/map.js', 'assets/villages.js', 'assets/biens.js'])
+    body += footer(r, ['assets/vendor/leaflet/leaflet.js', 'assets/map.js', 'assets/hier.js', 'assets/villages.js', 'assets/biens.js'])
     write(f'quartiers/{slug}.html', body)
 
 
@@ -391,18 +421,57 @@ def vl_home(root):
     </div>'''
 
 
-def page_quartiers():
-    r = ''
-    body = head('Les 18 quartiers de Louviers : prix, ventes, carte · louviers.immo',
-                'Les 18 quartiers de Louviers, « les villages dans la ville » : carte, prix médian au m² des maisons et des appartements, nombre de ventes, et une page par quartier.',
-                'quartiers.html', r, css=_LEAF.format(r=r) + VCSS)
-    body += header('quartiers.html', r, topbar=False)
+def vl_table(r):
     rows = ''
     for f in VFEAT:
         p = f['properties']; S = VSTATS[p['n']]
         cell = lambda d: f'<td class="num" data-v="{round(d["med"])}">{_fr(d["med"])} €</td>' if d.get('med') else '<td class="num" data-v="0">—</td>'
         pm = f'<td class="num" data-v="{round(S["M"]["prix_moy"])}">{_fr(S["M"]["prix_moy"], -3)} €</td>' if S['M'].get('med') else '<td class="num" data-v="0">—</td>'
-        rows += f'<tr><td data-v="{p["n"]}"><a class="link-u" href="quartiers/{p["slug"]}.html">{p["n"]}. {_e(p["nom"])}</a></td><td class="num" data-v="{S["n"]}">{S["n"]}</td>{cell(S["M"])}{cell(S["A"])}{pm}</tr>'
+        rows += f'<tr class="pq-row" data-slug="{p["slug"]}"><td data-v="{p["n"]}"><a class="link-u" href="{r}quartiers/{p["slug"]}.html">{p["n"]}. {_e(p["nom"])}</a></td><td class="num" data-v="{S["n"]}">{S["n"]}</td>{cell(S["M"])}{cell(S["A"])}{pm}</tr>'
+    return f'''<div style="overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--white)">
+      <table class="data vq-tbl" id="vl-tbl"><thead><tr><th><button type="button" data-c="0">Quartier</button></th><th class="num"><button type="button" data-c="1">Ventes</button></th><th class="num"><button type="button" data-c="2">Maisons €/m²</button></th><th class="num"><button type="button" data-c="3">Appart. €/m²</button></th><th class="num"><button type="button" data-c="4">Prix moyen maison</button></th></tr></thead>
+      <tbody>{rows}</tbody>
+      <tfoot><tr><td><b>Louviers</b></td><td class="num"><b>{LOUV['n']}</b></td><td class="num"><b>{_fr(LOUV['M']['med'])} €</b></td><td class="num"><b>{_fr(LOUV['A']['med'])} €</b></td><td class="num"><b>{_fr(LOUV['M']['prix_moy'], -3)} €</b></td></tr></tfoot></table>
+    </div>'''
+
+
+def prix_quartiers(r):
+    """Section « Les prix par quartier » de prix.html."""
+    opts = ''.join(f'<option value="{f["properties"]["slug"]}">{f["properties"]["n"]}. {_e(f["properties"]["nom"])}</option>' for f in VFEAT)
+    panels = ''
+    for f in VFEAT:
+        p = f['properties']; n = p['n']; S = VSTATS[n]
+        panels += f'''<div class="pq-panel" data-slug="{p['slug']}" hidden>
+      <div class="pq-head"><span class="vq-num" style="background:{p['c']}">{n}</span>
+        <div><h3>{_e(p['nom'])}</h3><p class="muted">{S['n']} vente{'s' if S['n'] > 1 else ''} de maisons et d’appartements, {VPERIODE}.</p></div>
+        <a class="btn btn-line plausible-event-name=Quartier+Depuis+Prix plausible-event-position={p['slug']}" href="{r}quartiers/{p['slug']}.html">Découvrir le quartier</a></div>
+      <div class="vq-prix">{_bloc_prix('M', S['M'], LOUV['M'])}{_bloc_prix('A', S['A'], LOUV['A'])}</div>
+      <div class="pq-warn"><strong>Le prix au m² ne dit pas tout.</strong> Dans un même quartier, l’état, le terrain, l’exposition ou les travaux à prévoir font varier le prix de 30 % ou plus. Ces chiffres situent un quartier, pas un bien.</div>
+      {f'<h4 class="pq-h4">Les dernières ventes</h4>' + _ventes_table(VSALES[n]) if VSALES[n] else ''}
+    </div>'''
+    return f'''<section class="section bg-sand" id="prix-quartiers">
+  <div class="wrap stack-lg">
+    <div class="head2" style="margin-bottom:0"><h2>Les prix <span class="it">par quartier</span></h2>
+      <p>Louviers compte 18 quartiers, les « villages dans la ville » définis par la Ville. Choisissez-en un : la carte, les chiffres clés et le détail ci-dessous s’y ajustent.</p></div>
+    <div class="pq-pick field"><label for="f-quartier">Quartier de Louviers</label>
+      <select id="f-quartier"><option value="">Tous les quartiers</option>{opts}</select></div>
+    <div id="pq-panels">{panels}</div>
+    <div class="stack" id="pq-tbl-w">
+      <h3 class="pq-h4" style="margin-top:0">Les 18 quartiers côte à côte</h3>
+      <p class="muted small">Ventes réelles de {VPERIODE}. Cliquez un titre de colonne pour trier, une ligne pour afficher le détail.</p>
+      {vl_table(r)}
+      <p class="note">Médianes au m², calculées dès 3 ventes. Quand un quartier compte peu de ventes, le chiffre bouge beaucoup : regardez aussi le nombre de ventes. Découpage : Ville de Louviers, numérisé par CV Immobilier (précision de l’ordre de 20 à 40 m). <a class="link-u" href="{r}quartiers.html">Découvrir les 18 quartiers</a></p>
+    </div>
+  </div>
+</section>'''
+
+
+def page_quartiers():
+    r = ''
+    body = head('Les 18 quartiers de Louviers : carte, vie de quartier · louviers.immo',
+                'Les 18 quartiers de Louviers, « les villages dans la ville » : carte, et une page par quartier pour découvrir ses commerces, ses écoles, son histoire vue du ciel et ses habitants.',
+                'quartiers.html', r, css=_LEAF.format(r=r) + VCSS)
+    body += header('quartiers.html', r, topbar=False)
     pills = ''.join(f'<a class="pill" href="{adr_link(r, c)}">{c}</a>' for c in COMMUNES)
     body += f'''<main id="contenu">
 <section class="page-head">
@@ -410,35 +479,19 @@ def page_quartiers():
     <div class="crumbs"><a href="{r}index.html">Accueil</a> · Quartiers</div>
     <span class="eyebrow">Les villages dans la ville</span>
     <h1 style="margin-top:12px">Les 18 quartiers <span class="it">de Louviers.</span></h1>
-    <p class="lede" style="margin-top:20px;max-width:46em">La Ville de Louviers découpe la commune en 18 quartiers, qu’elle appelle « les villages dans la ville ». Pour chacun : ses limites, ses prix réels, ses commerces et ses écoles.</p>
+    <p class="lede" style="margin-top:20px;max-width:46em">La Ville de Louviers découpe la commune en 18 quartiers, qu’elle appelle « les villages dans la ville ». Pour chacun : ses limites, ses commerces, ses écoles, et le quartier vu du ciel dans les années 1950.</p>
   </div>
 </section>
 <section class="section" style="padding-top:24px">
   <div class="wrap">
-    <div class="vl-modes" role="group" aria-label="Couleur de la carte">
-      <button type="button" data-mode="q" aria-pressed="true">Quartiers</button>
-      <button type="button" data-mode="M" aria-pressed="false">Prix des maisons</button>
-      <button type="button" data-mode="A" aria-pressed="false">Prix des appartements</button>
-    </div>
     <div class="vl-map" id="vl-map" role="img" aria-label="Carte des 18 quartiers de Louviers"></div>
-    <div class="vl-leg" id="vl-leg" hidden><span id="vl-lo"></span><span class="g"></span><span id="vl-hi"></span><span>· médiane au m², quartiers d’au moins 3 ventes</span></div>
+    <p class="small muted" style="margin-top:14px">Les prix de chaque quartier sont sur la page Prix. <a class="link-u" href="{r}prix.html#prix-quartiers">Comparer les prix des 18 quartiers</a></p>
   </div>
 </section>
 <section class="section bg-sand" style="padding-top:56px">
   <div class="wrap">
-    <div class="head2"><h2>Une page par quartier</h2><p>Prix détaillés, dernières ventes, commerces, écoles, quartiers voisins.</p></div>
+    <div class="head2"><h2>Une page par quartier</h2><p>Commerces, écoles, bus, le quartier vu du ciel hier et aujourd’hui, et ceux qui le font vivre.</p></div>
     {vl_grid(r)}
-  </div>
-</section>
-<section class="section">
-  <div class="wrap">
-    <div class="head2"><h2>Les 18 quartiers côte à côte</h2><p>Ventes réelles de {VPERIODE}. Cliquez un titre de colonne pour trier.</p></div>
-    <div style="overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--white)">
-      <table class="data vq-tbl" id="vl-tbl"><thead><tr><th><button type="button" data-c="0">Quartier</button></th><th class="num"><button type="button" data-c="1">Ventes</button></th><th class="num"><button type="button" data-c="2">Maisons €/m²</button></th><th class="num"><button type="button" data-c="3">Appart. €/m²</button></th><th class="num"><button type="button" data-c="4">Prix moyen maison</button></th></tr></thead>
-      <tbody>{rows}</tbody>
-      <tfoot><tr><td><b>Louviers</b></td><td class="num"><b>{LOUV['n']}</b></td><td class="num"><b>{_fr(LOUV['M']['med'])} €</b></td><td class="num"><b>{_fr(LOUV['A']['med'])} €</b></td><td class="num"><b>{_fr(LOUV['M']['prix_moy'], -3)} €</b></td></tr></tfoot></table>
-    </div>
-    <p class="note" style="margin-top:12px">Médianes au m², calculées dès 3 ventes. Quand un quartier compte peu de ventes, le chiffre bouge beaucoup d’une année à l’autre : regardez aussi le nombre de ventes. Découpage : Ville de Louviers, numérisé par CV Immobilier (précision de l’ordre de 20 à 40 m).</p>
   </div>
 </section>
 <section class="section bg-sand">

@@ -4,7 +4,7 @@
 Mise à jour automatique des prix (DVF) pour louviers.immo.
 
 Télécharge les fichiers DVF géolocalisés de l'Eure pour l'année en cours et les
-deux précédentes, puis reconstruit data/dvf.json avec scripts/build_dvf.py.
+cinq précédentes (DVF garde 5 ans d'historique ; les années absentes sont ignorées), puis reconstruit data/dvf.json avec scripts/build_dvf.py.
 Le fichier n'est remplacé que si la nouvelle publication apporte des ventes plus
 récentes (DVF est mis à jour en avril et en octobre).
 
@@ -42,7 +42,7 @@ def period_to(path):
 
 def main():
     today = date.today()
-    years = [today.year - 2, today.year - 1, today.year]
+    years = list(range(today.year - 5, today.year + 1))
     with tempfile.TemporaryDirectory() as tmp:
         print('Téléchargement des fichiers DVF de l’Eure…', flush=True)
         files = [p for p in (fetch(y, tmp) for y in years) if p]
@@ -61,7 +61,9 @@ def main():
         n_old, n_new = count(OUT), count(new)
         if n_old and n_new < n_old * 0.5:
             sys.exit(f'Seulement {n_new} ventes contre {n_old} aujourd’hui : fichier inchangé par sécurité.')
-        if new_to and new_to > old_to:
+        n_old_y = len({s[2][:4] for s in (json.load(open(OUT, encoding='utf-8')).get('sales') or [])}) if os.path.exists(OUT) else 0
+        n_new_y = len({s[2][:4] for s in (json.load(open(new, encoding='utf-8')).get('sales') or [])})
+        if new_to and (new_to > old_to or n_new_y > n_old_y):
             os.replace(new, OUT)
             print('data/dvf.json mis à jour.', flush=True)
         else:

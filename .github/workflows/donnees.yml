@@ -2,8 +2,8 @@ name: Mettre à jour les données
 
 on:
   schedule:
-    - cron: "17 3 * * 1"
-  workflow_dispatch:
+    - cron: "17 3 1 * *"   # le 1er de chaque mois vers 5 h (heure de Paris) : une publication par mois au lieu de quatre
+  workflow_dispatch:        # bouton « Run workflow » dans l'onglet Actions
 
 permissions:
   contents: write

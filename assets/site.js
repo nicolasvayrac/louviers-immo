@@ -163,7 +163,19 @@
         var sales = (j.sales || []).map(function (s) {
           return { lat: s[0], lon: s[1], ym: s[2], price: s[3], surf: s[4], type: s[5], rooms: s[6], commune: s[7], pm2: s[3] / s[4] };
         });
-        return { meta: j, sales: sales };
+        // Le fichier peut couvrir 5 ans : les outils (estimation, adresse, accueil) travaillent sur les 24 derniers mois ;
+        // la page Prix utilise allSales pour proposer les années précédentes.
+        var to = j.period && j.period.to, from = j.period && j.period.from, wFrom = from;
+        if (to) {
+          var t = parseInt(to.slice(0, 4), 10) * 12 + parseInt(to.slice(5, 7), 10) - 1 - 23;
+          var f = Math.floor(t / 12) + '-' + String(t % 12 + 1).padStart(2, '0');
+          if (!from || f > from) wFrom = f;
+        }
+        var win = wFrom ? sales.filter(function (s) { return s.ym >= wFrom; }) : sales;
+        var meta = {}; for (var k in j) if (k !== 'sales') meta[k] = j[k];
+        var metaW = {}; for (var k2 in meta) metaW[k2] = meta[k2];
+        if (to) metaW.period = { from: wFrom, to: to };
+        return { meta: metaW, sales: win, metaAll: meta, allSales: sales };
       }).catch(function () { return { meta: {}, sales: [] }; });
     }
     return dvfPromise;
