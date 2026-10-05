@@ -37,6 +37,7 @@ AGENTS = {
              '<p>Faire la descente en kayak de la vallée de l’Eure. Louviers se découvre aussi depuis la rivière.</p>'),
         ],
         'photo': None,
+        'ventes': [('agents/arthur-maison-bourgeoise.jpg', 'La maison bourgeoise face à l’école de musique.'), ('agents/arthur-maison-de-ville.jpg', 'La maison de ville, place de la République.')],
     },
     'jessica-mourad': {
         'prenom': 'Jessica', 'nom': 'Jessica Mourad', 'de': 'de Jessica',
@@ -55,6 +56,7 @@ AGENTS = {
              '<p>Un appartement place de la Porte-de-l’Eau, qui appartenait à un jeune propriétaire. L’acquéreuse, une retraitée, cherchait une maison. Elle a eu un coup de cœur pour l’appartement, et elle ne l’a jamais regretté. Depuis, Jessica et ses clients sont devenus des proches.</p>'),
         ],
         'photo': None,
+        'ventes': [('agents/jessica-immeuble.jpg', 'La résidence, place de la Porte-de-l’Eau.'), ('agents/jessica-sejour.jpg', 'Le séjour qui a fait craquer l’acquéreuse.')],
     },
     'nicolas-vayrac': {
         'prenom': 'Nicolas', 'nom': 'Nicolas Vayrac', 'de': 'de Nicolas',
@@ -93,6 +95,8 @@ AG_CSS = '''<style>
 .ag-quote{margin:0;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(24px,2.6vw,34px);line-height:1.35;color:var(--navy);border-left:3px solid var(--gold);padding-left:24px}
 .ag-qa{display:grid;gap:10px;max-width:40em}.ag-qa h2{font-size:clamp(22px,2vw,28px)}.ag-qa p{font-size:17px;line-height:1.7;margin:0;color:var(--text)}
 .ag-fig{margin:0}.ag-fig img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:20px;display:block}.ag-fig figcaption{font-size:14px;color:var(--muted);margin-top:10px}
+.ag-ventes{display:grid;grid-template-columns:1fr 1fr;gap:16px}.ag-ventes .ag-fig img{aspect-ratio:3/2}
+@media(max-width:560px){.ag-ventes{grid-template-columns:1fr}}
 .ag-chips{display:flex;flex-wrap:wrap;gap:8px}.ag-chips a{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 12px 6px 6px;font-size:14px;color:var(--navy);background:var(--white)}
 .ag-chips i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:600;color:var(--navy)}
 .ag-team{display:flex;flex-wrap:wrap;gap:24px}.ag-team a{display:grid;justify-items:center;gap:8px;color:var(--navy);font-family:var(--serif);font-size:18px}
@@ -119,6 +123,12 @@ def page_agent(slug):
         f, cap = A['photo']
         fig = f'<figure class="ag-fig"><img src="{r}assets/img/{f}" alt="" loading="lazy"><figcaption>{cap}</figcaption></figure>'
         secs = secs.replace('</div><div class="ag-qa"><h2>Les ventes', f'</div>{fig}<div class="ag-qa"><h2>Les ventes', 1)
+    if A.get('ventes'):
+        g = ''.join(f'<figure class="ag-fig"><img src="{r}assets/img/{f}" alt="{cap}" loading="lazy"><figcaption>{cap}</figcaption></figure>' for f, cap in A['ventes'])
+        grid = f'<div class="ag-ventes">{g}</div>'
+        k = secs.index('<h2>Les ventes') if '<h2>Les ventes' in secs else secs.index('<h2>La vente')
+        end = secs.index('</div>', k) + len('</div>')
+        secs = secs[:end] + grid + secs[end:]
     chips = ''.join(f'<a href="{r}quartiers/{q}.html"><i style="background:{_QU[q]["c"]}">{_QU[q]["n"]}</i>{_QU[q]["nom"]}</a>' for q in A['quartiers'])
     cur = ' aria-current="page"'
     others = ''.join(
