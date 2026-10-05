@@ -159,7 +159,8 @@
   var dvfPromise = null;
   LI.loadDVF = function () {
     if (!dvfPromise) {
-      dvfPromise = LI.fetchJSON(LI.root + 'data/dvf.json', null, 15000).then(function (j) {
+      var dv = document.documentElement.getAttribute('data-dvf');
+      dvfPromise = LI.fetchJSON(LI.root + 'data/dvf.json' + (dv ? '?v=' + encodeURIComponent(dv) : ''), null, 15000).then(function (j) {
         var sales = (j.sales || []).map(function (s) {
           return { lat: s[0], lon: s[1], ym: s[2], price: s[3], surf: s[4], type: s[5], rooms: s[6], commune: s[7], pm2: s[3] / s[4] };
         });

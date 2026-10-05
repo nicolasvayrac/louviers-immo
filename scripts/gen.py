@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261005i'
+VER = '20261005j'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -44,7 +44,7 @@ def head(title, desc, path, root, noindex=False, jsonld=None, css=''):
     canon = DOMAIN + ('' if path == 'index.html' else path)
     ld = '<script type="application/ld+json">%s</script>\n' % json.dumps(jsonld, ensure_ascii=False) if jsonld else ''
     return f'''<!doctype html>
-<html lang="fr" data-root="{root}" class="no-js">
+<html lang="fr" data-root="{root}" data-dvf="{globals().get('DVF_STAMP', '')}" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -2213,8 +2213,9 @@ def page_a_vendre():
 
 
 exec(open(os.path.join(HERE, 'pages_villages.py'), encoding='utf-8').read())
+exec(open(os.path.join(HERE, 'page_equipe.py'), encoding='utf-8').read())
 
 for fn in [page_a_vendre, page_merci, page_qr, page_comparer, page_georget, page_guincetre, page_portes_eau, page_diagnostics, page_conciergerie, page_index, page_adresse, page_prix, page_quartiers, page_villages, page_portraits,
-           page_portrait_modele, page_outils, page_commerces, page_barbe, page_apropos, page_mentions, page_404]:
+           page_portrait_modele, page_outils, page_commerces, page_barbe, page_apropos, page_mentions, page_404, page_equipe]:
     fn()
 write_sitemap()

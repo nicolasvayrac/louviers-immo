@@ -916,3 +916,6 @@ picture > source { display: none; }
 .vh-ex { margin-top: 12px; font-size: 14px; color: var(--muted); min-height: 1.5em; }
 .vl-card.off { opacity: .35; }
 .vl-card.on { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-tint); }
+
+/* Évite un léger défilement horizontal sur téléphone (illustrations qui débordent) */
+html, body { overflow-x: clip; }

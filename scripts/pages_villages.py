@@ -40,6 +40,8 @@ def village_de(lat, lon, maxd=250):
 # ---------- ventes DVF par quartier
 _DVF = json.load(open(os.path.join(OUT, 'data/dvf.json'), encoding='utf-8'))
 _PER = _DVF['period']
+# Change dès que les données changent : sert à forcer le rechargement de data/dvf.json chez les visiteurs.
+DVF_STAMP = f"{_PER['from']}_{_PER['to']}_{len(_DVF['sales'])}"
 
 
 def _ym_add(ym, k):
