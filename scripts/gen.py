@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261005j'
+VER = '20261005k'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -376,8 +376,9 @@ def page_index():
         f'<a class="envie envie-{c}" href="{r}commerces.html#{k}">{ico(d)}<span class="en">{l}</span><span class="ed">{s}</span></a>'
         for k, l, s, c, d in ENVIES)
     faces = ''.join(
-        f'<span class="face" tabindex="0"><img src="{r}assets/img/equipe/{img}.jpg" alt="{n}, {role.lower()}" width="400" height="400" loading="lazy">'
-        f'<span class="face-tip" aria-hidden="true"><b>{n}</b>{role}</span></span>'
+        (f'<a class="face" href="{r}agents/{img}.html">' if img in AGENT_PAGES else '<span class="face" tabindex="0">') +
+        f'<img src="{r}assets/img/equipe/{img}.jpg" alt="{n}, {role.lower()}" width="400" height="400" loading="lazy">'
+        f'<span class="face-tip" aria-hidden="true"><b>{n}</b>{role}{"<br>Son Louviers →" if img in AGENT_PAGES else ""}</span>' + ('</a>' if img in AGENT_PAGES else '</span>')
         for n, role, tel, img in TEAM)
     body = head('louviers.immo — Louviers, mode d’emploi · le guide par CV Immobilier',
                 'Le guide de Louviers et de l’Agglomération Seine-Eure : testez une adresse pour voir les commerces, écoles et temps de trajet autour, découvrez les quartiers, les prix réels de l’immobilier et les portraits de ceux qui font Louviers.',
@@ -1138,10 +1139,10 @@ def page_outils():
             <select id="e-duree"><option value="15">15 ans</option><option value="20">20 ans</option><option value="25" selected>25 ans</option></select></div>
         </div>
         <div class="two">
-          <div class="field"><label for="e-taux">Taux du crédit (%)</label><input id="e-taux" type="number" inputmode="decimal" min="0" max="15" step="0.05" value="3.5"></div>
-          <div class="field"><label for="e-ass">Taux d’assurance (%)</label><input id="e-ass" type="number" inputmode="decimal" min="0" max="2" step="0.01" value="0.30"></div>
+          <div class="field"><label for="e-taux">Taux du crédit (%)</label><input id="e-taux" type="number" inputmode="decimal" min="0" max="15" step="0.01" value="3.76"></div>
+          <div class="field"><label for="e-ass">Taux d’assurance (%)</label><input id="e-ass" type="number" inputmode="decimal" min="0" max="2" step="0.01" value="0.34"></div>
         </div>
-        <p class="note">Taux pré-remplis à titre d’exemple : modifiez-les selon les conditions du moment. Pour une simulation personnalisée, un courtier ou votre banque vous donnera un chiffre précis : retrouvez <a href="{r}commerces.html#financement" style="font-weight:600">nos courtiers partenaires à Louviers</a>.</p>
+        <p class="note">Taux pré-remplis d’après le simulateur Meilleurtaux (taux moyens avant négociation, octobre 2026) : modifiez-les selon votre situation. Pour une simulation personnalisée, un courtier ou votre banque vous donnera un chiffre précis : retrouvez <a href="{r}commerces.html#financement" style="font-weight:600">nos courtiers partenaires à Louviers</a>.</p>
       </form>
       <div class="out" aria-live="polite">
         <span class="eyebrow">Budget d’achat estimé</span>
@@ -1200,7 +1201,7 @@ def page_apropos():
     team = ''.join(f'''<div class="member">
         <img src="{r}assets/img/equipe/{img}.jpg" alt="{n}" width="400" height="400" loading="lazy">
         <div class="mn">{n}</div><div class="mr">{role}</div>
-        <a class="mt" href="tel:+33{tel.replace(' ', '')[1:]}">{tel}</a></div>''' for n, role, tel, img in TEAM)
+        <a class="mt" href="tel:+33{tel.replace(' ', '')[1:]}">{tel}</a>{f'<a class="link-u" style="margin-top:6px;font-size:14px" href="{r}agents/{img}.html">Le Louviers {AGENTS[img]["de"]}</a>' if img in AGENT_PAGES else ''}</div>''' for n, role, tel, img in TEAM)
     body = head('À propos de louviers.immo · CV Immobilier, Louviers depuis 1992',
                 'louviers.immo est le guide de Louviers proposé par CV Immobilier, agence immobilière indépendante installée à Louviers depuis 1992 et à Saint-Pierre-du-Vauvray depuis 2024.',
                 'a-propos.html', r, jsonld=ORG)
@@ -2214,8 +2215,9 @@ def page_a_vendre():
 
 exec(open(os.path.join(HERE, 'pages_villages.py'), encoding='utf-8').read())
 exec(open(os.path.join(HERE, 'page_equipe.py'), encoding='utf-8').read())
+exec(open(os.path.join(HERE, 'pages_agents.py'), encoding='utf-8').read())
 
 for fn in [page_a_vendre, page_merci, page_qr, page_comparer, page_georget, page_guincetre, page_portes_eau, page_diagnostics, page_conciergerie, page_index, page_adresse, page_prix, page_quartiers, page_villages, page_portraits,
-           page_portrait_modele, page_outils, page_commerces, page_barbe, page_apropos, page_mentions, page_404, page_equipe]:
+           page_portrait_modele, page_outils, page_commerces, page_barbe, page_apropos, page_mentions, page_404, page_equipe, page_agents]:
     fn()
 write_sitemap()

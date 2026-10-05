@@ -12,6 +12,9 @@
   <url><loc>https://louviers.immo/portraits.html</loc><priority>0.8</priority></url>
   <url><loc>https://louviers.immo/prix.html</loc><priority>0.8</priority></url>
   <url><loc>https://louviers.immo/quartiers.html</loc><priority>0.8</priority></url>
+  <url><loc>https://louviers.immo/agents/arthur-godefroy.html</loc><priority>0.6</priority></url>
+  <url><loc>https://louviers.immo/agents/jessica-mourad.html</loc><priority>0.6</priority></url>
+  <url><loc>https://louviers.immo/agents/nicolas-vayrac.html</loc><priority>0.6</priority></url>
   <url><loc>https://louviers.immo/portraits/aux-delices-de-louviers.html</loc><priority>0.6</priority></url>
   <url><loc>https://louviers.immo/portraits/georget-cycles.html</loc><priority>0.6</priority></url>
   <url><loc>https://louviers.immo/portraits/institut-des-portes-de-l-eau.html</loc><priority>0.6</priority></url>

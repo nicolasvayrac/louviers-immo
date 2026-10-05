@@ -20,6 +20,7 @@ window.LI_EXCLUS = [
   "Caramel",
   "Éram",
   "Manufacture Hermès",
+  "Grain de Café",        // remplacé plus bas par « Grain de café 27 » (bonne page Facebook)
 ];
 
 /* ----------------------------------------------------------
@@ -39,6 +40,16 @@ window.LI_RUBRIQUES = {
    Même format que data/partenaires.js, sans badge doré.
    ---------------------------------------------------------- */
 window.LI_AJOUTS = [
+  {
+    name: "Grain de café 27",
+    category: "Salon de thé, café torréfié sur place",
+    kind: "cafe",
+    rubrique: "cafes",
+    address: "39 rue du Matrey 27400 Louviers",
+    insee: "27375",
+    lat: 49.211411, lon: 1.168162,
+    web: "https://www.facebook.com/GrainDeCafe.Louviers"
+  },
   {
     name: "Bonobo",
     category: "Vêtements",
