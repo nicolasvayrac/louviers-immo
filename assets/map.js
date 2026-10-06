@@ -17,7 +17,7 @@
       if (!l.on || !l.getTileUrl) return;
       l.on('tileerror', function (e) {
         var t = e.tile;
-        if (t.getAttribute('data-retry')) return;
+        if (t.getAttribute('data-retry') || /^data:/.test(t.src)) return;
         t.setAttribute('data-retry', '1');
         setTimeout(function () { t.src = e.tile.src.split('&_r=')[0] + '&_r=' + Date.now(); }, 700);
       });

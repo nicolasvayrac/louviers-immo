@@ -258,6 +258,7 @@ VCSS = '''<style>
 .vq-cta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .vq-cta a{display:flex;flex-direction:column;gap:8px;border-radius:22px;padding:24px;background:var(--navy);color:var(--on-dark)}
 .vq-cta a strong{font-family:var(--serif);font-weight:400;font-size:23px;color:var(--cream)}
+.vq-cta a .eyebrow{color:var(--gold)}.vq-cta a.alt .eyebrow{color:var(--gold-text)}
 .vq-cta a .go{margin-top:auto;color:var(--gold);font-weight:600}
 .vq-cta a.alt{background:var(--white);color:var(--text);border:1px solid var(--line)}
 .vq-cta a.alt strong{color:var(--navy)}.vq-cta a.alt .go{color:var(--gold-text)}
@@ -295,7 +296,7 @@ VCSS = '''<style>
 @media(max-width:900px){.vq-pb{grid-template-columns:1fr}.vq-hero,.vq-prix{grid-template-columns:1fr}.vq-k,.vq-facts{grid-template-columns:repeat(2,1fr)}.vq-rubs,.vq-cta,.vq-pors,.vl-grid{grid-template-columns:1fr}.vq-map{min-height:320px}}
 </style>
 '''
-_LEAF = '<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n'
+_LEAF = '<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css" media="print" data-m="all" onload="this.media=this.dataset.m">\n'
 
 
 def _kpi(l, v, u): return f'<div class="kpi light"><div class="l">{l}</div><div class="v">{v}</div><div class="u">{u}</div></div>'
@@ -449,7 +450,7 @@ def prix_quartiers(r):
         <a class="btn btn-line plausible-event-name=Quartier+Depuis+Prix plausible-event-position={p['slug']}" href="{r}quartiers/{p['slug']}.html">Découvrir le quartier</a></div>
       <div class="vq-prix">{_bloc_prix('M', S['M'], LOUV['M'])}{_bloc_prix('A', S['A'], LOUV['A'])}</div>
       <div class="pq-warn"><strong>Le prix au m² ne dit pas tout.</strong> Dans un même quartier, l’état, le terrain, l’exposition ou les travaux à prévoir font varier le prix de 30 % ou plus. Ces chiffres situent un quartier, pas un bien.</div>
-      {f'<h4 class="pq-h4">Les dernières ventes</h4>' + _ventes_table(VSALES[n]) if VSALES[n] else ''}
+      {f'<h3 class="pq-h4">Les dernières ventes</h3>' + _ventes_table(VSALES[n]) if VSALES[n] else ''}
     </div>'''
     return f'''<section class="section bg-sand" id="prix-quartiers">
   <div class="wrap stack-lg">

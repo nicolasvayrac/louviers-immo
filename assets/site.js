@@ -10,6 +10,29 @@
   LI.root = document.documentElement.getAttribute('data-root') || '';
   LI.center = { lat: 49.2153, lon: 1.1655 }; // Louviers
 
+  /* ---------- Provenance : d'où vient le visiteur (QR code, support imprimé, site…) ----------
+     Les adresses courtes (/set, /sac…) sont définies dans netlify.toml. La provenance est
+     gardée le temps de la visite et ajoutée aux formulaires (champ caché « provenance »). */
+  LI.SUPPORTS = { '/set': 'set-de-table', '/sac': 'sac-a-pain', '/vitrine': 'vitrine-commerce',
+    '/agence': 'vitrine-agence', '/affiche': 'affiche', '/presse': 'presse', '/carte': 'carte-de-visite' };
+  LI.provenance = (function () {
+    var src = '';
+    try {
+      var q = new URLSearchParams(location.search);
+      src = LI.SUPPORTS[location.pathname.replace(/\/+$/, '')] || q.get('utm_source') || q.get('src') || '';
+      if (!src && document.referrer) {
+        var h = new URL(document.referrer).hostname;
+        if (h && h !== location.hostname) src = 'lien:' + h.replace(/^www\./, '');
+      }
+      if (src) sessionStorage.setItem('li_src', src); else src = sessionStorage.getItem('li_src') || '';
+    } catch (e) {}
+    return src || 'direct';
+  })();
+  document.addEventListener('DOMContentLoaded', function () {
+    var f = document.querySelectorAll('input[name="provenance"]');
+    for (var i = 0; i < f.length; i++) f[i].value = LI.provenance;
+  });
+
   /* ---------- Utilitaires ---------- */
   LI.esc = function (s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {

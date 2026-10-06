@@ -25,7 +25,7 @@
 <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
 <link rel="preload" href="../assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css" media="print" data-m="all" onload="this.media=this.dataset.m">
 <style>
 .vq-hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,3vw,48px);align-items:stretch}
 .vq-num{display:inline-grid;place-items:center;width:52px;height:52px;border-radius:50%;font:600 20px var(--sans,inherit);color:var(--navy);border:2px solid rgba(27,46,64,.25)}
@@ -60,6 +60,7 @@
 .vq-cta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .vq-cta a{display:flex;flex-direction:column;gap:8px;border-radius:22px;padding:24px;background:var(--navy);color:var(--on-dark)}
 .vq-cta a strong{font-family:var(--serif);font-weight:400;font-size:23px;color:var(--cream)}
+.vq-cta a .eyebrow{color:var(--gold)}.vq-cta a.alt .eyebrow{color:var(--gold-text)}
 .vq-cta a .go{margin-top:auto;color:var(--gold);font-weight:600}
 .vq-cta a.alt{background:var(--white);color:var(--text);border:1px solid var(--line)}
 .vq-cta a.alt strong{color:var(--navy)}.vq-cta a.alt .go{color:var(--gold-text)}
@@ -96,7 +97,7 @@
 .vl-card span{font-size:13px;color:var(--muted)}
 @media(max-width:900px){.vq-pb{grid-template-columns:1fr}.vq-hero,.vq-prix{grid-template-columns:1fr}.vq-k,.vq-facts{grid-template-columns:repeat(2,1fr)}.vq-rubs,.vq-cta,.vq-pors,.vl-grid{grid-template-columns:1fr}.vq-map{min-height:320px}}
 </style>
-<link rel="stylesheet" href="../assets/style.css?v=20261005k">
+<link rel="stylesheet" href="../assets/style.css?v=20261006a">
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -186,7 +187,7 @@
         <p style="color:#9FB0C0;max-width:28em">louviers.immo est un guide proposé par CV Immobilier, agence immobilière indépendante membre de la FNAIM et du réseau Interkab, à Louviers depuis 1992.</p>
       </div>
       <div>
-        <h4>Le guide</h4>
+        <h2 class="fh">Le guide</h2>
         <ul>
           <li><a href="../adresse.html">Mon adresse</a></li>
           <li><a href="../commerces.html">Commerces</a></li>
@@ -200,14 +201,14 @@
         </ul>
       </div>
       <div>
-        <h4>Agence de Louviers</h4>
+        <h2 class="fh">Agence de Louviers</h2>
         <ul>
           <li>27 rue du Général de Gaulle<br>27400 Louviers</li>
           <li><a class="tel" href="tel:+33232402228">02 32 40 22 28</a></li>
         </ul>
       </div>
       <div>
-        <h4>Saint-Pierre-du-Vauvray</h4>
+        <h2 class="fh">Saint-Pierre-du-Vauvray</h2>
         <ul>
           <li>15 Grande Rue<br>27430 Saint-Pierre-du-Vauvray</li>
           <li><a class="tel" href="tel:+33279492171">02 79 49 21 71</a></li>
@@ -226,10 +227,10 @@
     </div>
   </div>
 </footer>
-<script src="../assets/site.js?v=20261005k"></script>
-<script src="../assets/vendor/leaflet/leaflet.js?v=20261005k"></script>
-<script src="../assets/map.js?v=20261005k"></script>
-<script src="../assets/hier.js?v=20261005k"></script>
-<script src="../assets/villages.js?v=20261005k"></script>
+<script src="../assets/site.js?v=20261006a"></script>
+<script src="../assets/vendor/leaflet/leaflet.js?v=20261006a"></script>
+<script src="../assets/map.js?v=20261006a"></script>
+<script src="../assets/hier.js?v=20261006a"></script>
+<script src="../assets/villages.js?v=20261006a"></script>
 </body>
 </html>

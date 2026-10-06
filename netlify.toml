@@ -21,6 +21,45 @@
   status = 301
   force = true
 
+# Adresses courtes des supports imprimés (QR codes). Réécriture (200) : l'adresse reste
+# louviers.immo/set, ce qui permet de compter chaque support dans la mesure d'audience.
+# La provenance est ensuite ajoutée aux formulaires (voir LI.SUPPORTS dans assets/site.js).
+[[redirects]]
+  from = "/set"
+  to = "/prix.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/sac"
+  to = "/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/vitrine"
+  to = "/commerces.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/agence"
+  to = "/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/affiche"
+  to = "/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/presse"
+  to = "/index.html"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/carte"
+  to = "/index.html"
+  status = 200
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]

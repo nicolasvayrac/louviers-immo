@@ -10,7 +10,7 @@ DOMAIN = 'https://louviers.immo/'
 CV_SITE = 'https://www.cvimmobilier.fr/'
 CV_EST = 'https://www.cvimmobilier.fr/estimation'
 MAIL = 'contact@cvimmobilier.fr'
-VER = '20261005k'
+VER = '20261006a'
 # Passerelle cvimmobilier.fr (biens à vendre) : True pour l'afficher sur le site
 PASSERELLE = False
 
@@ -40,6 +40,12 @@ ORG = {
 PIN = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C7C33" stroke-width="1.8" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'
 
 
+# Cloudflare Web Analytics (gratuit, sans cookies) : coller ici le jeton fourni par Cloudflare.
+CF_TOKEN = ''
+CF_BEACON = ('<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+             'data-cf-beacon=\'{"token": "%s"}\'></script>\n' % CF_TOKEN) if CF_TOKEN else ''
+
+
 def head(title, desc, path, root, noindex=False, jsonld=None, css=''):
     canon = DOMAIN + ('' if path == 'index.html' else path)
     ld = '<script type="application/ld+json">%s</script>\n' % json.dumps(jsonld, ensure_ascii=False) if jsonld else ''
@@ -66,7 +72,7 @@ def head(title, desc, path, root, noindex=False, jsonld=None, css=''):
 <!-- Plausible Analytics : mesure d'audience sans cookies -->
 <script defer data-domain="louviers.immo" src="https://plausible.io/js/script.outbound-links.tagged-events.js"></script>
 <script>window.plausible = window.plausible || function () {{ (window.plausible.q = window.plausible.q || []).push(arguments) }}</script>
-<link rel="icon" type="image/png" href="{root}assets/img/favicon.png">
+{CF_BEACON}<link rel="icon" type="image/png" href="{root}assets/img/favicon.png">
 <link rel="apple-touch-icon" href="{root}assets/img/apple-touch-icon.png">
 <link rel="preload" href="{root}assets/fonts/fraunces-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{root}assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -110,7 +116,7 @@ def footer(root, scripts=()):
         <p style="color:#9FB0C0;max-width:28em">louviers.immo est un guide proposé par CV Immobilier, agence immobilière indépendante membre de la FNAIM et du réseau Interkab, à Louviers depuis 1992.</p>
       </div>
       <div>
-        <h4>Le guide</h4>
+        <h2 class="fh">Le guide</h2>
         <ul>
           <li><a href="{root}adresse.html">Mon adresse</a></li>
           <li><a href="{root}commerces.html">Commerces</a></li>
@@ -125,14 +131,14 @@ def footer(root, scripts=()):
         </ul>
       </div>
       <div>
-        <h4>Agence de Louviers</h4>
+        <h2 class="fh">Agence de Louviers</h2>
         <ul>
           <li>27 rue du Général de Gaulle<br>27400 Louviers</li>
           <li><a class="tel" href="tel:+33232402228">02 32 40 22 28</a></li>
         </ul>
       </div>
       <div>
-        <h4>Saint-Pierre-du-Vauvray</h4>
+        <h2 class="fh">Saint-Pierre-du-Vauvray</h2>
         <ul>
           <li>15 Grande Rue<br>27430 Saint-Pierre-du-Vauvray</li>
           <li><a class="tel" href="tel:+33279492171">02 79 49 21 71</a></li>
@@ -302,6 +308,7 @@ COMMUNES = ['Saint-Pierre-du-Vauvray', 'Le Vaudreuil', 'Incarville', 'Val-de-Reu
 def form_proposer(r, where):
     return f'''<form class="lform plausible-event-name=Proposer+Commerce plausible-event-position={where}" name="proposer-commerce" method="POST" action="{r}merci.html" data-netlify="true" netlify-honeypot="bot-field">
       <input type="hidden" name="form-name" value="proposer-commerce">
+      <input type="hidden" name="provenance" value="">
       <input type="hidden" name="page" value="{where}">
       <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
       <div class="lform-grid">
@@ -382,7 +389,7 @@ def page_index():
         for n, role, tel, img in TEAM)
     body = head('louviers.immo — Louviers, mode d’emploi · le guide par CV Immobilier',
                 'Le guide de Louviers et de l’Agglomération Seine-Eure : testez une adresse pour voir les commerces, écoles et temps de trajet autour, découvrez les quartiers, les prix réels de l’immobilier et les portraits de ceux qui font Louviers.',
-                'index.html', r, jsonld=ORG, css=f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n')
+                'index.html', r, jsonld=ORG, css=f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css" media="print" data-m="all" onload="this.media=this.dataset.m">\n')
     body += header(None, r)
     body += f'''<main id="contenu">
 <section class="hero2">
@@ -568,7 +575,7 @@ def page_adresse():
           ('15 Grande Rue 27430 Saint-Pierre-du-Vauvray', 'Grande Rue, Saint-Pierre-du-Vauvray'),
           ('Le Vaudreuil', 'Le Vaudreuil')]
     exl = ''.join(f'<a class="pill" href="{adr_link(r, q)}">{l}</a>' for q, l in ex)
-    css = f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n'
+    css = f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css" media="print" data-m="all" onload="this.media=this.dataset.m">\n'
     body = head('Mon adresse — vivre à Louviers, rue par rue · louviers.immo',
                 'Entrez une adresse à Louviers ou dans l’Agglomération Seine-Eure : commerces les plus proches, écoles, arrêts de bus, gare, temps de trajet à pied, à vélo et en voiture, et prix des ventes autour.',
                 'adresse.html', r, css=css)
@@ -696,6 +703,7 @@ def page_adresse():
       </div>
       <form class="lform plausible-event-name=Alerte+Quartier" name="alerte-quartier" method="POST" action="{r}merci.html" data-netlify="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="alerte-quartier">
+        <input type="hidden" name="provenance" value="">
         <input type="hidden" name="adresse" id="alerte-adresse" value="">
         <p hidden><label>Ne pas remplir <input name="bot-field"></label></p>
         <div class="field"><label for="alerte-mail">Votre adresse mail</label><input id="alerte-mail" name="email" type="email" required autocomplete="email"></div>
@@ -717,7 +725,7 @@ def page_adresse():
 # =========================================================
 def page_prix():
     r = ''
-    css = f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n' + VCSS
+    css = f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css" media="print" data-m="all" onload="this.media=this.dataset.m">\n' + VCSS
     body = head('Prix de l’immobilier à Louviers : ventes réelles par quartier · louviers.immo',
                 'Prix au m² à Louviers, quartier par quartier, et dans l’Agglomération Seine-Eure à partir des ventes réelles enregistrées par l’État (DVF) : carte des ventes, médianes maisons et appartements, dernières ventes.',
                 'prix.html', r, css=css)
@@ -1330,7 +1338,7 @@ def page_404():
 # =========================================================
 def page_commerces():
     r = ''
-    css = f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css">\n'
+    css = f'<link rel="stylesheet" href="{r}assets/vendor/leaflet/leaflet.css" media="print" data-m="all" onload="this.media=this.dataset.m">\n'
     body = head('Commerces à Louviers : restaurants, snacking, mode, métiers de bouche · louviers.immo',
                 'L’annuaire de Louviers et de l’Agglomération Seine-Eure par rubrique : restaurants, snacking, cafés, boulangeries, métiers de bouche, mode, artisans, clubs sportifs, notaires, santé, services.',
                 'commerces.html', r, css=css)
